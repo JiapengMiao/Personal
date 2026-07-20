@@ -1,0 +1,1317 @@
+{
+  "generatedAt": "2026-07-19T09:52:47.776Z",
+  "asOfDate": "2026-07-19",
+  "overallPulse": {
+    "score": 0.4,
+    "status": "偏紧",
+    "position": 0.59
+  },
+  "sources": {
+    "wss": {
+      "label": "World Silver Survey 2026",
+      "url": "https://silverinstitute.org/wp-content/uploads/2026/04/World-Silver-Survey-2026.pdf"
+    },
+    "wssRelease": {
+      "label": "The Silver Institute 2025 market release",
+      "url": "https://silverinstitute.org/elevated-lease-rates-regional-liquidity-tightness-and-robust-investor-interest-resulted-in-record-silver-prices-in-2025/"
+    },
+    "nextGen": {
+      "label": "Silver: The Next Generation Metal",
+      "url": "https://silverinstitute.org/wp-content/uploads/2025/12/Silver_The-Next-Generation-Metal_DECEMBER-Release.pdf"
+    },
+    "ieaAi": {
+      "label": "IEA · Energy and AI",
+      "url": "https://www.iea.org/reports/key-questions-on-energy-and-ai/executive-summary"
+    },
+    "ieaRenew": {
+      "label": "IEA · Renewables 2025",
+      "url": "https://www.iea.org/reports/renewables-2025/executive-summary"
+    },
+    "wind": {
+      "label": "Wind 万得（日频行情与库存）",
+      "url": "https://www.wind.com.cn/"
+    }
+  },
+  "themeSummaries": [
+    {
+      "theme": "光伏银耗",
+      "short": "光伏",
+      "value": "4,696.6 吨",
+      "delta": "同比 -19.1%",
+      "description": "装机扩张尚未抵消单位降银、银包铜和铜电镀带来的压力。",
+      "icon": "PV",
+      "score": -2,
+      "status": "强利空",
+      "tone": "strong-negative"
+    },
+    {
+      "theme": "非光伏电气电子",
+      "short": "电气电子",
+      "value": "8,457.0 吨",
+      "delta": "同比 +3.4%",
+      "description": "汽车、半导体、电网、通信和消费电子共同构成增长池。",
+      "icon": "EE",
+      "score": 2,
+      "status": "强利多",
+      "tone": "strong-positive"
+    },
+    {
+      "theme": "高功率封装",
+      "short": "功率封装",
+      "value": "暂无统一吨数",
+      "delta": "2 项待接入",
+      "description": "重点跟踪SiC/IGBT模块与银烧结、银钎焊材料出货。",
+      "icon": "SiC",
+      "score": 0,
+      "status": "待接入",
+      "tone": "missing"
+    },
+    {
+      "theme": "AI物理基础设施",
+      "short": "AI基建",
+      "value": "485.0 TWh",
+      "delta": "2025A",
+      "description": "用电与IT容量指示硬件扩张，但不能同比例映射白银吨数。",
+      "icon": "AI",
+      "score": 0,
+      "status": "仅有基线",
+      "tone": "neutral"
+    },
+    {
+      "theme": "供应与投资",
+      "short": "供应投资",
+      "value": "-1,440.1 吨",
+      "delta": "2026F 缺口",
+      "description": "连续缺口叠加资金流和可用库存变化，决定现货紧张度。",
+      "icon": "S/D",
+      "score": 2,
+      "status": "强利多",
+      "tone": "strong-positive"
+    }
+  ],
+  "indicators": [
+    {
+      "id": 1,
+      "theme": "光伏银耗",
+      "role": "主指标",
+      "name": "全球光伏用银量",
+      "period": "2026F",
+      "value": 4696.6,
+      "priorPeriod": "2025A",
+      "priorValue": 5803.9,
+      "unit": "吨",
+      "direction": "越高越利多",
+      "upperThreshold": 300,
+      "lowerThreshold": -300,
+      "thresholdNote": "同比变动 ±300 吨",
+      "score": -2,
+      "status": "强利空",
+      "tone": "strong-negative",
+      "dataStatus": "已核实",
+      "frequency": "年度",
+      "updatedAt": "2026-07-19",
+      "sourceLabel": "World Silver Survey 2026",
+      "sourceUrl": "https://silverinstitute.org/wp-content/uploads/2026/04/World-Silver-Survey-2026.pdf",
+      "note": "装机增长与单位降银的合成结果；2026年同比约-19.1%。",
+      "history": [
+        {
+          "period": "2024A",
+          "kind": "actual",
+          "value": 6142.9,
+          "delta": null,
+          "score": null,
+          "status": "基线"
+        },
+        {
+          "period": "2025A",
+          "kind": "actual",
+          "value": 5803.9,
+          "delta": -339,
+          "score": -2,
+          "status": "强利空"
+        },
+        {
+          "period": "2026F",
+          "kind": "forecast",
+          "value": 4696.6,
+          "delta": -1107.3,
+          "score": -2,
+          "status": "强利空"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "theme": "光伏银耗",
+      "role": "驱动",
+      "name": "电池平均单位银耗",
+      "period": null,
+      "value": null,
+      "priorPeriod": null,
+      "priorValue": null,
+      "unit": "mg/W",
+      "direction": "越高越利多",
+      "upperThreshold": 0.3,
+      "lowerThreshold": -0.3,
+      "thresholdNote": "季度变动 ±0.3 mg/W",
+      "score": 0,
+      "status": "待接入",
+      "tone": "missing",
+      "dataStatus": "待接入",
+      "frequency": "季度",
+      "updatedAt": "2026-07-19",
+      "sourceLabel": "World Silver Survey 2026",
+      "sourceUrl": "https://silverinstitute.org/wp-content/uploads/2026/04/World-Silver-Survey-2026.pdf",
+      "note": "按TOPCon、HJT、BC路线分别更新；WSS提示2027年主流可能低于5 mg/W。",
+      "history": []
+    },
+    {
+      "id": 3,
+      "theme": "光伏银耗",
+      "role": "驱动",
+      "name": "全球新增光伏装机",
+      "period": null,
+      "value": null,
+      "priorPeriod": null,
+      "priorValue": null,
+      "unit": "GW",
+      "direction": "越高越利多",
+      "upperThreshold": 20,
+      "lowerThreshold": -20,
+      "thresholdNote": "期间变动 ±20 GW",
+      "score": 0,
+      "status": "待接入",
+      "tone": "missing",
+      "dataStatus": "待接入",
+      "frequency": "季度/年度",
+      "updatedAt": "2026-07-19",
+      "sourceLabel": "IEA · Renewables 2025",
+      "sourceUrl": "https://www.iea.org/reports/renewables-2025/executive-summary",
+      "note": "需与单位银耗联合解读，不能单独外推白银需求。",
+      "history": []
+    },
+    {
+      "id": 4,
+      "theme": "非光伏电气电子",
+      "role": "主指标",
+      "name": "非光伏电气电子用银",
+      "period": "2026F",
+      "value": 8457,
+      "priorPeriod": "2025A",
+      "priorValue": 8177.1,
+      "unit": "吨",
+      "direction": "越高越利多",
+      "upperThreshold": 200,
+      "lowerThreshold": -200,
+      "thresholdNote": "同比变动 ±200 吨",
+      "score": 2,
+      "status": "强利多",
+      "tone": "strong-positive",
+      "dataStatus": "已核实",
+      "frequency": "年度",
+      "updatedAt": "2026-07-19",
+      "sourceLabel": "World Silver Survey 2026",
+      "sourceUrl": "https://silverinstitute.org/wp-content/uploads/2026/04/World-Silver-Survey-2026.pdf",
+      "note": "电气电子总量减光伏；包含汽车、AI、电网、半导体、通信和消费电子。",
+      "history": [
+        {
+          "period": "2024A",
+          "kind": "actual",
+          "value": 8192.7,
+          "delta": null,
+          "score": null,
+          "status": "基线"
+        },
+        {
+          "period": "2025A",
+          "kind": "actual",
+          "value": 8177.1,
+          "delta": -15.6,
+          "score": -1,
+          "status": "偏利空"
+        },
+        {
+          "period": "2026F",
+          "kind": "forecast",
+          "value": 8457,
+          "delta": 279.9,
+          "score": 2,
+          "status": "强利多"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "theme": "非光伏电气电子",
+      "role": "守门指标",
+      "name": "占工业需求比重",
+      "period": "2026F",
+      "value": 0.4251,
+      "priorPeriod": "2025A",
+      "priorValue": 0.3999,
+      "unit": "%",
+      "direction": "越高越利多",
+      "upperThreshold": 0.02,
+      "lowerThreshold": -0.02,
+      "thresholdNote": "同比变动 ±2.0 个百分点",
+      "score": 2,
+      "status": "强利多",
+      "tone": "strong-positive",
+      "dataStatus": "已核实",
+      "frequency": "年度",
+      "updatedAt": "2026-07-19",
+      "sourceLabel": "World Silver Survey 2026",
+      "sourceUrl": "https://silverinstitute.org/wp-content/uploads/2026/04/World-Silver-Survey-2026.pdf",
+      "note": "用于判断电气化增量是否足以抵消光伏降银。",
+      "history": [
+        {
+          "period": "2024A",
+          "kind": "actual",
+          "value": 0.3879,
+          "delta": null,
+          "score": null,
+          "status": "基线"
+        },
+        {
+          "period": "2025A",
+          "kind": "actual",
+          "value": 0.3999,
+          "delta": 0.012,
+          "score": 1,
+          "status": "偏利多"
+        },
+        {
+          "period": "2026F",
+          "kind": "forecast",
+          "value": 0.4251,
+          "delta": 0.0252,
+          "score": 2,
+          "status": "强利多"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "theme": "非光伏电气电子",
+      "role": "驱动",
+      "name": "全球汽车行业用银",
+      "period": "2026E",
+      "value": 2473.6,
+      "priorPeriod": "2025E",
+      "priorValue": 2392.3,
+      "unit": "吨",
+      "direction": "越高越利多",
+      "upperThreshold": 80,
+      "lowerThreshold": -80,
+      "thresholdNote": "同比变动 ±80 吨",
+      "score": 2,
+      "status": "强利多",
+      "tone": "strong-positive",
+      "dataStatus": "模型值",
+      "frequency": "年度",
+      "updatedAt": "2026-07-19",
+      "sourceLabel": "Silver: The Next Generation Metal",
+      "sourceUrl": "https://silverinstitute.org/wp-content/uploads/2025/12/Silver_The-Next-Generation-Metal_DECEMBER-Release.pdf",
+      "note": "由2031年2,923.7吨及3.4%复合增速反推；全汽车口径。",
+      "history": [
+        {
+          "period": "2025E",
+          "kind": "estimate",
+          "value": 2392.3,
+          "delta": null,
+          "score": null,
+          "status": "基线"
+        },
+        {
+          "period": "2026E",
+          "kind": "estimate",
+          "value": 2473.6,
+          "delta": 81.3,
+          "score": 2,
+          "status": "强利多"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "theme": "高功率封装",
+      "role": "代理指标",
+      "name": "SiC/IGBT功率模块出货增速",
+      "period": null,
+      "value": null,
+      "priorPeriod": null,
+      "priorValue": null,
+      "unit": "%",
+      "direction": "越高越利多",
+      "upperThreshold": 0.1,
+      "lowerThreshold": -0.1,
+      "thresholdNote": "增速变动 ±10 个百分点",
+      "score": 0,
+      "status": "待接入",
+      "tone": "missing",
+      "dataStatus": "待接入",
+      "frequency": "季度",
+      "updatedAt": "2026-07-19",
+      "sourceLabel": "待确定",
+      "sourceUrl": "",
+      "note": "建议接入Yole/Omdia或主要功率半导体企业出货数据。",
+      "history": []
+    },
+    {
+      "id": 8,
+      "theme": "高功率封装",
+      "role": "主代理指标",
+      "name": "银烧结/银钎焊材料出货",
+      "period": null,
+      "value": null,
+      "priorPeriod": null,
+      "priorValue": null,
+      "unit": "吨",
+      "direction": "越高越利多",
+      "upperThreshold": 10,
+      "lowerThreshold": -10,
+      "thresholdNote": "期间变动 ±10 吨",
+      "score": 0,
+      "status": "待接入",
+      "tone": "missing",
+      "dataStatus": "待接入",
+      "frequency": "季度",
+      "updatedAt": "2026-07-19",
+      "sourceLabel": "待确定",
+      "sourceUrl": "",
+      "note": "优先寻找材料企业销量或BOM；目前缺少全球统一口径。",
+      "history": []
+    },
+    {
+      "id": 9,
+      "theme": "AI物理基础设施",
+      "role": "主代理指标",
+      "name": "全球数据中心用电",
+      "period": "2025A",
+      "value": 485,
+      "priorPeriod": null,
+      "priorValue": null,
+      "unit": "TWh",
+      "direction": "越高越利多",
+      "upperThreshold": 30,
+      "lowerThreshold": -30,
+      "thresholdNote": "同比变动 ±30 TWh",
+      "score": 0,
+      "status": "仅有基线",
+      "tone": "neutral",
+      "dataStatus": "仅有基线",
+      "frequency": "年度",
+      "updatedAt": "2026-07-19",
+      "sourceLabel": "IEA · Energy and AI",
+      "sourceUrl": "https://www.iea.org/reports/key-questions-on-energy-and-ai/executive-summary",
+      "note": "IEA预计2030年约950 TWh；用电增长不能同比例映射银耗。",
+      "history": [
+        {
+          "period": "2025A",
+          "kind": "actual",
+          "value": 485,
+          "delta": null,
+          "score": null,
+          "status": "仅有基线"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "theme": "AI物理基础设施",
+      "role": "驱动",
+      "name": "AI服务器/GPU系统出货增速",
+      "period": null,
+      "value": null,
+      "priorPeriod": null,
+      "priorValue": null,
+      "unit": "%",
+      "direction": "越高越利多",
+      "upperThreshold": 0.1,
+      "lowerThreshold": -0.1,
+      "thresholdNote": "增速变动 ±10 个百分点",
+      "score": 0,
+      "status": "待接入",
+      "tone": "missing",
+      "dataStatus": "待接入",
+      "frequency": "季度",
+      "updatedAt": "2026-07-19",
+      "sourceLabel": "待确定",
+      "sourceUrl": "",
+      "note": "建议接入服务器厂商、GPU厂商或IDC/Omdia出货数据。",
+      "history": []
+    },
+    {
+      "id": 11,
+      "theme": "AI物理基础设施",
+      "role": "驱动",
+      "name": "数据中心新增IT容量",
+      "period": null,
+      "value": null,
+      "priorPeriod": null,
+      "priorValue": null,
+      "unit": "GW",
+      "direction": "越高越利多",
+      "upperThreshold": 1,
+      "lowerThreshold": -1,
+      "thresholdNote": "期间变动 ±1 GW",
+      "score": 0,
+      "status": "待接入",
+      "tone": "missing",
+      "dataStatus": "待接入",
+      "frequency": "季度",
+      "updatedAt": "2026-07-19",
+      "sourceLabel": "IEA · Energy and AI",
+      "sourceUrl": "https://www.iea.org/reports/key-questions-on-energy-and-ai/executive-summary",
+      "note": "与PDU/UPS、开关柜和冷却系统订单联合观察。",
+      "history": []
+    },
+    {
+      "id": 12,
+      "theme": "供应与投资",
+      "role": "供给",
+      "name": "全球矿山产量",
+      "period": "2026F",
+      "value": 26254.4,
+      "priorPeriod": "2025A",
+      "priorValue": 26332.2,
+      "unit": "吨",
+      "direction": "越低越利多",
+      "upperThreshold": 300,
+      "lowerThreshold": -300,
+      "thresholdNote": "同比变动 ±300 吨",
+      "score": 1,
+      "status": "偏利多",
+      "tone": "positive",
+      "dataStatus": "已核实",
+      "frequency": "年度",
+      "updatedAt": "2026-07-19",
+      "sourceLabel": "World Silver Survey 2026",
+      "sourceUrl": "https://silverinstitute.org/wp-content/uploads/2026/04/World-Silver-Survey-2026.pdf",
+      "note": "白银多为副产品，供给响应受铜、铅锌和金矿资本开支制约。",
+      "history": [
+        {
+          "period": "2025A",
+          "kind": "actual",
+          "value": 26332.2,
+          "delta": null,
+          "score": null,
+          "status": "基线"
+        },
+        {
+          "period": "2026F",
+          "kind": "forecast",
+          "value": 26254.4,
+          "delta": -77.8,
+          "score": 1,
+          "status": "偏利多"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "theme": "供应与投资",
+      "role": "供给",
+      "name": "全球再生银供应",
+      "period": "2026F",
+      "value": 6572.2,
+      "priorPeriod": "2025A",
+      "priorValue": 6146,
+      "unit": "吨",
+      "direction": "越低越利多",
+      "upperThreshold": 300,
+      "lowerThreshold": -300,
+      "thresholdNote": "同比变动 ±300 吨",
+      "score": -2,
+      "status": "强利空",
+      "tone": "strong-negative",
+      "dataStatus": "已核实",
+      "frequency": "年度",
+      "updatedAt": "2026-07-19",
+      "sourceLabel": "World Silver Survey 2026",
+      "sourceUrl": "https://silverinstitute.org/wp-content/uploads/2026/04/World-Silver-Survey-2026.pdf",
+      "note": "高价推动回收；需关注回收和精炼瓶颈。",
+      "history": [
+        {
+          "period": "2025A",
+          "kind": "actual",
+          "value": 6146,
+          "delta": null,
+          "score": null,
+          "status": "基线"
+        },
+        {
+          "period": "2026F",
+          "kind": "forecast",
+          "value": 6572.2,
+          "delta": 426.2,
+          "score": -2,
+          "status": "强利空"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "theme": "供应与投资",
+      "role": "主指标",
+      "name": "全球市场平衡",
+      "period": "2026F",
+      "value": -1440.1,
+      "priorPeriod": "2025A",
+      "priorValue": -1253.5,
+      "unit": "吨",
+      "direction": "越低越利多",
+      "upperThreshold": 150,
+      "lowerThreshold": -150,
+      "thresholdNote": "同比变动 ±150 吨",
+      "score": 2,
+      "status": "强利多",
+      "tone": "strong-positive",
+      "dataStatus": "已核实",
+      "frequency": "年度",
+      "updatedAt": "2026-07-19",
+      "sourceLabel": "World Silver Survey 2026",
+      "sourceUrl": "https://silverinstitute.org/wp-content/uploads/2026/04/World-Silver-Survey-2026.pdf",
+      "note": "供应减需求；负值为缺口；不包含ETP资金流。",
+      "history": [
+        {
+          "period": "2017A",
+          "kind": "actual",
+          "value": 1657.8,
+          "delta": null,
+          "score": null,
+          "status": "基线"
+        },
+        {
+          "period": "2018A",
+          "kind": "actual",
+          "value": 466.6,
+          "delta": -1191.2,
+          "score": 2,
+          "status": "强利多"
+        },
+        {
+          "period": "2019A",
+          "kind": "actual",
+          "value": 345.2,
+          "delta": -121.4,
+          "score": 1,
+          "status": "偏利多"
+        },
+        {
+          "period": "2020A",
+          "kind": "actual",
+          "value": 1632.9,
+          "delta": 1287.7,
+          "score": -2,
+          "status": "强利空"
+        },
+        {
+          "period": "2021A",
+          "kind": "actual",
+          "value": -2603.4,
+          "delta": -4236.3,
+          "score": 2,
+          "status": "强利多"
+        },
+        {
+          "period": "2022A",
+          "kind": "actual",
+          "value": -7900.3,
+          "delta": -5296.9,
+          "score": 2,
+          "status": "强利多"
+        },
+        {
+          "period": "2023A",
+          "kind": "actual",
+          "value": -6223.8,
+          "delta": 1676.5,
+          "score": -2,
+          "status": "强利空"
+        },
+        {
+          "period": "2024A",
+          "kind": "actual",
+          "value": -4289.2,
+          "delta": 1934.6,
+          "score": -2,
+          "status": "强利空"
+        },
+        {
+          "period": "2025A",
+          "kind": "actual",
+          "value": -1253.5,
+          "delta": 3035.7,
+          "score": -2,
+          "status": "强利空"
+        },
+        {
+          "period": "2026F",
+          "kind": "forecast",
+          "value": -1440.1,
+          "delta": -186.6,
+          "score": 2,
+          "status": "强利多"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "theme": "供应与投资",
+      "role": "投资",
+      "name": "ETP净流入",
+      "period": "2026F",
+      "value": 933.1,
+      "priorPeriod": null,
+      "priorValue": null,
+      "unit": "吨",
+      "direction": "越高越利多",
+      "upperThreshold": 300,
+      "lowerThreshold": -300,
+      "thresholdNote": "期间变动 ±300 吨",
+      "score": 0,
+      "status": "仅有基线",
+      "tone": "neutral",
+      "dataStatus": "仅有基线",
+      "frequency": "月度/年度",
+      "updatedAt": "2026-07-19",
+      "sourceLabel": "The Silver Institute 2025 market release",
+      "sourceUrl": "https://silverinstitute.org/elevated-lease-rates-regional-liquidity-tightness-and-robust-investor-interest-resulted-in-record-silver-prices-in-2025/",
+      "note": "资金流会影响可流通金属的紧张程度。",
+      "history": [
+        {
+          "period": "2026F",
+          "kind": "forecast",
+          "value": 933.1,
+          "delta": null,
+          "score": null,
+          "status": "仅有基线"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "theme": "供应与投资",
+      "role": "库存",
+      "name": "交易所及伦敦可用库存",
+      "period": "2026-07-17",
+      "value": 11208.3,
+      "priorPeriod": "2026-07-16",
+      "priorValue": 11155,
+      "unit": "吨",
+      "direction": "越低越利多",
+      "upperThreshold": 500,
+      "lowerThreshold": -500,
+      "thresholdNote": "期间变动 ±500 吨",
+      "score": -1,
+      "status": "偏利空",
+      "tone": "negative",
+      "dataStatus": "已接入",
+      "frequency": "日度",
+      "updatedAt": "2026-07-19",
+      "sourceLabel": "Wind 万得（日频行情与库存）",
+      "sourceUrl": "https://www.wind.com.cn/",
+      "note": "建议分COMEX注册库存、LBMA库存和ETF托管库存记录。 COMEX 库存（金衡制原始单位已换算为吨）+ 上期所仓单（千克换算为吨），Wind 日频。",
+      "history": [
+        {
+          "period": "2026-05-20",
+          "kind": "actual",
+          "value": 10819,
+          "delta": null,
+          "score": null,
+          "status": "基线"
+        },
+        {
+          "period": "2026-05-21",
+          "kind": "actual",
+          "value": 10776.4,
+          "delta": -42.6,
+          "score": 1,
+          "status": "偏利多"
+        },
+        {
+          "period": "2026-05-22",
+          "kind": "actual",
+          "value": 10748.8,
+          "delta": -27.6,
+          "score": 1,
+          "status": "偏利多"
+        },
+        {
+          "period": "2026-05-26",
+          "kind": "actual",
+          "value": 10771.7,
+          "delta": 22.9,
+          "score": -1,
+          "status": "偏利空"
+        },
+        {
+          "period": "2026-05-27",
+          "kind": "actual",
+          "value": 10813.5,
+          "delta": 41.8,
+          "score": -1,
+          "status": "偏利空"
+        },
+        {
+          "period": "2026-05-28",
+          "kind": "actual",
+          "value": 10832,
+          "delta": 18.5,
+          "score": -1,
+          "status": "偏利空"
+        },
+        {
+          "period": "2026-05-29",
+          "kind": "actual",
+          "value": 10820.8,
+          "delta": -11.2,
+          "score": 1,
+          "status": "偏利多"
+        },
+        {
+          "period": "2026-06-01",
+          "kind": "actual",
+          "value": 10822.5,
+          "delta": 1.7,
+          "score": -1,
+          "status": "偏利空"
+        },
+        {
+          "period": "2026-06-02",
+          "kind": "actual",
+          "value": 10870.5,
+          "delta": 48,
+          "score": -1,
+          "status": "偏利空"
+        },
+        {
+          "period": "2026-06-03",
+          "kind": "actual",
+          "value": 10895.1,
+          "delta": 24.6,
+          "score": -1,
+          "status": "偏利空"
+        },
+        {
+          "period": "2026-06-04",
+          "kind": "actual",
+          "value": 10901.7,
+          "delta": 6.6,
+          "score": -1,
+          "status": "偏利空"
+        },
+        {
+          "period": "2026-06-05",
+          "kind": "actual",
+          "value": 10900.6,
+          "delta": -1.1,
+          "score": 1,
+          "status": "偏利多"
+        },
+        {
+          "period": "2026-06-08",
+          "kind": "actual",
+          "value": 10874.9,
+          "delta": -25.7,
+          "score": 1,
+          "status": "偏利多"
+        },
+        {
+          "period": "2026-06-09",
+          "kind": "actual",
+          "value": 10862.7,
+          "delta": -12.2,
+          "score": 1,
+          "status": "偏利多"
+        },
+        {
+          "period": "2026-06-10",
+          "kind": "actual",
+          "value": 10868,
+          "delta": 5.3,
+          "score": -1,
+          "status": "偏利空"
+        },
+        {
+          "period": "2026-06-11",
+          "kind": "actual",
+          "value": 10828,
+          "delta": -40,
+          "score": 1,
+          "status": "偏利多"
+        },
+        {
+          "period": "2026-06-12",
+          "kind": "actual",
+          "value": 10819.2,
+          "delta": -8.8,
+          "score": 1,
+          "status": "偏利多"
+        },
+        {
+          "period": "2026-06-15",
+          "kind": "actual",
+          "value": 10823.3,
+          "delta": 4.1,
+          "score": -1,
+          "status": "偏利空"
+        },
+        {
+          "period": "2026-06-16",
+          "kind": "actual",
+          "value": 10857.5,
+          "delta": 34.2,
+          "score": -1,
+          "status": "偏利空"
+        },
+        {
+          "period": "2026-06-17",
+          "kind": "actual",
+          "value": 10836.8,
+          "delta": -20.7,
+          "score": 1,
+          "status": "偏利多"
+        },
+        {
+          "period": "2026-06-18",
+          "kind": "actual",
+          "value": 10862.4,
+          "delta": 25.6,
+          "score": -1,
+          "status": "偏利空"
+        },
+        {
+          "period": "2026-06-22",
+          "kind": "actual",
+          "value": 10889.4,
+          "delta": 27,
+          "score": -1,
+          "status": "偏利空"
+        },
+        {
+          "period": "2026-06-23",
+          "kind": "actual",
+          "value": 10894.9,
+          "delta": 5.5,
+          "score": -1,
+          "status": "偏利空"
+        },
+        {
+          "period": "2026-06-24",
+          "kind": "actual",
+          "value": 10892.3,
+          "delta": -2.6,
+          "score": 1,
+          "status": "偏利多"
+        },
+        {
+          "period": "2026-06-25",
+          "kind": "actual",
+          "value": 10907.4,
+          "delta": 15.1,
+          "score": -1,
+          "status": "偏利空"
+        },
+        {
+          "period": "2026-06-26",
+          "kind": "actual",
+          "value": 10901.6,
+          "delta": -5.8,
+          "score": 1,
+          "status": "偏利多"
+        },
+        {
+          "period": "2026-06-29",
+          "kind": "actual",
+          "value": 10847.8,
+          "delta": -53.8,
+          "score": 1,
+          "status": "偏利多"
+        },
+        {
+          "period": "2026-06-30",
+          "kind": "actual",
+          "value": 10855.3,
+          "delta": 7.5,
+          "score": -1,
+          "status": "偏利空"
+        },
+        {
+          "period": "2026-07-01",
+          "kind": "actual",
+          "value": 10854.7,
+          "delta": -0.6,
+          "score": 1,
+          "status": "偏利多"
+        },
+        {
+          "period": "2026-07-02",
+          "kind": "actual",
+          "value": 10879.4,
+          "delta": 24.7,
+          "score": -1,
+          "status": "偏利空"
+        },
+        {
+          "period": "2026-07-06",
+          "kind": "actual",
+          "value": 10888.5,
+          "delta": 9.1,
+          "score": -1,
+          "status": "偏利空"
+        },
+        {
+          "period": "2026-07-07",
+          "kind": "actual",
+          "value": 10984.3,
+          "delta": 95.8,
+          "score": -1,
+          "status": "偏利空"
+        },
+        {
+          "period": "2026-07-08",
+          "kind": "actual",
+          "value": 10996.4,
+          "delta": 12.1,
+          "score": -1,
+          "status": "偏利空"
+        },
+        {
+          "period": "2026-07-09",
+          "kind": "actual",
+          "value": 10987.9,
+          "delta": -8.5,
+          "score": 1,
+          "status": "偏利多"
+        },
+        {
+          "period": "2026-07-10",
+          "kind": "actual",
+          "value": 10988.6,
+          "delta": 0.7,
+          "score": -1,
+          "status": "偏利空"
+        },
+        {
+          "period": "2026-07-13",
+          "kind": "actual",
+          "value": 11032.1,
+          "delta": 43.5,
+          "score": -1,
+          "status": "偏利空"
+        },
+        {
+          "period": "2026-07-14",
+          "kind": "actual",
+          "value": 11135.5,
+          "delta": 103.4,
+          "score": -1,
+          "status": "偏利空"
+        },
+        {
+          "period": "2026-07-15",
+          "kind": "actual",
+          "value": 11156.9,
+          "delta": 21.4,
+          "score": -1,
+          "status": "偏利空"
+        },
+        {
+          "period": "2026-07-16",
+          "kind": "actual",
+          "value": 11155,
+          "delta": -1.9,
+          "score": 1,
+          "status": "偏利多"
+        },
+        {
+          "period": "2026-07-17",
+          "kind": "actual",
+          "value": 11208.3,
+          "delta": 53.3,
+          "score": -1,
+          "status": "偏利空"
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "theme": "供应与投资",
+      "role": "流动性",
+      "name": "白银租借利率",
+      "period": null,
+      "value": null,
+      "priorPeriod": null,
+      "priorValue": null,
+      "unit": "%",
+      "direction": "越高越利多",
+      "upperThreshold": 0.01,
+      "lowerThreshold": -0.01,
+      "thresholdNote": "利率变动 ±1 个百分点",
+      "score": 0,
+      "status": "待接入",
+      "tone": "missing",
+      "dataStatus": "待接入",
+      "frequency": "周度/月度",
+      "updatedAt": "2026-07-19",
+      "sourceLabel": "待确定",
+      "sourceUrl": "",
+      "note": "高租借利率通常提示现货或区域流动性偏紧。",
+      "history": []
+    }
+  ],
+  "triggers": [
+    {
+      "id": "t14-2018A",
+      "indicatorId": 14,
+      "name": "全球市场平衡",
+      "theme": "供应与投资",
+      "period": "2018A",
+      "kind": "站上强利多",
+      "severity": "positive",
+      "prevScore": null,
+      "score": 2,
+      "delta": -1191.2,
+      "description": "变动-1191.2 吨，突破上阈值（阈值口径：同比变动 ±150 吨）"
+    },
+    {
+      "id": "t14-2019A",
+      "indicatorId": 14,
+      "name": "全球市场平衡",
+      "theme": "供应与投资",
+      "period": "2019A",
+      "kind": "强信号解除",
+      "severity": "neutral",
+      "prevScore": 2,
+      "score": 1,
+      "delta": -121.4,
+      "description": "由强利多转为偏利多（阈值口径：同比变动 ±150 吨）"
+    },
+    {
+      "id": "t14-2020A",
+      "indicatorId": 14,
+      "name": "全球市场平衡",
+      "theme": "供应与投资",
+      "period": "2020A",
+      "kind": "跌入强利空",
+      "severity": "negative",
+      "prevScore": 1,
+      "score": -2,
+      "delta": 1287.7,
+      "description": "变动+1287.7 吨，跌破下阈值（阈值口径：同比变动 ±150 吨）"
+    },
+    {
+      "id": "t14-2021A",
+      "indicatorId": 14,
+      "name": "全球市场平衡",
+      "theme": "供应与投资",
+      "period": "2021A",
+      "kind": "站上强利多",
+      "severity": "positive",
+      "prevScore": -2,
+      "score": 2,
+      "delta": -4236.3,
+      "description": "变动-4236.3 吨，突破上阈值（阈值口径：同比变动 ±150 吨）"
+    },
+    {
+      "id": "t14-2023A",
+      "indicatorId": 14,
+      "name": "全球市场平衡",
+      "theme": "供应与投资",
+      "period": "2023A",
+      "kind": "跌入强利空",
+      "severity": "negative",
+      "prevScore": 2,
+      "score": -2,
+      "delta": 1676.5,
+      "description": "变动+1676.5 吨，跌破下阈值（阈值口径：同比变动 ±150 吨）"
+    },
+    {
+      "id": "t1-2025A",
+      "indicatorId": 1,
+      "name": "全球光伏用银量",
+      "theme": "光伏银耗",
+      "period": "2025A",
+      "kind": "跌入强利空",
+      "severity": "negative",
+      "prevScore": null,
+      "score": -2,
+      "delta": -339,
+      "description": "变动-339.0 吨，跌破下阈值（阈值口径：同比变动 ±300 吨）"
+    },
+    {
+      "id": "t4-2026F",
+      "indicatorId": 4,
+      "name": "非光伏电气电子用银",
+      "theme": "非光伏电气电子",
+      "period": "2026F",
+      "kind": "站上强利多",
+      "severity": "positive",
+      "prevScore": -1,
+      "score": 2,
+      "delta": 279.9,
+      "description": "变动+279.9 吨，突破上阈值（阈值口径：同比变动 ±200 吨）"
+    },
+    {
+      "id": "t5-2026F",
+      "indicatorId": 5,
+      "name": "占工业需求比重",
+      "theme": "非光伏电气电子",
+      "period": "2026F",
+      "kind": "站上强利多",
+      "severity": "positive",
+      "prevScore": 1,
+      "score": 2,
+      "delta": 0.0252,
+      "description": "变动+2.5个百分点，突破上阈值（阈值口径：同比变动 ±2.0 个百分点）"
+    },
+    {
+      "id": "t6-2026E",
+      "indicatorId": 6,
+      "name": "全球汽车行业用银",
+      "theme": "非光伏电气电子",
+      "period": "2026E",
+      "kind": "站上强利多",
+      "severity": "positive",
+      "prevScore": null,
+      "score": 2,
+      "delta": 81.3,
+      "description": "变动+81.3 吨，突破上阈值（阈值口径：同比变动 ±80 吨）"
+    },
+    {
+      "id": "t13-2026F",
+      "indicatorId": 13,
+      "name": "全球再生银供应",
+      "theme": "供应与投资",
+      "period": "2026F",
+      "kind": "跌入强利空",
+      "severity": "negative",
+      "prevScore": null,
+      "score": -2,
+      "delta": 426.2,
+      "description": "变动+426.2 吨，跌破下阈值（阈值口径：同比变动 ±300 吨）"
+    },
+    {
+      "id": "t14-2026F",
+      "indicatorId": 14,
+      "name": "全球市场平衡",
+      "theme": "供应与投资",
+      "period": "2026F",
+      "kind": "站上强利多",
+      "severity": "positive",
+      "prevScore": -2,
+      "score": 2,
+      "delta": -186.6,
+      "description": "变动-186.6 吨，突破上阈值（阈值口径：同比变动 ±150 吨）"
+    }
+  ],
+  "marketBalance": [
+    {
+      "year": 2017,
+      "value": 1657.8,
+      "type": "实际"
+    },
+    {
+      "year": 2018,
+      "value": 466.6,
+      "type": "实际"
+    },
+    {
+      "year": 2019,
+      "value": 345.2,
+      "type": "实际"
+    },
+    {
+      "year": 2020,
+      "value": 1632.9,
+      "type": "实际"
+    },
+    {
+      "year": 2021,
+      "value": -2603.4,
+      "type": "实际"
+    },
+    {
+      "year": 2022,
+      "value": -7900.3,
+      "type": "实际"
+    },
+    {
+      "year": 2023,
+      "value": -6223.8,
+      "type": "实际"
+    },
+    {
+      "year": 2024,
+      "value": -4289.2,
+      "type": "实际"
+    },
+    {
+      "year": 2025,
+      "value": -1253.5,
+      "type": "实际"
+    },
+    {
+      "year": 2026,
+      "value": -1440.1,
+      "type": "预测"
+    }
+  ],
+  "industrialMix": [
+    {
+      "year": "2024",
+      "photovoltaic": 6142.9,
+      "nonPv": 8192.7,
+      "brazing": 1545.8,
+      "other": 5237.8
+    },
+    {
+      "year": "2025",
+      "photovoltaic": 5803.9,
+      "nonPv": 8177.1,
+      "brazing": 1570.7,
+      "other": 4895.7
+    },
+    {
+      "year": "2026F",
+      "photovoltaic": 4696.6,
+      "nonPv": 8457,
+      "brazing": 1586.3,
+      "other": 5153.8
+    }
+  ],
+  "actions": [
+    {
+      "cadence": "周度/月度",
+      "task": "补录ETP流、可用库存与租借利率",
+      "owner": "供应与投资",
+      "status": "最高优先"
+    },
+    {
+      "cadence": "季度",
+      "task": "按TOPCon/HJT/BC更新mg/W与装机",
+      "owner": "光伏银耗",
+      "status": "需接入"
+    },
+    {
+      "cadence": "季度",
+      "task": "接入SiC/IGBT与银烧结材料出货",
+      "owner": "高功率封装",
+      "status": "需接入"
+    },
+    {
+      "cadence": "季度",
+      "task": "更新AI服务器、IT容量与PDU/UPS订单",
+      "owner": "AI物理基础设施",
+      "status": "需接入"
+    },
+    {
+      "cadence": "年度",
+      "task": "用WSS重算非光伏电气电子与市场平衡",
+      "owner": "供需总盘",
+      "status": "固定更新"
+    }
+  ]
+}
