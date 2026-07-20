@@ -191,7 +191,12 @@ function DeferredChart({ daily, theme }: { daily: DailyData; theme: ThemeMode })
     };
   }, [daily, theme]);
   const ref = useEChart(build, [daily], theme);
-  return <div ref={ref} className="echart chart-wrap" style={{ height: 320 }} />;
+  return (
+    <>
+      <RangePicker dates={daily.dates} chartRef={ref} />
+      <div ref={ref} className="echart chart-wrap" style={{ height: 320 }} />
+    </>
+  );
 }
 
 interface LineSpec {
