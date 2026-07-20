@@ -69,7 +69,7 @@ export function DailySection({ daily, theme }: { daily: DailyData; theme: ThemeM
             ]}
             height={320}
             zoom
-            connectNulls={false}
+            connectNulls
           />
         </article>
         <article className="panel chart-panel">
