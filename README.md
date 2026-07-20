@@ -7,7 +7,8 @@
 2026-07-19
 
 ## 目录结构
-- docs/    -> 文档、对话记录、需求文档
+- docs/    -> GitHub Pages 发布目录（仅网页构建产物，publish.bat 每次全量重建，勿放其他文件）
+- conversation_logs/ -> 对话记录与工作日志（仅本地保存，.gitignore 已排除，不上传 git）
 - src/     -> 源代码：build_dashboard_data.py（数据管道）、verify_dashboard.py / verify_drawer.py（截图验证）
 - data/    -> 源数据副本（010源数据/、006源数据/、006设计参考/）
 - output/  -> 产出物（verify/ 验证截图等）
