@@ -62,12 +62,12 @@ export function BasisSection({ theme }: { theme: ThemeMode }) {
   const [profitLoading, setProfitLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/data/min_contracts.json").then(r => r.json()).then((d: { contracts: MinContract[] }) => setContracts(d.contracts)).catch(() => {});
+    fetch("data/min_contracts.json").then(r => r.json()).then((d: { contracts: MinContract[] }) => setContracts(d.contracts)).catch(() => {});
   }, []);
 
   useEffect(() => {
     let cancelled = false;
-    fetch("/data/import_profit.json").then(r => r.json()).then((d: ImportProfitData) => { if (!cancelled) { setProfit(d); setProfitLoading(false); } }).catch(() => { if (!cancelled) setProfitLoading(false); });
+    fetch("data/import_profit.json").then(r => r.json()).then((d: ImportProfitData) => { if (!cancelled) { setProfit(d); setProfitLoading(false); } }).catch(() => { if (!cancelled) setProfitLoading(false); });
     return () => { cancelled = true; };
   }, []);
 
@@ -78,7 +78,7 @@ export function BasisSection({ theme }: { theme: ThemeMode }) {
     const fetchMin = (code: string): Promise<MinData> => {
       const cached = cacheRef.current.get(code);
       if (cached) return Promise.resolve(cached);
-      return fetch(`/data/min_${code}.json`).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }).then((d: MinData) => { cacheRef.current.set(code, d); return d; });
+      return fetch(`data/min_${code}.json`).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }).then((d: MinData) => { cacheRef.current.set(code, d); return d; });
     };
     Promise.all([fetchMin(leftCode), fetchMin(rightCode)]).then(([a, b]) => {
       if (cancelled) return;

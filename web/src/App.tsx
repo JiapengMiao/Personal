@@ -32,13 +32,13 @@ export default function App() {
   useEffect(() => {
     let cancelled = false;
     Promise.all([
-      fetchJson<DashboardData["monitoring"]>("/data/monitoring.json"),
-      fetchJson<DashboardData["market"]>("/data/market.json"),
-      fetchJson<DashboardData["daily"]>("/data/daily.json"),
-      fetchJson<DashboardData["positions"]>("/data/positions_curve.json"),
-      fetchJson<DashboardData["virtualRatio"]>("/data/virtual_ratio.json"),
-      fetchJson<DashboardData["seasonality"]>("/data/seasonality.json"),
-      fetchJson<DashboardData["leaseRates"]>("/data/lease_rates.json"),
+      fetchJson<DashboardData["monitoring"]>("data/monitoring.json"),
+      fetchJson<DashboardData["market"]>("data/market.json"),
+      fetchJson<DashboardData["daily"]>("data/daily.json"),
+      fetchJson<DashboardData["positions"]>("data/positions_curve.json"),
+      fetchJson<DashboardData["virtualRatio"]>("data/virtual_ratio.json"),
+      fetchJson<DashboardData["seasonality"]>("data/seasonality.json"),
+      fetchJson<DashboardData["leaseRates"]>("data/lease_rates.json"),
     ])
       .then(([monitoring, market, daily, positions, virtualRatio, seasonality, leaseRates]) => {
         if (!cancelled) {
