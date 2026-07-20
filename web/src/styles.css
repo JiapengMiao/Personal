@@ -913,11 +913,45 @@ footer {
 .range-picker button:disabled { opacity: 0.45; cursor: default; }
 
 /* ——— 现货基差报价表 ——— */
-.spot-table { width: 100%; border-collapse: collapse; font-size: 12.5px; font-family: var(--mono); }
-.spot-table th { background: var(--raised); color: var(--sub); font-weight: 600; padding: 8px 10px; text-align: center; border-bottom: 1px solid var(--edge); white-space: nowrap; }
-.spot-table td { padding: 6px 10px; border-bottom: 1px solid var(--hairline); text-align: center; color: var(--text); }
-.spot-table .quoter-name { text-align: left; font-weight: 500; white-space: nowrap; color: var(--sub); }
-.spot-table .note-cell { text-align: left; color: var(--weak); font-size: 11.5px; max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.spot-table tr.no-quote td { opacity: 0.4; }
-.spot-table tr:hover td { background: rgba(217,164,65,.04); }
-.light-mode .spot-table tr:hover td { background: rgba(154,109,18,.04); }
+.spot-table { width: 100%; border-collapse: collapse; font-size: 12.5px; font-family: var(--mono); border: 1px solid var(--edge); }
+.spot-table th { background: var(--raised); color: var(--sub); font-weight: 600; padding: 8px 10px; text-align: center; border: 1px solid var(--edge); white-space: nowrap; }
+.spot-table td { padding: 6px 10px; border: 1px solid var(--hairline); text-align: center; color: var(--text); }
+.spot-table .quoter-name { text-align: left; font-weight: 500; white-space: nowrap; display: flex; align-items: center; gap: 6px; }
+.spot-table .note-cell { text-align: left; color: var(--weak); font-size: 11.5px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.spot-table tr.no-quote td { opacity: 0.35; }
+.spot-table tr:hover td { background: rgba(217,164,65,.05); }
+.light-mode .spot-table tr:hover td { background: rgba(154,109,18,.05); }
+/* 分类颜色 */
+.spot-dot { display: inline-block; width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+.spot-cat-dot { display: inline-flex; align-items: center; gap: 4px; font-size: 11.5px; color: var(--sub); }
+.spot-cat-dot::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 2px; }
+/* 冶炼厂 = 金色 */
+.cat-smelter .quoter-name { color: #d9a441; }
+.spot-dot.cat-smelter, .spot-cat-dot.cat-smelter::before { background: #d9a441; }
+.light-mode .cat-smelter .quoter-name { color: #9a6d12; }
+.light-mode .spot-dot.cat-smelter, .light-mode .spot-cat-dot.cat-smelter::before { background: #9a6d12; }
+/* 贸易商 = 青色 */
+.cat-trader .quoter-name { color: #56c8dc; }
+.spot-dot.cat-trader, .spot-cat-dot.cat-trader::before { background: #56c8dc; }
+.light-mode .cat-trader .quoter-name { color: #0d7d92; }
+.light-mode .spot-dot.cat-trader, .light-mode .spot-cat-dot.cat-trader::before { background: #0d7d92; }
+/* 期货风险子 = 绿色 */
+.cat-futures .quoter-name { color: #3ecf8e; }
+.spot-dot.cat-futures, .spot-cat-dot.cat-futures::before { background: #3ecf8e; }
+.light-mode .cat-futures .quoter-name { color: #157a4c; }
+.light-mode .spot-dot.cat-futures, .light-mode .spot-cat-dot.cat-futures::before { background: #157a4c; }
+/* 银行 = 紫色 */
+.cat-bank .quoter-name { color: #b07ce8; }
+.spot-dot.cat-bank, .spot-cat-dot.cat-bank::before { background: #b07ce8; }
+.light-mode .cat-bank .quoter-name { color: #7b3fbf; }
+.light-mode .spot-dot.cat-bank, .light-mode .spot-cat-dot.cat-bank::before { background: #7b3fbf; }
+/* 其他 = 灰色 */
+.cat-other .quoter-name { color: var(--weak); }
+.spot-dot.cat-other, .spot-cat-dot.cat-other::before { background: var(--weak); }
+/* 日期选择器 */
+.spot-date-picker { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; flex-wrap: wrap; font-size: 13px; }
+.spot-date-picker label { display: flex; align-items: center; gap: 6px; color: var(--sub); }
+.spot-date-picker select, .spot-date-picker input[type="date"] { background: var(--raised); border: 1px solid var(--edge); border-radius: 6px; color: var(--text); padding: 4px 8px; font-family: var(--mono); font-size: 12px; color-scheme: dark; }
+.light-mode .spot-date-picker select, .light-mode .spot-date-picker input[type="date"] { color-scheme: light; }
+.spot-legend { display: flex; gap: 12px; margin-left: auto; }
+
