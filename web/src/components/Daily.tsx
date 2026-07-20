@@ -312,7 +312,9 @@ export function RangePicker({ dates, chartRef }: { dates: string[]; chartRef: Re
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const min = dates[0] ?? "";
-  const max = dates[dates.length - 1] ?? "";
+  // max 取数据末日期与今天中较大者，确保浏览器"今天"按钮始终可用
+  const today = new Date().toISOString().slice(0, 10);
+  const max = (dates[dates.length - 1] ?? "") > today ? (dates[dates.length - 1] ?? "") : today;
 
   const apply = () => {
     if (!start || !end) return;
