@@ -8,6 +8,7 @@ import { DailySection } from "./components/Daily";
 import { ComexSection, PositionsSection } from "./components/Positions";
 import { BasisSection, LeaseSection, SeasonalitySection } from "./components/Basis";
 import { DynamicsSection, IndicatorDrawer, IndicatorLibrarySection } from "./components/Library";
+import { SpotQuotesSection } from "./components/SpotQuotes";
 
 const THEME_KEY = "ag-monitor-theme";
 
@@ -132,6 +133,7 @@ export default function App() {
         <MarketSection market={data.market} theme={theme} />
         <DailySection daily={data.daily} theme={theme} />
         <PositionsSection positions={data.positions} virtualRatio={data.virtualRatio} theme={theme} />
+        <SpotQuotesSection />
         <ComexSection daily={data.daily} theme={theme} />
         <BasisSection theme={theme} />
         <SeasonalitySection data={data.seasonality} asOfDate={data.daily.asOfDate} theme={theme} />
