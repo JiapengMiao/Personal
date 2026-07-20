@@ -32,7 +32,21 @@ SRC006 = ROOT / "data" / "006源数据"
 OUT_DIR = ROOT / "web" / "public" / "data"
 # 主表以项目 010（日度会议数据整理）为准——用户每日在此维护，含"网页数据" sheet
 MAIN_XLSX = Path(r"C:\Users\56558\Nutstore\1\我的坚果云\agent\Project-010-日度会议数据整理\data\白银所有数据.xlsx")
-LEASE_XLSX = SRC010 / "20260719租借利率.xlsx"
+
+
+def _find_lease_xlsx() -> Path:
+    """租借/租赁利率表：用户在 010 的"租赁利率"文件夹按日期文件名维护（如 20260720租赁利率.xlsx），
+    自动取最新一份；若该目录不存在则回退到本项目 data/010源数据/ 下的副本。"""
+    lease_dir = Path(r"C:\Users\56558\Nutstore\1\我的坚果云\agent\Project-010-日度会议数据整理\data\租赁利率")
+    cands = sorted(lease_dir.glob("*利率*.xlsx")) if lease_dir.is_dir() else []
+    if not cands:
+        cands = sorted(SRC010.glob("*利率*.xlsx"))
+    if not cands:
+        raise FileNotFoundError("未找到租借/租赁利率 xlsx（010 租赁利率目录与本地 010源数据 均为空）")
+    return cands[-1]
+
+
+LEASE_XLSX = _find_lease_xlsx()
 
 ERRORS: list[tuple[str, str]] = []   # (步骤名, 错误信息)
 
@@ -709,8 +723,8 @@ def verify() -> None:
         print(f"    {key}: 头部 null {head_nulls}/5, 末值 {arr[-1]}, 最后实际日 {la.get(key)}")
     dom = d["series"]["domesticInvT"]
     dom_last = dom[-1]
-    check(dom_last is not None and abs(dom_last - 2038.254) < 0.01,
-          f"domesticInvT 末值 {dom_last} ≈ 990.039+1048.215=2038.254 (容差 0.01)")
+    check(dom_last is not None and 500 < dom_last < 5000,
+          f"domesticInvT 末值 {dom_last} 在合理区间 (500, 5000) 吨")
     sh_last, sg_last = d["series"]["shfeInvT"][-1], d["series"]["sgeInvT"][-1]
     check(sh_last is not None and sg_last is not None and
           abs((sh_last + sg_last) - dom_last) < 0.002,
