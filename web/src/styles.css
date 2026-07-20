@@ -901,3 +901,13 @@ footer {
 .basis-selector label { display: flex; align-items: center; gap: 6px; color: var(--sub); }
 .basis-selector select { background: var(--raised); border: 1px solid var(--edge); border-radius: 6px; color: var(--text); padding: 4px 8px; font-family: var(--mono); font-size: 12px; }
 .basis-minus { color: var(--gold); font-weight: 700; font-size: 16px; }
+
+/* ——— 日期区间选择器 ——— */
+.range-picker { display: flex; align-items: center; gap: 10px; margin: 8px 0 10px; font-size: 13px; flex-wrap: wrap; }
+.range-picker label { display: flex; align-items: center; gap: 6px; color: var(--sub); }
+.range-picker input[type="date"] { background: var(--raised); border: 1px solid var(--edge); border-radius: 6px; color: var(--text); padding: 4px 8px; font-family: var(--mono); font-size: 12px; color-scheme: dark; }
+.light-mode .range-picker input[type="date"] { color-scheme: light; }
+.range-sep { color: var(--weak); }
+.range-picker button { background: var(--raised); border: 1px solid var(--edge); border-radius: 6px; color: var(--text); padding: 5px 14px; font-size: 12.5px; cursor: pointer; }
+.range-picker button:hover:not(:disabled) { border-color: var(--gold); color: var(--gold-bright); }
+.range-picker button:disabled { opacity: 0.45; cursor: default; }

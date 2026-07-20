@@ -1,6 +1,6 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import type { DailyData } from "../lib/types";
-import { baseAxis, baseLegend, baseTooltip, getPalette, hexToRgba, zoomFill, type ThemeMode } from "../lib/echarts";
+import { baseAxis, baseLegend, baseTooltip, echarts, getPalette, hexToRgba, zoomFill, type ThemeMode } from "../lib/echarts";
 import { useEChart } from "../lib/useEChart";
 import { SectionHeading } from "./shared";
 import { ffill, formatNumber, lastNonNull } from "../lib/format";
@@ -69,7 +69,7 @@ export function DailySection({ daily, theme }: { daily: DailyData; theme: ThemeM
             ]}
             height={320}
             zoom
-            connectNulls
+            connectNulls={false}
           />
         </article>
         <article className="panel chart-panel">
@@ -270,8 +270,6 @@ export function MultiLineChart({
           data: s.data ?? [],
           showSymbol: false,
           connectNulls,
-          // 仅在大数据量时启用 LTTB：ECharts 只对当前缩放窗口内的数据采样，缩得越小点越稀、拖动越流畅
-          ...(largeData ? { sampling: "lttb" as const } : {}),
           lineStyle: { width: s.width ?? 1.8, type: "solid" as const, color: p.series[s.colorIdx % p.series.length] },
           itemStyle: { color: p.series[s.colorIdx % p.series.length] },
           markPoint: markLatest
@@ -295,7 +293,42 @@ export function MultiLineChart({
       };
     };
   }, [theme, dates, series, zoom, connectNulls, markLatest, zoomStart, largeData]);
-  const ref = useEChart(build, [theme, dates, series, zoom, connectNulls, markLatest, zoomStart, largeData], theme);
-  return <div ref={ref} className="echart chart-wrap" style={{ height }} />;
+  const chartRef = useEChart(build, [theme, dates, series, zoom, connectNulls, markLatest, zoomStart, largeData], theme);
+  return (
+    <>
+      {zoom && <RangePicker dates={dates} chartRef={chartRef} />}
+      <div ref={chartRef} className="echart chart-wrap" style={{ height }} />
+    </>
+  );
+}
+
+/** 日期区间选择器：通过 ref 拿到 ECharts 实例，dispatchAction 精确设定 dataZoom 窗口 */
+function RangePicker({ dates, chartRef }: { dates: string[]; chartRef: React.RefObject<HTMLDivElement | null> }) {
+  const [start, setStart] = useState("");
+  const [end, setEnd] = useState("");
+  const min = dates[0] ?? "";
+  const max = dates[dates.length - 1] ?? "";
+
+  const apply = () => {
+    if (!start || !end) return;
+    const el = chartRef.current;
+    if (!el) return;
+    const inst = echarts.getInstanceByDom(el);
+    if (!inst) return;
+    inst.dispatchAction({ type: "dataZoom", startValue: start, endValue: end });
+  };
+
+  return (
+    <div className="range-picker">
+      <label>
+        起始 <input type="date" value={start} min={min} max={max} onChange={(e) => setStart(e.target.value)} />
+      </label>
+      <span className="range-sep">—</span>
+      <label>
+        截止 <input type="date" value={end} min={min} max={max} onChange={(e) => setEnd(e.target.value)} />
+      </label>
+      <button type="button" onClick={apply} disabled={!start || !end}>应用</button>
+    </div>
+  );
 }
 
