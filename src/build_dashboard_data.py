@@ -30,7 +30,8 @@ ROOT = Path(__file__).resolve().parent.parent
 SRC010 = ROOT / "data" / "010源数据"
 SRC006 = ROOT / "data" / "006源数据"
 OUT_DIR = ROOT / "web" / "public" / "data"
-MAIN_XLSX = SRC010 / "白银所有数据.xlsx"
+# 主表以项目 010（日度会议数据整理）为准——用户每日在此维护，含"网页数据" sheet
+MAIN_XLSX = Path(r"C:\Users\56558\Nutstore\1\我的坚果云\agent\Project-010-日度会议数据整理\data\白银所有数据.xlsx")
 LEASE_XLSX = SRC010 / "20260719租借利率.xlsx"
 
 ERRORS: list[tuple[str, str]] = []   # (步骤名, 错误信息)
@@ -325,15 +326,66 @@ CTX: Ctx | None = None
 
 
 def step_copy_static() -> None:
-    for src_name, dst_name in [("monitoring-data.json", "monitoring.json"),
-                               ("market-data.json", "market.json")]:
-        src = SRC006 / src_name
-        with open(src, encoding="utf-8") as fh:
-            json.load(fh)  # 防御性校验：必须是合法 JSON
-        OUT_DIR.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(src, OUT_DIR / dst_name)
-        size_kb = (OUT_DIR / dst_name).stat().st_size / 1024
-        print(f"  [OK] {dst_name} (原样拷贝, {size_kb:.1f} KB)")
+    # monitoring.json 仍原样拷贝 006 抽取结果
+    src = SRC006 / "monitoring-data.json"
+    with open(src, encoding="utf-8") as fh:
+        json.load(fh)
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(src, OUT_DIR / "monitoring.json")
+    size_kb = (OUT_DIR / "monitoring.json").stat().st_size / 1024
+    print(f"  [OK] monitoring.json (原样拷贝, {size_kb:.1f} KB)")
+
+    # market.json 改为从 010 主表"网页数据" sheet 生成（用户手工维护的万得数据）
+    build_market_from_web_sheet()
+
+
+def build_market_from_web_sheet() -> None:
+    """读取 010 主表"网页数据" sheet，生成 market.json。
+
+    sheet 结构（data_only）：
+      第4行 = 列名（日期/伦敦银(人民币/千克)/伦敦金(人民币/克)/国投瑞银白银期货A/SHFE白银/SGE白银T+D）
+      第5行 = 万得代码（Date/XAGCNY.IDC/XAUCNY.IDC/161226.OF/AG.SHF/AG(T+D).SGE）
+      第6行起 = 数据（A 列为日期）
+    金银比 = 伦敦金(元/克) ÷ 伦敦银(元/千克) × 1000（同币种，单位换算后无量纲）。
+    """
+    wb = load_workbook(MAIN_XLSX, read_only=True, data_only=True)
+    if "网页数据" not in wb.sheetnames:
+        raise KeyError("主表缺少『网页数据』sheet")
+    ws = wb["网页数据"]
+    rows = list(ws.iter_rows(min_row=4, values_only=True))
+    wb.close()
+    # rows[0]=列名行, rows[1]=代码行, rows[2:]=数据
+    series_map = {
+        "londonSilverCnyKg": {"label": "伦敦银（人民币/千克）", "unit": "元/千克", "col": 1},
+        "londonGoldCnyG": {"label": "伦敦金（人民币/克）", "unit": "元/克", "col": 2},
+        "silverFundNav": {"label": "白银期货 LOF（161226.OF）净值", "unit": "元", "col": 3},
+        "shfeSilver": {"label": "沪银主力（AG.SHF）", "unit": "元/千克", "col": 4},
+        "sgeAgTd": {"label": "上金所 Ag(T+D)", "unit": "元/千克", "col": 5},
+    }
+    items: dict[str, dict] = {}
+    for key, meta in series_map.items():
+        pts = []
+        for r in rows[2:]:
+            dt, val = r[0], r[meta["col"]]
+            if dt is None or val is None:
+                continue
+            d = dt.date().isoformat() if hasattr(dt, "date") else str(dt)[:10]
+            f = to_float(val)
+            if f is not None:
+                pts.append({"date": d, "value": round(f, 4)})
+        items[key] = {"label": meta["label"], "unit": meta["unit"], "points": pts}
+
+    # 金银比：按日期对齐伦敦金/伦敦银
+    au = {p["date"]: p["value"] for p in items["londonGoldCnyG"]["points"]}
+    ag = {p["date"]: p["value"] for p in items["londonSilverCnyKg"]["points"]}
+    ratio_pts = []
+    for d in sorted(au.keys() & ag.keys()):
+        if ag[d]:
+            ratio_pts.append({"date": d, "value": round(au[d] / ag[d] * 1000, 2)})
+    items["goldSilverRatio"] = {"label": "金银比（伦敦金 ÷ 伦敦银，人民币同口径）", "unit": "", "points": ratio_pts}
+
+    write_json("market.json", {"fetchedAt": now_iso(), "items": items})
+
 
 
 def step_daily() -> None:

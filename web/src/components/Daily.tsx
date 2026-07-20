@@ -303,7 +303,7 @@ export function MultiLineChart({
 }
 
 /** 日期区间选择器：通过 ref 拿到 ECharts 实例，dispatchAction 精确设定 dataZoom 窗口 */
-function RangePicker({ dates, chartRef }: { dates: string[]; chartRef: React.RefObject<HTMLDivElement | null> }) {
+export function RangePicker({ dates, chartRef }: { dates: string[]; chartRef: React.RefObject<HTMLDivElement | null> }) {
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const min = dates[0] ?? "";

@@ -139,16 +139,12 @@ export interface FuturesSeries {
 export interface MarketData {
   fetchedAt: string;
   items: {
-    comexStocks: MarketSeriesValue;
-    shfeWarrants: MarketSeriesValue;
-    londonSilverUsd: MarketSeriesValue;
-    londonGoldUsd: MarketSeriesValue;
-    agFuturesClose: FuturesSeries;
-    silverFund: FundSeries;
-    sgeAg9999Close: MarketSeriesValue;
-    sgeAgTdLatest: AgTdLatest;
-    sgeInventory: MarketSeriesValue;
-    goldSilverRatio: MarketSeriesValue;
+    londonSilverCnyKg: MarketSeriesValue;   // 伦敦银（人民币/千克）
+    londonGoldCnyG: MarketSeriesValue;      // 伦敦金（人民币/克）
+    silverFundNav: MarketSeriesValue;       // 白银期货 LOF 净值
+    shfeSilver: MarketSeriesValue;          // 沪银主力
+    sgeAgTd: MarketSeriesValue;             // 上金所 Ag(T+D)
+    goldSilverRatio: MarketSeriesValue;     // 金银比
   };
 }
 
