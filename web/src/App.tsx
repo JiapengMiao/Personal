@@ -30,6 +30,22 @@ export default function App() {
   const [selectedTheme, setSelectedTheme] = useState<string | null>(null);
   const [drawer, setDrawer] = useState<{ indicator: Indicator; list: Indicator[] } | null>(null);
 
+  // 演示缩放:投屏到大屏/电视时整页等比放大。用文档级 zoom(等同浏览器 Ctrl+加号),
+  // 而非改单个 font-size —— ECharts 图表的字画在 canvas 上,CSS 字号管不到;
+  // 文档级 zoom 会让画布按更高分辨率重绘(图仍锐利),文字与图表同比例放大,顶栏/弹层/网格也不错位。
+  const ZOOM_KEY = "ag-monitor-zoom";
+  const [zoom, setZoom] = useState<number>(() => {
+    const n = Number(localStorage.getItem(ZOOM_KEY));
+    return Number.isFinite(n) && n > 0 ? Math.min(200, Math.max(100, n)) : 100;
+  });
+  useEffect(() => {
+    // 直接写根元素内联 zoom(等同浏览器 Ctrl+加号),不用 var 间接取值——
+    // Chromium 对非标准属性 zoom 的 var() 解析存在静默失败风险,内联赋值零间接最稳。
+    document.documentElement.style.setProperty("zoom", String(zoom / 100));
+    localStorage.setItem(ZOOM_KEY, String(zoom));
+  }, [zoom]);
+  const applyZoom = useCallback((z: number) => setZoom(Math.min(200, Math.max(100, z))), []);
+
   // 数据加载（三级加载：首屏只拉 daily_recent.json 近2年 ~133KB，历史数据拖到早期再懒加载）
   useEffect(() => {
     let cancelled = false;
@@ -141,7 +157,9 @@ export default function App() {
         asOf={data.monitoring.asOfDate}
         dailyAsOf={data.daily.asOfDate}
         theme={theme}
+        zoom={zoom}
         onToggleTheme={toggleTheme}
+        onZoom={applyZoom}
       />
       <main>
         <Hero data={data} />
