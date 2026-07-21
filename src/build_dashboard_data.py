@@ -459,6 +459,32 @@ def step_daily() -> None:
         "series": series,
     })
 
+    # —— 三级加载：切出近 2 年的轻量版 daily_recent.json（首屏加载，~4% 体积）——
+    # 历史数据保留在 daily.json（重命名为 daily_history.json 由前端按需加载）
+    RECENT_YEARS = 2
+    cutoff_ts = pd.Timestamp(dates[-1]) - pd.DateOffset(years=RECENT_YEARS)
+    cutoff = cutoff_ts.strftime("%Y-%m-%d")
+    start_idx = next((i for i, d in enumerate(dates) if d >= cutoff), 0)
+    recent_dates = dates[start_idx:]
+    recent_series = {k: v[start_idx:] for k, v in series.items()}
+    write_json("daily_recent.json", {
+        "generatedAt": now_iso(),
+        "asOfDate": dates[-1],
+        "lastActual": last_actual,
+        "recentFrom": recent_dates[0],
+        "dates": recent_dates,
+        "series": recent_series,
+    })
+    print(f"  daily_recent.json: {len(recent_dates)} 点（自 {recent_dates[0]}，近 {RECENT_YEARS} 年）")
+    # 全量历史另存为 daily_history.json（前端懒加载）
+    write_json("daily_history.json", {
+        "generatedAt": now_iso(),
+        "asOfDate": dates[-1],
+        "lastActual": last_actual,
+        "dates": dates,
+        "series": series,
+    })
+
 
 def _contract_points(code: str, y_func) -> list[dict]:
     """按交易日日历计算 x（距到期日的交易日序号差，到期日 x=0），保留 [-90, 0]。

@@ -158,6 +158,8 @@ export interface DailyData {
   series: DailySeriesMap;
   /** 各序列最后真实值日期（ffill 前），如 {"shfeInvT":"2026-07-17"}；管道未升级时可能缺省 */
   lastActual?: Record<string, string>;
+  /** 近期数据起点（daily_recent.json 特有），前端据此判断是否需懒加载历史 */
+  recentFrom?: string;
 }
 
 // ——— positions_curve.json / virtual_ratio.json ———

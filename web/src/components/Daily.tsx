@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { DailyData } from "../lib/types";
 import { baseAxis, baseLegend, baseTooltip, echarts, getPalette, hexToRgba, zoomFill, type ThemeMode } from "../lib/echarts";
 import { useEChart } from "../lib/useEChart";
@@ -6,10 +6,24 @@ import { SectionHeading } from "./shared";
 import { ffill, formatNumber, lastNonNull } from "../lib/format";
 
 // ——— 04 库存与递延 ———
-export function DailySection({ daily, theme }: { daily: DailyData; theme: ThemeMode }) {
+export function DailySection({ daily, theme, onLoadHistory, historyLoaded, historyLoading }: {
+  daily: DailyData;
+  theme: ThemeMode;
+  onLoadHistory?: () => void;
+  historyLoaded?: boolean;
+  historyLoading?: boolean;
+}) {
   return (
     <section className="section-block" id="daily">
       <SectionHeading index="04" title="递延费与库存 · 日频" desc="递延费方向 / 国内库存 / 海外库存 / ETF（单位：吨）" id="daily" />
+      {daily.recentFrom && !historyLoaded && (
+        <div className="history-banner">
+          <span>当前显示近 2 年数据（自 {daily.recentFrom}），共 58 年历史（1968 起）可按需加载</span>
+          <button type="button" onClick={onLoadHistory} disabled={historyLoading}>
+            {historyLoading ? "加载中…" : "加载全部历史数据"}
+          </button>
+        </div>
+      )}
       <div className="stack-grid">
         <article className="panel chart-panel">
           <div className="panel-heading">
@@ -191,6 +205,7 @@ function DeferredChart({ daily, theme }: { daily: DailyData; theme: ThemeMode })
     };
   }, [daily, theme]);
   const ref = useEChart(build, [daily], theme);
+
   return (
     <>
       <RangePicker dates={daily.dates} chartRef={ref} />
@@ -299,6 +314,7 @@ export function MultiLineChart({
     };
   }, [theme, dates, series, zoom, connectNulls, markLatest, zoomStart, largeData]);
   const chartRef = useEChart(build, [theme, dates, series, zoom, connectNulls, markLatest, zoomStart, largeData], theme);
+
   return (
     <>
       {zoom && <RangePicker dates={dates} chartRef={chartRef} />}

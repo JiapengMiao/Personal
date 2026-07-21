@@ -29,13 +29,13 @@ export default function App() {
   const [selectedTheme, setSelectedTheme] = useState<string | null>(null);
   const [drawer, setDrawer] = useState<{ indicator: Indicator; list: Indicator[] } | null>(null);
 
-  // 数据加载
+  // 数据加载（三级加载：首屏只拉 daily_recent.json 近2年 ~133KB，历史数据拖到早期再懒加载）
   useEffect(() => {
     let cancelled = false;
     Promise.all([
       fetchJson<DashboardData["monitoring"]>("data/monitoring.json"),
       fetchJson<DashboardData["market"]>("data/market.json"),
-      fetchJson<DashboardData["daily"]>("data/daily.json"),
+      fetchJson<DashboardData["daily"]>("data/daily_recent.json"),
       fetchJson<DashboardData["positions"]>("data/positions_curve.json"),
       fetchJson<DashboardData["virtualRatio"]>("data/virtual_ratio.json"),
       fetchJson<DashboardData["seasonality"]>("data/seasonality.json"),
@@ -53,6 +53,22 @@ export default function App() {
       cancelled = true;
     };
   }, []);
+
+  // 历史数据懒加载：用户点击按钮后拉取全量历史
+  const [historyLoading, setHistoryLoading] = useState(false);
+  const historyLoaded = data ? data.daily.dates.length > 2000 : false;
+  const loadDailyHistory = useCallback(async () => {
+    if (!data || historyLoaded || historyLoading) return;
+    setHistoryLoading(true);
+    try {
+      const history = await fetchJson<DashboardData["daily"]>("data/daily_history.json");
+      setData((d) => (d ? { ...d, daily: history } : d));
+    } catch {
+      /* 静默失败，保持近期数据 */
+    } finally {
+      setHistoryLoading(false);
+    }
+  }, [data, historyLoaded, historyLoading]);
 
   // 主题持久化
   const toggleTheme = useCallback(() => {
@@ -131,7 +147,7 @@ export default function App() {
         <SignalsSection monitoring={data.monitoring} selectedTheme={selectedTheme} onSelectTheme={setSelectedTheme} />
         <TrendsSection monitoring={data.monitoring} theme={theme} />
         <MarketSection market={data.market} theme={theme} />
-        <DailySection daily={data.daily} theme={theme} />
+        <DailySection daily={data.daily} theme={theme} onLoadHistory={loadDailyHistory} historyLoaded={historyLoaded} historyLoading={historyLoading} />
         <PositionsSection positions={data.positions} virtualRatio={data.virtualRatio} theme={theme} />
         <SpotQuotesSection />
         <ComexSection daily={data.daily} theme={theme} />
