@@ -26,7 +26,7 @@ export function PositionsSection({
               <h3>到期前持仓量（手）</h3>
             </div>
           </div>
-          <CurveChart data={positions} theme={theme} decimals={0} />
+          <CurveChart data={positions} theme={theme} decimals={0} unit="手" />
         </article>
         <article className="panel chart-panel">
           <div className="panel-heading">
@@ -35,7 +35,7 @@ export function PositionsSection({
               <h3>到期前虚实比（倍）</h3>
             </div>
           </div>
-          <CurveChart data={virtualRatio} theme={theme} decimals={2} />
+          <CurveChart data={virtualRatio} theme={theme} decimals={2} unit="倍" />
           <p className="chart-note">口径：虚实比 = 持仓量 × 15 千克 ÷ 注册仓单（{virtualRatio.formula ?? "oi*15/st_stock_kg"}）；横轴为距到期日的交易日数。</p>
         </article>
       </div>
@@ -43,7 +43,17 @@ export function PositionsSection({
   );
 }
 
-function CurveChart({ data, theme, decimals }: { data: CurveData; theme: ThemeMode; decimals: number }) {
+function CurveChart({
+  data,
+  theme,
+  decimals,
+  unit = "",
+}: {
+  data: CurveData;
+  theme: ThemeMode;
+  decimals: number;
+  unit?: string;
+}) {
   const build = useMemo(() => {
     return () => {
       const p = getPalette(theme);
@@ -84,6 +94,17 @@ function CurveChart({ data, theme, decimals }: { data: CurveData; theme: ThemeMo
           const color = p.series[i % p.series.length];
           const pts = c.points.map((pt) => [pt.x, pt.y] as [number, number]);
           const lastPt = pts[pts.length - 1];
+          // 尾端读数：仅未到期合约（折线停在负 x；已到期者延伸到 0 归零，不叠标签以免在 x=0 挤成一团）
+          const halo = theme === "light" ? "#ffffff" : "#0a101b";
+          const tail =
+            lastPt && lastPt[0] < 0
+              ? {
+                  code: c.code,
+                  val: formatNumber(lastPt[1], decimals),
+                  days: Math.abs(Math.round(lastPt[0])),
+                  coord: lastPt as [number, number],
+                }
+              : null;
           return {
             name: c.code,
             type: "line" as const,
@@ -99,29 +120,38 @@ function CurveChart({ data, theme, decimals }: { data: CurveData; theme: ThemeMo
               lineStyle: { color: p.edge, width: 1, type: "dashed" as const },
               data: [{ xAxis: 0 }],
             },
-            markPoint: lastPt
+            markPoint: tail
               ? {
                   symbol: "circle",
-                  symbolSize: 7,
-                  itemStyle: { color },
+                  symbolSize: 6,
+                  itemStyle: { color, borderColor: halo, borderWidth: 1.5 },
                   label: {
                     show: true,
                     position: "right" as const,
-                    formatter: `${c.code}  ${formatNumber(lastPt[1], decimals)}\n距最后交易日${Math.abs(lastPt[0])}日`,
-                    color,
-                    fontFamily: "JetBrains Mono",
-                    fontSize: 10,
-                    lineHeight: 13,
+                    distance: 7,
+                    formatter: `{c|${tail.code}}  {v|${tail.val}${unit}}\n{d|距到期 ${tail.days} 交易日}`,
+                    backgroundColor: theme === "light" ? "rgba(255,255,255,0.92)" : "rgba(10,16,27,0.9)",
+                    borderColor: color,
+                    borderWidth: 1,
+                    borderRadius: 5,
+                    padding: [5, 8],
+                    fontFamily: "JetBrains Mono, monospace",
+                    lineHeight: 14,
+                    rich: {
+                      c: { color, fontSize: 11, fontWeight: 700, fontFamily: "JetBrains Mono, monospace" },
+                      v: { color: p.text, fontSize: 11, fontWeight: 700, fontFamily: "JetBrains Mono, monospace" },
+                      d: { color: p.sub, fontSize: 9.5, fontFamily: "JetBrains Mono, monospace" },
+                    },
                   },
-                  data: [{ coord: lastPt }],
+                  data: [{ coord: tail.coord }],
                 }
               : undefined,
           };
         }),
       };
     };
-  }, [data, theme, decimals]);
-  const ref = useEChart(build, [data, decimals], theme);
+  }, [data, theme, decimals, unit]);
+  const ref = useEChart(build, [data, decimals, unit], theme);
   return <div ref={ref} className="echart chart-wrap" style={{ height: 360 }} />;
 }
 
