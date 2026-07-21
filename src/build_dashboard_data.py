@@ -586,17 +586,25 @@ def step_lease_rates() -> None:
     df.columns = [str(c).strip() for c in df.columns]
     date_col = df.columns[0]
 
-    def find_col(tenor_pat: str) -> str:
+    def find_col(metal: str, tenor_pat: str) -> str:
         for c in df.columns:
-            if "白银" in c and re.search(tenor_pat, c):
+            if metal in c and re.search(tenor_pat, c):
                 return c
-        raise KeyError(f"租借利率表未找到白银 {tenor_pat} 列; 实际列: {list(df.columns)}")
+        raise KeyError(f"租借利率表未找到{metal} {tenor_pat} 列; 实际列: {list(df.columns)}")
 
     col_map = {
-        "m1": find_col(r"(一|1)个月"),
-        "m3": find_col(r"3个月"),
-        "m6": find_col(r"6个月"),
-        "m12": find_col(r"12个月"),
+        "m1": find_col("白银", r"(一|1)个月"),
+        "m3": find_col("白银", r"3个月"),
+        "m6": find_col("白银", r"6个月"),
+        "m12": find_col("白银", r"12个月"),
+        "pt_m1": find_col("铂金", r"(一|1)个月"),
+        "pt_m3": find_col("铂金", r"3个月"),
+        "pt_m6": find_col("铂金", r"6个月"),
+        "pt_m12": find_col("铂金", r"12个月"),
+        "pd_m1": find_col("钯金", r"(一|1)个月"),
+        "pd_m3": find_col("钯金", r"3个月"),
+        "pd_m6": find_col("钯金", r"6个月"),
+        "pd_m12": find_col("钯金", r"12个月"),
     }
     df["__d"] = pd.to_datetime(df[date_col], errors="coerce")
     df = df.dropna(subset=["__d"]).sort_values("__d")
@@ -763,7 +771,8 @@ def verify() -> None:
     lr = load_out("lease_rates.json")
     check(lr["dates"] == sorted(lr["dates"]), "lease_rates 日期升序")
     check(len(lr["dates"]) > 200, f"lease_rates 日期数 {len(lr['dates'])} (期望 >200)")
-    check(list(lr["series"].keys()) == ["m1", "m3", "m6", "m12"], f"lease_rates 键 {list(lr['series'])}")
+    EXPECTED_LR_KEYS = ["m1", "m3", "m6", "m12", "pt_m1", "pt_m3", "pt_m6", "pt_m12", "pd_m1", "pd_m3", "pd_m6", "pd_m12"]
+    check(list(lr["series"].keys()) == EXPECTED_LR_KEYS, f"lease_rates 键 {list(lr['series'])}")
     check(all(len(v) == len(lr["dates"]) for v in lr["series"].values()), "lease_rates 序列长度一致")
     m6nn = [v for v in lr["series"]["m6"] if v is not None]
     check(len(m6nn) > 100 and -5 < m6nn[-1] < 20, f"lease m6 最新 {m6nn[-1]}% 量级合理, 非空 {len(m6nn)}")

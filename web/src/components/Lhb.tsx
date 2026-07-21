@@ -62,6 +62,9 @@ export function LhbSection({ data }: { data: LhbData | null }) {
 }
 
 function RankTable({ title, rows, side }: { title: string; rows: LhbMember[]; side: "long" | "short" }) {
+  const sumPos = rows.reduce((s, r) => s + r.position, 0);
+  const sumChg = rows.reduce((s, r) => s + r.change, 0);
+  const sumNet = rows.reduce((s, r) => s + r.net, 0);
   return (
     <div className="lhb-table-wrap">
       <h4 className="lhb-table-title">{title}</h4>
@@ -90,6 +93,19 @@ function RankTable({ title, rows, side }: { title: string; rows: LhbMember[]; si
             </tr>
           ))}
         </tbody>
+        <tfoot>
+          <tr className="lhb-total">
+            <td></td>
+            <td className="lhb-member">合计 TOP{rows.length}</td>
+            <td><strong>{formatNumber(sumPos, 0)}</strong></td>
+            <td className={sumChg > 0 ? "val-up" : sumChg < 0 ? "val-down" : ""}>
+              <strong>{sumChg > 0 ? "+" : ""}{formatNumber(sumChg, 0)}</strong>
+            </td>
+            <td className={sumNet > 0 ? "val-up" : sumNet < 0 ? "val-down" : ""}>
+              <strong>{formatNumber(sumNet, 0)}</strong>
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   );
