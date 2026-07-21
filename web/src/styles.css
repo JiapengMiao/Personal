@@ -997,6 +997,9 @@ footer {
 .light-mode .lhb-table tr:hover td { background: rgba(154,109,18,.04); }
 .lhb-table .val-up { color: var(--up); }
 .lhb-table .val-down { color: var(--down); }
+.lhb-table tfoot td { padding: 7px 8px; text-align: right; border-top: 2px solid var(--edge); color: var(--text); font-size: 12px; }
+.lhb-table tfoot .lhb-member { text-align: left; color: var(--sub); font-weight: 600; }
+.lhb-table tfoot strong { font-weight: 700; }
 @media (max-width: 900px) { .lhb-grid { grid-template-columns: 1fr; } }
 
 
