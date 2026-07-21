@@ -39,6 +39,7 @@ export const NAV_ITEMS = [
   { id: "market", label: "市场" },
   { id: "daily", label: "库存" },
   { id: "positions", label: "持仓" },
+  { id: "hktrade", label: "贸易" },
   { id: "basis", label: "基差" },
   { id: "season", label: "季节" },
   { id: "indicators", label: "指标库" },
