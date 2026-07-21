@@ -12,8 +12,8 @@
   --gold: #d9a441;
   --gold-bright: #f0c264;
   --silver: #c7d3e0;
-  --up: #3ecf8e;
-  --down: #f26d6d;
+  --up: #f26d6d;
+  --down: #3ecf8e;
   --base: #e8b34a;
   --live: #56c8dc;
   --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -79,8 +79,8 @@ button { color: inherit; }
   --silver: #5c7186;
   --gold: #9a6d12;
   --gold-bright: #7c5a10;
-  --up: #157a4c;
-  --down: #bf3b34;
+  --up: #bf3b34;
+  --down: #157a4c;
   --base: #8f660f;
   --live: #0d7d92;
   --shadow: 0 18px 46px rgba(26, 46, 66, 0.10);
@@ -387,8 +387,8 @@ main { width: min(1440px, calc(100% - 48px)); margin: 0 auto; position: relative
   white-space: nowrap;
 }
 .led-badge .led { width: 6px; height: 6px; border-radius: 50%; background: currentColor; box-shadow: 0 0 8px currentColor; }
-.led-badge.strong-positive, .led-badge.positive { color: var(--up); border-color: rgba(62, 207, 142, .3); background: rgba(62, 207, 142, .08); }
-.led-badge.strong-negative, .led-badge.negative { color: var(--down); border-color: rgba(242, 109, 109, .3); background: rgba(242, 109, 109, .08); }
+.led-badge.strong-positive, .led-badge.positive { color: var(--up); border-color: rgba(242, 109, 109, .3); background: rgba(242, 109, 109, .08); }
+.led-badge.strong-negative, .led-badge.negative { color: var(--down); border-color: rgba(62, 207, 142, .3); background: rgba(62, 207, 142, .08); }
 .led-badge.neutral { color: var(--base); border-color: rgba(232, 179, 74, .3); background: rgba(232, 179, 74, .08); }
 .led-badge.missing { color: var(--weak); }
 .signal-card h3 { margin: 18px 0 6px; font-size: 14px; }
@@ -410,8 +410,8 @@ main { width: min(1440px, calc(100% - 48px)); margin: 0 auto; position: relative
 .score-scale { display: grid; grid-template-columns: repeat(5, 1fr) 26px; align-items: center; gap: 4px; }
 .score-scale i { height: 4px; background: var(--hairline); border-radius: 4px; }
 .score-scale i.active { height: 7px; background: var(--base); box-shadow: 0 0 10px rgba(232, 179, 74, .4); }
-.strong-negative .score-scale i.active, .negative .score-scale i.active { background: var(--down); box-shadow: 0 0 10px rgba(242, 109, 109, .45); }
-.strong-positive .score-scale i.active, .positive .score-scale i.active { background: var(--up); box-shadow: 0 0 10px rgba(62, 207, 142, .45); }
+.strong-negative .score-scale i.active, .negative .score-scale i.active { background: var(--down); box-shadow: 0 0 10px rgba(62, 207, 142, .45); }
+.strong-positive .score-scale i.active, .positive .score-scale i.active { background: var(--up); box-shadow: 0 0 10px rgba(242, 109, 109, .45); }
 .score-scale span { color: var(--weak); text-align: right; font-family: var(--mono); font-size: 12px; font-weight: 700; }
 
 /* ——— 趋势与结构 ——— */
@@ -544,8 +544,8 @@ main { width: min(1440px, calc(100% - 48px)); margin: 0 auto; position: relative
   font-weight: 700;
   white-space: nowrap;
 }
-.kind-badge.positive { color: var(--up); background: rgba(62, 207, 142, .10); border: 1px solid rgba(62, 207, 142, .28); }
-.kind-badge.negative { color: var(--down); background: rgba(242, 109, 109, .10); border: 1px solid rgba(242, 109, 109, .28); }
+.kind-badge.positive { color: var(--up); background: rgba(242, 109, 109, .10); border: 1px solid rgba(242, 109, 109, .28); }
+.kind-badge.negative { color: var(--down); background: rgba(62, 207, 142, .10); border: 1px solid rgba(62, 207, 142, .28); }
 .kind-badge.neutral { color: var(--sub); background: var(--raised); border: 1px solid var(--hairline); }
 .trigger-text { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .trigger-text strong { font-size: 13.5px; }
@@ -681,8 +681,8 @@ main { width: min(1440px, calc(100% - 48px)); margin: 0 auto; position: relative
   letter-spacing: .03em;
   white-space: nowrap;
 }
-.signal-badge.strong-positive, .signal-badge.positive { color: var(--up); background: rgba(62, 207, 142, .10); border: 1px solid rgba(62, 207, 142, .28); }
-.signal-badge.strong-negative, .signal-badge.negative { color: var(--down); background: rgba(242, 109, 109, .10); border: 1px solid rgba(242, 109, 109, .28); }
+.signal-badge.strong-positive, .signal-badge.positive { color: var(--up); background: rgba(242, 109, 109, .10); border: 1px solid rgba(242, 109, 109, .28); }
+.signal-badge.strong-negative, .signal-badge.negative { color: var(--down); background: rgba(62, 207, 142, .10); border: 1px solid rgba(62, 207, 142, .28); }
 .signal-badge.neutral { color: var(--base); background: rgba(232, 179, 74, .10); border: 1px solid rgba(232, 179, 74, .28); }
 .signal-badge.missing { color: var(--sub); background: var(--raised); border: 1px solid var(--hairline); }
 
@@ -774,8 +774,8 @@ footer {
   border-radius: 8px;
   background: var(--raised);
 }
-.history-cell.pos { border-color: rgba(62, 207, 142, .3); background: rgba(62, 207, 142, .07); }
-.history-cell.neg { border-color: rgba(242, 109, 109, .3); background: rgba(242, 109, 109, .07); }
+.history-cell.pos { border-color: rgba(242, 109, 109, .3); background: rgba(242, 109, 109, .07); }
+.history-cell.neg { border-color: rgba(62, 207, 142, .3); background: rgba(62, 207, 142, .07); }
 .history-cell.flat { border-color: rgba(232, 179, 74, .3); background: rgba(232, 179, 74, .07); }
 .history-period { color: var(--weak); font-family: var(--mono); font-size: 11px; }
 .history-cell strong { font-family: var(--mono); font-size: 14px; }

@@ -195,14 +195,18 @@ export function SeasonalitySection({ data, asOfDate, theme }: { data: Seasonalit
 
 export function LeaseSection({ data, theme }: { data: LeaseRatesData; theme: ThemeMode }) {
   const [metal, setMetal] = useState<"ag" | "pt" | "pd">("ag");
-  const METAL_TABS: { key: "ag" | "pt" | "pd"; label: string; prefix: string }[] = [
-    { key: "ag", label: "白银", prefix: "" },
-    { key: "pt", label: "铂金", prefix: "pt_" },
-    { key: "pd", label: "钯金", prefix: "pd_" },
+  const METAL_KEYS: Record<string, string[]> = {
+    ag: ["m1", "m3", "m6", "m12"],
+    pt: ["pt_m1", "pt_m3", "pt_m6", "pt_m12"],
+    pd: ["pd_m1", "pd_m3", "pd_m6", "pd_m12"],
+  };
+  const METAL_TABS: { key: "ag" | "pt" | "pd"; label: string }[] = [
+    { key: "ag", label: "白银" },
+    { key: "pt", label: "铂金" },
+    { key: "pd", label: "钯金" },
   ];
   const TENOR_LABELS: Record<string, string> = { m1: "1个月", m3: "3个月", m6: "6个月", m12: "12个月" };
-  const activePrefix = METAL_TABS.find((t) => t.key === metal)!.prefix;
-  const activeKeys = Object.keys(data.series).filter((k) => k.startsWith(activePrefix) || (activePrefix === "" && !k.startsWith("pt_") && !k.startsWith("pd_")));
+  const activeKeys = (METAL_KEYS[metal] ?? METAL_KEYS.ag).filter((k) => k in data.series);
   const build = useMemo(() => { return () => { const p = getPalette(theme); return { animationDuration: 400, grid: { top: 34, right: 16, bottom: 52, left: 58 }, tooltip: { trigger: "axis", ...baseTooltip(p), valueFormatter: (v: unknown) => (v == null ? "—" : `${formatNumber(Number(v), 4)}%`) }, legend: { ...baseLegend(p), top: 0, left: 0 }, xAxis: { type: "category", data: data.dates, ...baseAxis(p), boundaryGap: false, axisLabel: { ...baseAxis(p).axisLabel, formatter: (v: string) => v.slice(0, 7), interval: 29 } }, yAxis: { type: "value", scale: true, ...baseAxis(p), axisLabel: { ...baseAxis(p).axisLabel, formatter: (v: number) => `${formatNumber(v, 2)}%` } }, dataZoom: [{ type: "inside", throttle: 40 }, { type: "slider", height: 18, bottom: 8, ...zoomFill(p) }], series: activeKeys.map((k, i) => { const tenor = k.replace(/^pt_/, "").replace(/^pd_/, ""); return { name: TENOR_LABELS[tenor] ?? k, type: "line", data: data.series[k], showSymbol: false, connectNulls: true, lineStyle: { width: 1.8, color: p.series[i % p.series.length] }, itemStyle: { color: p.series[i % p.series.length] } }; }) }; }; }, [data, theme, metal, activeKeys]);
   const ref = useEChart(build, [data, metal], theme);
   const metalLabel = METAL_TABS.find((t) => t.key === metal)!.label;
