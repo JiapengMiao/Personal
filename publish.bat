@@ -16,6 +16,10 @@ echo [3/7] 生成香港贸易JSON（来自 data\hk_silver_trade.csv）...
 "C:\Users\56558\AppData\Local\Programs\Python\Python312\python.exe" src\build_hk_trade.py
 if errorlevel 1 ( echo [错误] 香港贸易JSON生成失败 & pause & exit /b 1 )
 
+echo [3.5/7] 生成龙虎榜JSON（来自 010 SHFE_PM）...
+"C:\Users\56558\AppData\Local\Programs\Python\Python312\python.exe" src\build_lhb.py
+if errorlevel 1 ( echo [警告] 龙虎榜JSON生成失败（可能010未抓SHFE_PM），继续 & )
+
 echo [4/7] 构建前端...
 cd web
 "C:\Users\56558\.workbuddy\binaries\node\versions\22.22.2\node.exe" node_modules\vite\bin\vite.js build --emptyOutDir false --logLevel warn

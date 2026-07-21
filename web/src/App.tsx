@@ -10,6 +10,7 @@ import { BasisSection, LeaseSection, SeasonalitySection } from "./components/Bas
 import { DynamicsSection, IndicatorDrawer, IndicatorLibrarySection } from "./components/Library";
 import { SpotQuotesSection } from "./components/SpotQuotes";
 import { HkTradeSection } from "./components/HkTrade";
+import { LhbSection, type LhbData } from "./components/Lhb";
 
 const THEME_KEY = "ag-monitor-theme";
 
@@ -29,6 +30,12 @@ export default function App() {
   const [active, setActive] = useState("signals");
   const [selectedTheme, setSelectedTheme] = useState<string | null>(null);
   const [drawer, setDrawer] = useState<{ indicator: Indicator; list: Indicator[] } | null>(null);
+  const [lhb, setLhb] = useState<LhbData | null>(null);
+
+  // 龙虎榜独立加载（失败静默，不影响主看板）
+  useEffect(() => {
+    fetchJson<LhbData>("data/lhb.json").then(setLhb).catch(() => { /* 无数据时不显示 */ });
+  }, []);
 
   // 数据加载（三级加载：首屏只拉 daily_recent.json 近2年 ~133KB，历史数据拖到早期再懒加载）
   useEffect(() => {
@@ -152,6 +159,7 @@ export default function App() {
         <PositionsSection positions={data.positions} virtualRatio={data.virtualRatio} theme={theme} />
         <SpotQuotesSection />
         <ComexSection daily={data.daily} theme={theme} />
+        <LhbSection data={lhb} />
         <HkTradeSection theme={theme} />
         <BasisSection theme={theme} />
         <SeasonalitySection data={data.seasonality} asOfDate={data.daily.asOfDate} theme={theme} />
