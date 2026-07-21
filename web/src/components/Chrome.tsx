@@ -50,17 +50,13 @@ export function Topbar({
   asOf,
   dailyAsOf,
   theme,
-  zoom,
   onToggleTheme,
-  onZoom,
 }: {
   active: string;
   asOf: string;
   dailyAsOf: string;
   theme: "dark" | "light";
-  zoom: number;
   onToggleTheme: () => void;
-  onZoom: (z: number) => void;
 }) {
   return (
     <header className="topbar">
@@ -85,25 +81,6 @@ export function Topbar({
         <span className="data-clock">
           监测 {asOf} · 日频 {dailyAsOf}
         </span>
-        <div className="zoom-ctl" role="group" aria-label="演示缩放(投屏放大)">
-          <button
-            className="zoom-btn"
-            onClick={() => onZoom(Math.max(100, zoom - 25))}
-            disabled={zoom <= 100}
-            aria-label="缩小"
-          >
-            A−
-          </button>
-          <span className="zoom-val">{zoom}%</span>
-          <button
-            className="zoom-btn"
-            onClick={() => onZoom(Math.min(200, zoom + 25))}
-            disabled={zoom >= 200}
-            aria-label="放大"
-          >
-            A+
-          </button>
-        </div>
         <button className="icon-button" onClick={onToggleTheme} aria-label="切换明暗主题">
           {theme === "dark" ? "◐ 浅色" : "◑ 深色"}
         </button>

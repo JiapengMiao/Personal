@@ -24,7 +24,7 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; zoom: 1.25; }
 body {
   margin: 0;
   background: var(--bg);
@@ -978,10 +978,4 @@ footer {
 .hk-stat small { color: var(--sub); font-size: 11.5px; }
 .hk-stat strong { font-family: var(--mono); font-size: 20px; font-weight: 600; color: var(--text); }
 
-/* ——— 顶栏演示缩放旋钮(投屏放大) ——— */
-.zoom-ctl { display: inline-flex; align-items: stretch; border: 1px solid var(--hairline); border-radius: 8px; overflow: hidden; background: var(--raised); }
-.zoom-btn { border: 0; background: transparent; color: var(--sub); cursor: pointer; padding: 0 9px; font-family: var(--mono); font-size: 13px; font-weight: 700; line-height: 1; display: grid; place-items: center; transition: color .18s ease, background .18s ease; }
-.zoom-btn:hover:not(:disabled) { color: var(--gold-bright); background: rgba(217, 164, 65, .10); }
-.zoom-btn:disabled { opacity: .32; cursor: default; }
-.zoom-val { min-width: 46px; display: grid; place-items: center; color: var(--gold-bright); font-family: var(--mono); font-size: 12px; font-weight: 700; letter-spacing: .02em; border-left: 1px solid var(--hairline); border-right: 1px solid var(--hairline); padding: 0 4px; }
 

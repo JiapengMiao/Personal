@@ -24,6 +24,11 @@ echarts.use([
 
 export { echarts };
 
+// 调试/自动化验证用：暴露到 window，便于 Playwright 等外部脚本通过 getInstanceByDom 访问图表实例
+if (typeof window !== "undefined") {
+  (window as unknown as Record<string, unknown>).__echarts = echarts;
+}
+
 export type ThemeMode = "dark" | "light";
 
 export interface Palette {

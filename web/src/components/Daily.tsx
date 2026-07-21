@@ -279,9 +279,9 @@ export function MultiLineChart({
         },
         dataZoom: zoom
           ? [
-              // throttle 提高到 80ms：拖动期间每秒最多触发 12 次完整重绘
-              { type: "inside", throttle: 80, start: zoomStart, end: 100 },
-              { type: "slider", height: 18, bottom: 8, throttle: 80, start: zoomStart, end: 100, ...zoomFill(p) },
+              // throttle 降到 40ms：拖动更流畅；配合 sampling: 'lttb' 保真
+              { type: "inside", throttle: 40, start: zoomStart, end: 100 },
+              { type: "slider", height: 18, bottom: 8, throttle: 40, start: zoomStart, end: 100, ...zoomFill(p) },
             ]
           : undefined,
         series: series.map((s) => ({
@@ -290,6 +290,8 @@ export function MultiLineChart({
           data: s.data ?? [],
           showSymbol: false,
           connectNulls,
+          // 大数据量时启用 LTTB 采样：只对当前缩放窗口内数据采样
+          ...(largeData ? { sampling: "lttb" as const } : {}),
           lineStyle: { width: s.width ?? 1.8, type: "solid" as const, color: p.series[s.colorIdx % p.series.length] },
           itemStyle: { color: p.series[s.colorIdx % p.series.length] },
           markPoint: markLatest
