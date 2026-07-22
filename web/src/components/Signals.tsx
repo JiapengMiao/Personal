@@ -14,6 +14,17 @@ export function SignalsSection({
   selectedTheme: string | null;
   onSelectTheme: (theme: string | null) => void;
 }) {
+  const coverage = useMemo(() => {
+    const indicators = monitoring.indicators;
+    return {
+      available: indicators.filter((i) => i.value !== null).length,
+      verified: indicators.filter((i) => i.dataStatus === "已核实").length,
+      connected: indicators.filter((i) => i.dataStatus === "已接入").length,
+      modeled: indicators.filter((i) => i.dataStatus === "模型值").length,
+      baseline: indicators.filter((i) => i.dataStatus === "仅有基线").length,
+    };
+  }, [monitoring.indicators]);
+  const sourceEntries = useMemo(() => Object.entries(monitoring.sources), [monitoring.sources]);
   const sparkOf = (theme: string): number[] => {
     const main =
       monitoring.indicators.find((i) => i.theme === theme && i.role === "主指标" && i.history.length > 0) ??
@@ -49,6 +60,42 @@ export function SignalsSection({
           );
         })}
       </div>
+      <article className="panel monitoring-source-panel">
+        <div className="monitoring-source-heading">
+          <div>
+            <span>数据治理 · DATA COVERAGE</span>
+            <h3>17 项指标覆盖与数据来源</h3>
+          </div>
+          <div className="monitoring-coverage-pill">
+            <strong>{coverage.available} / {monitoring.indicators.length}</strong>
+            <small>已有读数</small>
+          </div>
+        </div>
+        <div className="monitoring-quality-grid">
+          <div><strong>{coverage.verified}</strong><span>已核实</span><small>官方报告或公开数据</small></div>
+          <div><strong>{coverage.connected}</strong><span>已接入</span><small>Wind / Project-010 流水线</small></div>
+          <div className="quality-model"><strong>{coverage.modeled}</strong><span>模型值</span><small>代理或公开值外推</small></div>
+          <div className="quality-baseline"><strong>{coverage.baseline}</strong><span>仅有基线</span><small>等待下一期读数</small></div>
+          <div><strong>{sourceEntries.length}</strong><span>来源</span><small>官方、行业与本地链路</small></div>
+        </div>
+        <div className="monitoring-source-list" aria-label="监测指标数据来源">
+          {sourceEntries.map(([key, source]) => {
+            const external = /^https?:\/\//i.test(source.url);
+            return source.url ? (
+              <a key={key} href={source.url} target={external ? "_blank" : undefined} rel={external ? "noreferrer" : undefined}>
+                <i />
+                <span>{source.label}</span>
+                <em>{external ? "↗" : "本地"}</em>
+              </a>
+            ) : (
+              <span key={key} className="source-chip-muted"><i /><span>{source.label}</span></span>
+            );
+          })}
+        </div>
+        <p className="monitoring-source-note">
+          出处标注更新于 {(monitoring.attributionUpdatedAt ?? monitoring.generatedAt).slice(0, 10)}。模型值和仅有基线不会当作官方实测值；点击来源或在指标详情中查看完整出处、更新方式与口径。
+        </p>
+      </article>
     </section>
   );
 }

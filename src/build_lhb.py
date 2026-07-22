@@ -3,7 +3,7 @@
 """
 build_lhb.py — 龙虎榜（上期所成交持仓排名）数据管道
 
-读 010 每日已抓好的全部 SHFE_PM xlsx，复刻 get_lhb_tot_fig9.py 的加工逻辑：
+读 data/shfe/lhb/ 中每日已抓好的全部 SHFE_PM xlsx，复刻原加工逻辑：
   买卖 outer merge → 净持仓=买−卖 → 多头净持仓降序 TOP20 / 空头净持仓升序 TOP20
 输出含全部可用交易日的 web/public/data/lhb.json，最新日期仍保留在顶层兼容旧前端。
 
@@ -20,7 +20,7 @@ from pathlib import Path
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parent.parent
-SHFE_DIR = Path(r"C:\Users\56558\Nutstore\1\我的坚果云\agent\Project-010-日度会议数据整理\output\SHFE_PM")
+SHFE_DIR = ROOT / "data" / "shfe" / "lhb"
 OUT = ROOT / "web" / "public" / "data" / "lhb.json"
 
 

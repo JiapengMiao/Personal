@@ -133,6 +133,36 @@ function ScoreBars({ history, theme }: { history: Indicator["history"]; theme: T
   return <div ref={ref} className="echart chart-wrap" style={{ height: 300 }} />;
 }
 
+const NOTE_LABELS = ["出处", "链接", "更新", "口径"] as const;
+
+function displayValue(indicator: Indicator, value: number | null): number | null {
+  return value === null ? null : value * (indicator.displayMultiplier ?? 1);
+}
+
+function formatIndicatorValue(indicator: Indicator, value: number | null): string {
+  const display = displayValue(indicator, value);
+  return display === null ? "—" : formatNumber(display, (indicator.displayMultiplier ?? 1) === 1 ? 1 : 2);
+}
+
+function parseIndicatorNote(note: string) {
+  return NOTE_LABELS.map((label, index) => {
+    const start = note.indexOf(`【${label}】`);
+    if (start < 0) return null;
+    const contentStart = start + label.length + 2;
+    const nextStarts = NOTE_LABELS.slice(index + 1)
+      .map((next) => note.indexOf(`【${next}】`, contentStart))
+      .filter((pos) => pos >= 0);
+    const end = nextStarts.length ? Math.min(...nextStarts) : note.length;
+    return { label, text: note.slice(contentStart, end).trim() };
+  }).filter((section): section is { label: typeof NOTE_LABELS[number]; text: string } => section !== null);
+}
+
+function RichNoteText({ text }: { text: string }) {
+  return <>{text.split(/(https?:\/\/[^\s；，。]+)/g).map((part, index) =>
+    /^https?:\/\//i.test(part) ? <a key={index} href={part} target="_blank" rel="noreferrer">{part}</a> : part
+  )}</>;
+}
+
 // ——— 11 十七项指标库 ———
 type SortKey = "value" | "score";
 
@@ -173,6 +203,7 @@ export function IndicatorLibrarySection({
     if (selectedTheme) list = list.filter((i) => i.theme === selectedTheme);
     if (status !== "全部") {
       if (status === "待接入") list = list.filter((i) => i.dataStatus === "待接入" || i.tone === "missing");
+      else if (["已核实", "已接入", "模型值", "仅有基线"].includes(status)) list = list.filter((i) => i.dataStatus === status);
       else if (status === "利多") list = list.filter((i) => i.score !== null && i.score > 0);
       else if (status === "利空") list = list.filter((i) => i.score !== null && i.score < 0);
     }
@@ -225,7 +256,7 @@ export function IndicatorLibrarySection({
             aria-label="搜索指标"
           />
           <select value={status} onChange={(e) => setStatus(e.target.value)} aria-label="状态筛选">
-            {["全部", "利多", "利空", "待接入"].map((s) => (
+            {["全部", "已核实", "已接入", "模型值", "仅有基线", "利多", "利空", "待接入"].map((s) => (
               <option key={s} value={s}>
                 {s === "全部" ? "全部状态" : s}
               </option>
@@ -255,6 +286,7 @@ export function IndicatorLibrarySection({
         {filtered.map((ind) => {
           const delta =
             ind.value !== null && ind.priorValue !== null ? ind.value - ind.priorValue : null;
+          const displayDelta = delta === null ? null : displayValue(ind, delta);
           const sparkTone = ind.score !== null && ind.score > 0 ? "pos" : ind.score !== null && ind.score < 0 ? "neg" : undefined;
           return (
             <button key={ind.id} className="table-row" onClick={() => onOpen(ind, filtered)}>
@@ -268,12 +300,12 @@ export function IndicatorLibrarySection({
                 </span>
               </span>
               <span className={`metric-value ${ind.value === null ? "muted-value" : ""}`}>
-                <strong>{ind.value === null ? "待接入" : formatNumber(ind.value)}</strong>
-                <small>{ind.value === null ? ind.dataStatus : `${ind.unit} · ${ind.period}`}</small>
+                <strong>{ind.value === null ? "待接入" : formatIndicatorValue(ind, ind.value)}</strong>
+                <small>{ind.value === null ? ind.dataStatus : `${ind.unit} · ${ind.period} · ${ind.dataStatus}`}</small>
               </span>
               <span>
                 <strong className={delta !== null && delta > 0 ? "metric-value" : ""} style={{ color: delta === null ? "var(--weak)" : delta > 0 ? "var(--up)" : delta < 0 ? "var(--down)" : "var(--weak)" }}>
-                  {delta === null ? "—" : `${delta > 0 ? "+" : ""}${formatNumber(delta)}`}
+                  {displayDelta === null ? "—" : `${displayDelta > 0 ? "+" : ""}${formatNumber(displayDelta, (ind.displayMultiplier ?? 1) === 1 ? 1 : 2)}`}
                 </strong>
                 <small>
                   vs {ind.priorPeriod}
@@ -342,17 +374,35 @@ export function IndicatorDrawer({
           <SignalBadge tone={indicator.tone} status={indicator.status} />
         </div>
         <div className="drawer-value">
-          <strong>{indicator.value === null ? "待接入" : `${formatNumber(indicator.value)} ${indicator.unit}`}</strong>
+          <strong>{indicator.value === null ? "待接入" : `${formatIndicatorValue(indicator, indicator.value)} ${indicator.unit}`}</strong>
           <span className="data-clock">{indicator.period}</span>
         </div>
+        {indicator.breakdown && indicator.breakdown.length > 0 && (
+          <div className="inventory-breakdown" aria-label="库存计算明细">
+            {indicator.breakdown.map((item) => (
+              <div key={item.label} className={item.sign < 0 ? "deduction" : "addition"}>
+                <span>{item.sign < 0 ? "−" : "+"} {item.label}</span>
+                <strong>{formatNumber(item.value, 1)} 吨</strong>
+                <small>实际截至 {item.asOfDate ?? "待确认"}</small>
+              </div>
+            ))}
+          </div>
+        )}
         {indicator.history.length > 1 && <DrawerChart indicator={indicator} theme={theme} />}
         {indicator.upperThreshold !== null && indicator.lowerThreshold !== null && (
           <ThresholdBar indicator={indicator} />
         )}
         {indicator.note && (
-          <div className="drawer-rule">
-            <small>口径备注</small>
-            <p>{indicator.note}</p>
+          <div className="drawer-rule drawer-attribution">
+            <small>数据出处与更新说明</small>
+            <div className="attribution-grid">
+              {parseIndicatorNote(indicator.note).map((section) => (
+                <div key={section.label}>
+                  <strong>{section.label}</strong>
+                  <p><RichNoteText text={section.text} /></p>
+                </div>
+              ))}
+            </div>
           </div>
         )}
         <div className="drawer-history">
@@ -363,7 +413,7 @@ export function IndicatorDrawer({
               return (
                 <div key={h.period} className={`history-cell ${cls}`}>
                   <span className="history-period">{h.period}</span>
-                  <strong>{formatNumber(h.value)}</strong>
+                  <strong>{formatIndicatorValue(indicator, h.value)}</strong>
                   <small>{h.status}</small>
                 </div>
               );
@@ -425,7 +475,7 @@ function DrawerChart({ indicator, theme }: { indicator: Indicator; theme: ThemeM
             const arr = params as { dataIndex: number }[];
             const h = indicator.history[arr[0]?.dataIndex ?? 0];
             if (!h) return "";
-            return `<strong>${h.period}</strong><br/>${formatNumber(h.value)} ${indicator.unit}<br/>信号 ${formatScore(h.score)} · ${h.status}`;
+            return `<strong>${h.period}</strong><br/>${formatIndicatorValue(indicator, h.value)} ${indicator.unit}<br/>信号 ${formatScore(h.score)} · ${h.status}`;
           },
         },
         xAxis: { type: "category", data: indicator.history.map((h) => h.period), ...baseAxis(p), boundaryGap: false },
@@ -438,7 +488,7 @@ function DrawerChart({ indicator, theme }: { indicator: Indicator; theme: ThemeM
         series: [
           {
             type: "line",
-            data: indicator.history.map((h) => h.value),
+          data: indicator.history.map((h) => displayValue(indicator, h.value)),
             symbol: "circle",
             symbolSize: 5,
             lineStyle: { width: 2, color: p.gold },
@@ -465,9 +515,14 @@ function DrawerChart({ indicator, theme }: { indicator: Indicator; theme: ThemeM
 function ThresholdBar({ indicator }: { indicator: Indicator }) {
   const lo = indicator.lowerThreshold!;
   const hi = indicator.upperThreshold!;
-  const v = indicator.value;
-  const pct = v === null ? null : Math.min(100, Math.max(0, ((v - lo) / (hi - lo)) * 100));
-  const overflow = v !== null && (v < lo || v > hi);
+  const delta = indicator.value !== null && indicator.priorValue !== null
+    ? indicator.value - indicator.priorValue
+    : null;
+  const pct = delta === null ? null : Math.min(100, Math.max(0, ((delta - lo) / (hi - lo)) * 100));
+  const overflow = delta !== null && (delta < lo || delta > hi);
+  const deltaText = delta === null
+    ? "基线"
+    : `${delta > 0 ? "+" : ""}${formatIndicatorValue(indicator, delta)}`;
   return (
     <div className="threshold-bar">
       <div className="threshold-head">
@@ -480,9 +535,9 @@ function ThresholdBar({ indicator }: { indicator: Indicator }) {
         )}
       </div>
       <div className="threshold-labels">
-        <span>下限 {formatNumber(lo)}</span>
-        <span className="threshold-current">当前 {v === null ? "—" : formatNumber(v)}</span>
-        <span>上限 {formatNumber(hi)}</span>
+        <span>下限 {formatIndicatorValue(indicator, lo)}</span>
+        <span className="threshold-current">本期变化 {deltaText}</span>
+        <span>上限 {formatIndicatorValue(indicator, hi)}</span>
       </div>
     </div>
   );

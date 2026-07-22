@@ -36,6 +36,13 @@ export interface Indicator {
   priorPeriod: string;
   priorValue: number | null;
   unit: string;
+  displayMultiplier?: number;
+  breakdown?: Array<{
+    label: string;
+    value: number;
+    sign: 1 | -1;
+    asOfDate: string | null;
+  }>;
   direction: string;
   upperThreshold: number | null;
   lowerThreshold: number | null;
@@ -87,11 +94,24 @@ export interface ActionItem {
   status: string;
 }
 
+export interface MonitoringSource {
+  label: string;
+  url: string;
+}
+
+export interface MonitoringLineageItem {
+  label: string;
+  sourceKey: string | null;
+  note: string;
+}
+
 export interface MonitoringData {
   generatedAt: string;
   asOfDate: string;
+  attributionUpdatedAt?: string;
   overallPulse: OverallPulse;
-  sources: Record<string, unknown>;
+  sources: Record<string, MonitoringSource>;
+  dataLineage?: Record<string, MonitoringLineageItem>;
   themeSummaries: ThemeSummary[];
   indicators: Indicator[];
   triggers: Trigger[];
@@ -300,9 +320,12 @@ export interface ImportProfitStats {
   importLatest: number;
   importMean: number;
   importPercentile: number;
-  exportLatest: number;
-  exportMean: number;
-  exportPercentile: number;
+  processingExportLatest: number;
+  processingExportMean: number;
+  processingExportPercentile: number;
+  generalExportLatest: number;
+  generalExportMean: number;
+  generalExportPercentile: number;
 }
 
 export interface ImportProfitData {
@@ -317,10 +340,12 @@ export interface ImportProfitData {
   windowStart?: string;
   windowEnd?: string;
   importFormula: string;
-  exportFormula: string;
+  processingExportFormula: string;
+  generalExportFormula: string;
   times: string[];
   importProfit: number[];
-  exportProfit: number[];
+  processingExportProfit: number[];
+  generalExportProfit: number[];
   stats: ImportProfitStats;
 }
 

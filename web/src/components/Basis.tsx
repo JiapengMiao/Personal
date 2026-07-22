@@ -50,6 +50,8 @@ const PRESETS = [
   { left: "AG2610", right: "AG2611", label: "AG2610-AG2611" },
 ];
 
+const PROFIT_DATA_VERSION = "20260722-general-export";
+
 const CONTRACT_MONTH: Record<string, string> = {
   F: "01", G: "02", H: "03", J: "04", K: "05", M: "06",
   N: "07", Q: "08", U: "09", V: "10", X: "11", Z: "12",
@@ -81,8 +83,8 @@ export function BasisSection({ theme }: { theme: ThemeMode }) {
 
   useEffect(() => {
     let cancelled = false;
-    fetch("data/import_profit.json").then(r => r.json()).then((d: ImportProfitData) => { if (!cancelled) { setProfit(d); setProfitLoading(false); } }).catch(() => { if (!cancelled) setProfitLoading(false); });
-    fetch("data/import_profit_daily.json").then(r => r.json()).then((d: ImportProfitData) => { if (!cancelled) { setDailyProfit(d); setDailyProfitLoading(false); } }).catch(() => { if (!cancelled) setDailyProfitLoading(false); });
+    fetch(`data/import_profit.json?v=${PROFIT_DATA_VERSION}`).then(r => r.json()).then((d: ImportProfitData) => { if (!cancelled) { setProfit(d); setProfitLoading(false); } }).catch(() => { if (!cancelled) setProfitLoading(false); });
+    fetch(`data/import_profit_daily.json?v=${PROFIT_DATA_VERSION}`).then(r => r.json()).then((d: ImportProfitData) => { if (!cancelled) { setDailyProfit(d); setDailyProfitLoading(false); } }).catch(() => { if (!cancelled) setDailyProfitLoading(false); });
     return () => { cancelled = true; };
   }, []);
 
@@ -113,7 +115,7 @@ export function BasisSection({ theme }: { theme: ThemeMode }) {
 
   return (
     <section className="section-block" id="basis">
-      <SectionHeading index="07" title="基差与进出口盈亏" desc="分钟级基差（元/千克）与进口／出口盈亏窗口（元/千克）" id="basis" />
+      <SectionHeading index="07" title="基差与进出口盈亏" desc="分钟级基差与进口／加贸出口／一般出口盈亏（元/千克）" id="basis" />
       <article className="panel chart-panel">
         <div className="panel-heading">
           <div><span>基差 · BASIS</span><h3>{pairLabel}</h3></div>
@@ -139,7 +141,8 @@ export function BasisSection({ theme }: { theme: ThemeMode }) {
         {profitLoading ? <div className="chart-loading">加载进出口盈亏数据…</div> : profit ? <ProfitChart data={profit} theme={theme} /> : <div className="chart-loading">数据不可用</div>}
         {profit && <div className="chart-note formula-note">
           <span>进口公式：{profit.importFormula}</span>
-          <span>出口公式：{profit.exportFormula}</span>
+          <span>加贸出口公式：{profit.processingExportFormula}</span>
+          <span>一般出口公式：{profit.generalExportFormula}</span>
           <span>主力识别：{profit.selectionMethod}。</span>
         </div>}
       </article>
@@ -149,7 +152,12 @@ export function BasisSection({ theme }: { theme: ThemeMode }) {
           <div className="panel-stat"><small>{dailyProfit ? `${readableOverseasContract(dailyProfit.foreignContract)} → ${dailyProfit.domesticContract} · ${readableOverseasContract(dailyProfit.fxContract)}` : "沿用分钟主力合约对"}</small><strong>{dailyProfit ? `最新 ${formatNumber(dailyProfit.stats.importLatest, 1)}` : "—"}</strong></div>
         </div>
         {dailyProfitLoading ? <div className="chart-loading">加载日度进出口盈亏数据…</div> : dailyProfit ? <ProfitChart data={dailyProfit} theme={theme} /> : <div className="chart-loading">数据不可用</div>}
-        {dailyProfit && <p className="chart-note">进口、出口公式与10日分钟级一致；日度外汇限定季度主力月（3/6/9/12），当前使用 {readableOverseasContract(dailyProfit.fxContract)}。</p>}
+        {dailyProfit && <div className="chart-note formula-note">
+          <span>进口公式：{dailyProfit.importFormula}</span>
+          <span>加贸出口公式：{dailyProfit.processingExportFormula}</span>
+          <span>一般出口公式：{dailyProfit.generalExportFormula}</span>
+          <span>日度外汇限定季度主力月（3/6/9/12），当前使用 {readableOverseasContract(dailyProfit.fxContract)}。</span>
+        </div>}
       </article>
     </section>
   );
@@ -195,12 +203,25 @@ function MinuteLineChart({ times, values, theme, height, colorIdx }: { times: st
 
 function ProfitChart({ data, theme }: { data: ImportProfitData; theme: ThemeMode }) {
   const impLatest = useMemo(() => lastNonNull(data.importProfit), [data]);
-  const expLatest = useMemo(() => lastNonNull(data.exportProfit), [data]);
+  const processingLatest = useMemo(() => lastNonNull(data.processingExportProfit), [data]);
+  const generalLatest = useMemo(() => lastNonNull(data.generalExportProfit), [data]);
   const [range, setRange] = useState<[number, number]>([0, 100]);
   useEffect(() => { setRange([0, 100]); }, [data, theme]);
-  const stats = useMemo(() => { const imp = computeWindow(data.importProfit, range[0], range[1]); const exp = computeWindow(data.exportProfit, range[0], range[1]); return { imp, exp, impPct: percentileOf(imp.subset, impLatest), expPct: percentileOf(exp.subset, expLatest) }; }, [data, range, impLatest, expLatest]);
+  const stats = useMemo(() => {
+    const imp = computeWindow(data.importProfit, range[0], range[1]);
+    const processing = computeWindow(data.processingExportProfit, range[0], range[1]);
+    const general = computeWindow(data.generalExportProfit, range[0], range[1]);
+    return {
+      imp,
+      processing,
+      general,
+      impPct: percentileOf(imp.subset, impLatest),
+      processingPct: percentileOf(processing.subset, processingLatest),
+      generalPct: percentileOf(general.subset, generalLatest),
+    };
+  }, [data, range, impLatest, processingLatest, generalLatest]);
   const onChart = useCallback((chart: echarts.ECharts) => { chart.off("datazoom"); chart.on("datazoom", (ev: unknown) => { setRange(readZoomRange(chart, ev, data.times.length)); }); }, [data]);
-  const build = useMemo(() => { return () => { const p = getPalette(theme); return { animationDuration: 300, grid: { top: 36, right: 16, bottom: 54, left: 64 }, tooltip: { trigger: "axis", ...baseTooltip(p), valueFormatter: (v: unknown) => (v == null ? "—" : `${formatNumber(Number(v), 1)} 元/千克`) }, legend: { ...baseLegend(p), top: 0, left: 0 }, xAxis: { type: "category", data: data.times, ...baseAxis(p), boundaryGap: false, axisLabel: { ...baseAxis(p).axisLabel, formatter: (v: string) => v.slice(5, 10), interval: Math.max(1, Math.floor(data.times.length / 8)) } }, yAxis: { type: "value", scale: true, ...baseAxis(p), axisLabel: { ...baseAxis(p).axisLabel, formatter: (v: number) => formatNumber(v, 0) } }, dataZoom: [{ type: "inside", throttle: 40 }, { type: "slider", height: 18, bottom: 8, ...zoomFill(p) }], series: [{ name: "进口盈亏", type: "line", data: data.importProfit, showSymbol: false, lineStyle: { width: 1.4, color: p.series[0] }, itemStyle: { color: p.series[0] } }, { name: "出口盈亏", type: "line", data: data.exportProfit, showSymbol: false, lineStyle: { width: 1.4, color: p.series[1] }, itemStyle: { color: p.series[1] } }] }; }; }, [data, theme]);
+  const build = useMemo(() => { return () => { const p = getPalette(theme); return { animationDuration: 300, grid: { top: 36, right: 16, bottom: 54, left: 64 }, tooltip: { trigger: "axis", ...baseTooltip(p), valueFormatter: (v: unknown) => (v == null ? "—" : `${formatNumber(Number(v), 1)} 元/千克`) }, legend: { ...baseLegend(p), top: 0, left: 0 }, xAxis: { type: "category", data: data.times, ...baseAxis(p), boundaryGap: false, axisLabel: { ...baseAxis(p).axisLabel, formatter: (v: string) => v.slice(5, 10), interval: Math.max(1, Math.floor(data.times.length / 8)) } }, yAxis: { type: "value", scale: true, ...baseAxis(p), axisLabel: { ...baseAxis(p).axisLabel, formatter: (v: number) => formatNumber(v, 0) } }, dataZoom: [{ type: "inside", throttle: 40 }, { type: "slider", height: 18, bottom: 8, ...zoomFill(p) }], series: [{ name: "进口盈亏", type: "line", data: data.importProfit, showSymbol: false, lineStyle: { width: 1.4, color: p.series[0] }, itemStyle: { color: p.series[0] } }, { name: "加贸出口盈亏", type: "line", data: data.processingExportProfit, showSymbol: false, lineStyle: { width: 1.4, color: p.series[1] }, itemStyle: { color: p.series[1] } }, { name: "一般出口盈亏", type: "line", data: data.generalExportProfit, showSymbol: false, lineStyle: { width: 1.4, color: p.series[2] }, itemStyle: { color: p.series[2] } }] }; }; }, [data, theme]);
   const ref = useEChart(build, [data], theme, onChart);
   return (<>
     <div ref={ref} className="echart chart-wrap" style={{ height: 320 }} />
@@ -208,9 +229,12 @@ function ProfitChart({ data, theme }: { data: ImportProfitData; theme: ThemeMode
       <StatCard label="进口最新" value={impLatest === null ? "—" : formatNumber(impLatest, 1)} />
       <StatCard label="进口均值" value={stats.imp.mean === null ? "—" : formatNumber(stats.imp.mean, 1)} />
       <PercentileCard label="进口百分位" percentile={stats.impPct} />
-      <StatCard label="出口最新" value={expLatest === null ? "—" : formatNumber(expLatest, 1)} />
-      <StatCard label="出口均值" value={stats.exp.mean === null ? "—" : formatNumber(stats.exp.mean, 1)} />
-      <PercentileCard label="出口百分位" percentile={stats.expPct} />
+      <StatCard label="加贸出口最新" value={processingLatest === null ? "—" : formatNumber(processingLatest, 1)} />
+      <StatCard label="加贸出口均值" value={stats.processing.mean === null ? "—" : formatNumber(stats.processing.mean, 1)} />
+      <PercentileCard label="加贸出口百分位" percentile={stats.processingPct} />
+      <StatCard label="一般出口最新" value={generalLatest === null ? "—" : formatNumber(generalLatest, 1)} />
+      <StatCard label="一般出口均值" value={stats.general.mean === null ? "—" : formatNumber(stats.general.mean, 1)} />
+      <PercentileCard label="一般出口百分位" percentile={stats.generalPct} />
     </div>
   </>);
 }

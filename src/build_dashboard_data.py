@@ -3,8 +3,8 @@
 """
 build_dashboard_data.py
 
-将 data/010源数据/ 下的 Excel（白银所有数据.xlsx、20260719租借利率.xlsx）
-与 data/006源数据/ 下的 JSON 抽取/转换为前端看板用 JSON，输出到 web/public/data/。
+将 data/wind/ 下的 Excel、data/shfe/、data/sge/、data/gfex/ 与
+data/monitoring/ 下的源数据抽取/转换为前端看板用 JSON，输出到 web/public/data/。
 
 用法:  python src/build_dashboard_data.py
 退出码: 全部成功 0；任一输出失败或校验失败 1（错误汇总打印在结尾）。
@@ -27,25 +27,22 @@ from openpyxl import load_workbook
 # ---------------------------------------------------------------- 路径
 
 ROOT = Path(__file__).resolve().parent.parent
-SRC010 = ROOT / "data" / "010源数据"
-SRC006 = ROOT / "data" / "006源数据"
+SRC_WIND = ROOT / "data" / "wind"
+SRC_SHFE = ROOT / "data" / "shfe"
+SRC_SGE = ROOT / "data" / "sge"
+SRC_GFEX = ROOT / "data" / "gfex"
+SRC_MONITORING = ROOT / "data" / "monitoring"
 OUT_DIR = ROOT / "web" / "public" / "data"
-PROJECT004 = ROOT.parent / "Project-004-白银数据拉取"
-PROJECT005 = ROOT.parent / "Project-005-广期所仓单拉取"
-PROJECT006 = ROOT.parent / "Project-006-白银客户搜集"
-# 主表以项目 010（日度会议数据整理）为准——用户每日在此维护，含"网页数据" sheet
-MAIN_XLSX = Path(r"C:\Users\56558\Nutstore\1\我的坚果云\agent\Project-010-日度会议数据整理\data\白银所有数据.xlsx")
+# 主表统一在本项目维护，含“网页数据”sheet。
+MAIN_XLSX = SRC_WIND / "白银所有数据.xlsx"
 
 
 def _find_lease_xlsx() -> Path:
-    """租借/租赁利率表：用户在 010 的"租赁利率"文件夹按日期文件名维护（如 20260720租赁利率.xlsx），
-    自动取最新一份；若该目录不存在则回退到本项目 data/010源数据/ 下的副本。"""
-    lease_dir = Path(r"C:\Users\56558\Nutstore\1\我的坚果云\agent\Project-010-日度会议数据整理\data\租赁利率")
+    """自动读取 data/wind/租赁利率 中文件名日期最新的一份利率表。"""
+    lease_dir = SRC_WIND / "租赁利率"
     cands = sorted(lease_dir.glob("*利率*.xlsx")) if lease_dir.is_dir() else []
     if not cands:
-        cands = sorted(SRC010.glob("*利率*.xlsx"))
-    if not cands:
-        raise FileNotFoundError("未找到租借/租赁利率 xlsx（010 租赁利率目录与本地 010源数据 均为空）")
+        raise FileNotFoundError(f"未找到租借/租赁利率 xlsx: {lease_dir}")
     return cands[-1]
 
 
@@ -454,18 +451,126 @@ class Ctx:
 CTX: Ctx | None = None
 
 
+def _inventory_signal(delta: float | None) -> tuple[int | None, str, str]:
+    """全球可用库存越低越利多；500 吨为强信号阈值。"""
+    if delta is None:
+        return None, "基线", "neutral"
+    if delta <= -500:
+        return 2, "强利多", "bull"
+    if delta < 0:
+        return 1, "偏利多", "bull"
+    if delta >= 500:
+        return -2, "强利空", "bear"
+    if delta > 0:
+        return -1, "偏利空", "bear"
+    return 0, "中性", "neutral"
+
+
+def _refresh_global_inventory_indicator(payload: dict) -> dict:
+    """用统一 Wind 主表重算指标16：LBMA+COMEX+上期所+上金所-SLV。"""
+    assert CTX is not None
+    source_cols = {
+        "lbma": "LBMA日度库存量:白银（吨）",
+        "comex": "COMEX:库存量:银（吨）",
+        "shfe": "上期库存（日度）（吨）",
+        "sge": "上金库存（日度）（吨）",
+        "slv": "SLV:白银ETF:持仓量(吨)",
+    }
+    missing = [col for col in source_cols.values() if col not in CTX.daily.columns]
+    if missing:
+        raise KeyError(f"全球库存指标缺少主表列: {missing}")
+
+    frame = pd.DataFrame({"date": pd.to_datetime(CTX.daily["date"], errors="coerce")})
+    actual: dict[str, pd.Series] = {}
+    last_actual: dict[str, str] = {}
+    for key, col in source_cols.items():
+        series = pd.to_numeric(CTX.daily[col], errors="coerce").replace(0, np.nan)
+        actual[key] = series
+        valid_idx = series[series.notna()].index
+        if len(valid_idx):
+            last_actual[key] = frame.loc[valid_idx[-1], "date"].strftime("%Y-%m-%d")
+        frame[key] = series.ffill()
+
+    frame["value"] = frame["lbma"] + frame["comex"] + frame["shfe"] + frame["sge"] - frame["slv"]
+    # 避免把周末仅由 ffill 形成的重复值当作新观察。
+    actual_observation = pd.concat(actual.values(), axis=1).notna().any(axis=1)
+    valid = frame.loc[frame["date"].notna() & frame["value"].notna() & actual_observation].copy()
+    valid = valid.drop_duplicates("date", keep="last").sort_values("date").tail(60)
+    if len(valid) < 2:
+        raise ValueError("全球库存指标有效观察少于 2 条")
+
+    history = []
+    previous: float | None = None
+    for row in valid.itertuples(index=False):
+        value = round(float(row.value), 1)
+        delta = None if previous is None else round(value - previous, 1)
+        score, status, tone = _inventory_signal(delta)
+        history.append({
+            "period": row.date.strftime("%Y-%m-%d"),
+            "value": value,
+            "delta": delta,
+            "score": score,
+            "status": status,
+            "tone": tone,
+        })
+        previous = value
+
+    latest = history[-1]
+    prior = history[-2]
+    latest_row = valid.iloc[-1]
+    breakdown_labels = {
+        "lbma": "LBMA库存",
+        "comex": "COMEX库存",
+        "shfe": "上期所库存",
+        "sge": "上金所库存",
+        "slv": "SLV持仓（扣减项）",
+    }
+    breakdown = [
+        {
+            "key": key,
+            "label": breakdown_labels[key],
+            "value": round(float(latest_row[key]), 3),
+            "unit": "吨",
+            "asOfDate": last_actual.get(key, latest["period"]),
+            "operation": "subtract" if key == "slv" else "add",
+        }
+        for key in ("lbma", "comex", "shfe", "sge", "slv")
+    ]
+
+    indicators = payload.get("indicators", [])
+    indicator = next((item for item in indicators if int(item.get("id", -1)) == 16), None)
+    if indicator is None:
+        raise KeyError("monitoring-data.json 缺少指标16")
+    indicator.update({
+        "name": "全球可用白银库存（扣除SLV）",
+        "value": latest["value"],
+        "unit": "吨",
+        "period": latest["period"],
+        "updatedAt": latest["period"],
+        "priorValue": prior["value"],
+        "priorPeriod": prior["period"],
+        "delta": latest["delta"],
+        "score": latest["score"],
+        "status": latest["status"],
+        "tone": latest["tone"],
+        "formula": "LBMA库存 + COMEX库存 + 上期所库存 + 上金所库存 - SLV持仓",
+        "breakdown": breakdown,
+        "history": history,
+        "dataStatus": "已接入",
+    })
+    payload["asOfDate"] = max(str(payload.get("asOfDate", "")), latest["period"])
+    return payload
+
+
 def step_copy_static() -> None:
-    # monitoring.json 直接读取 Project-006 最新生成物；本地 006源数据 仅作为灾备，不再作为主源。
-    live_src = PROJECT006 / "web" / "app" / "monitoring-data.json"
-    fallback_src = SRC006 / "monitoring-data.json"
-    src = live_src if live_src.exists() else fallback_src
+    # 监测模块已从 Project-006 并入本项目，统一读取本地标准目录。
+    src = SRC_MONITORING / "monitoring-data.json"
     with open(src, encoding="utf-8") as fh:
-        json.load(fh)
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-    shutil.copyfile(src, OUT_DIR / "monitoring.json")
+        payload = json.load(fh)
+    payload = _refresh_global_inventory_indicator(payload)
+    write_json("monitoring.json", payload)
     size_kb = (OUT_DIR / "monitoring.json").stat().st_size / 1024
-    source_label = "Project-006 最新生成物" if src == live_src else "本地灾备快照"
-    print(f"  [OK] monitoring.json ({source_label}, {size_kb:.1f} KB)")
+    print(f"  [OK] monitoring.json (统一监测源, {size_kb:.1f} KB)")
 
     # market.json 改为从 010 主表"网页数据" sheet 生成（用户手工维护的万得数据）
     build_market_from_web_sheet()
@@ -792,7 +897,7 @@ def step_metal_virtual_ratio() -> None:
     write_json("metal_virtual_ratio.json", {
         "generatedAt": now_iso(),
         "source": {
-            "workbook": "Project-010-日度会议数据整理/data/白银所有数据.xlsx",
+            "workbook": "data/wind/白银所有数据.xlsx",
             "warehouseSheet": "铂钯",
             "contractSheet": "广期合约参数",
         },
@@ -808,14 +913,14 @@ def step_metal_virtual_ratio() -> None:
 
 
 def step_shfe_positioning() -> None:
-    """跨项目读取 Project-004 的 SHFE 会员汇总与 SGE 持仓，统一输出网页数据。"""
-    ranking_root = PROJECT004 / "data"
+    """读取统一目录中的 SHFE 会员汇总与 SGE 持仓，输出网页数据。"""
+    ranking_root = SRC_SHFE / "ranking"
     date_dirs = sorted(
         path for path in ranking_root.iterdir()
         if path.is_dir() and re.fullmatch(r"\d{8}", path.name)
     )
     if not date_dirs:
-        raise FileNotFoundError(f"Project-004 未找到持仓排名日期目录: {ranking_root}")
+        raise FileNotFoundError(f"未找到 SHFE 持仓排名日期目录: {ranking_root}")
 
     records: list[dict] = []
     for date_dir in date_dirs:
@@ -845,15 +950,15 @@ def step_shfe_positioning() -> None:
 
     dates = [row["date"] for row in records]
     if dates != sorted(set(dates)):
-        raise ValueError("Project-004 SHFE 持仓日期不唯一或未升序")
+        raise ValueError("SHFE 持仓日期不唯一或未升序")
 
-    sge_path = PROJECT004 / "data" / "sge" / "ag_td_daily_2026.csv"
+    sge_path = SRC_SGE / "ag_td_daily_2026.csv"
     sge = pd.read_csv(sge_path, encoding="utf-8-sig")
     sge["date"] = pd.to_datetime(sge["date"], errors="coerce")
     sge["open_interest"] = pd.to_numeric(sge["open_interest"], errors="coerce")
     sge = sge.dropna(subset=["date", "open_interest"]).sort_values("date")
     if sge["date"].duplicated().any():
-        raise ValueError("Project-004 SGE Ag(T+D) 存在重复日期")
+        raise ValueError("SGE Ag(T+D) 存在重复日期")
     sge_map = dict(zip(sge["date"].dt.strftime("%Y-%m-%d"), sge["open_interest"]))
 
     common = [row for row in records if row["date"] in sge_map]
@@ -867,8 +972,8 @@ def step_shfe_positioning() -> None:
         "generatedAt": now_iso(),
         "asOfDate": latest["date"],
         "source": {
-            "project": "Project-004-白银数据拉取",
-            "rankingPattern": "data/YYYYMMDD/silver_ranking_YYYYMMDD.json",
+            "project": "Project-002-白银数据网页可视化",
+            "rankingPattern": "data/shfe/ranking/YYYYMMDD/silver_ranking_YYYYMMDD.json",
             "sgeFile": "data/sge/ag_td_daily_2026.csv",
         },
         "quality": {
@@ -897,15 +1002,15 @@ def step_shfe_positioning() -> None:
 
 
 def step_pp_warehouse() -> None:
-    """跨项目读取 Project-005 最新铂钯仓单原始 CSV，并重算仓库/厂库趋势。"""
+    """读取统一目录中的最新铂钯仓单原始 CSV，并重算仓库/厂库趋势。"""
     candidates: list[tuple[str, str, Path]] = []
     pattern = re.compile(r"铂钯仓单数据_\d{8}_(\d{8})_(\d{8}_\d{6})\.csv$")
-    for path in (PROJECT005 / "data").glob("铂钯仓单数据_*.csv"):
+    for path in SRC_GFEX.glob("铂钯仓单数据_*.csv"):
         match = pattern.fullmatch(path.name)
         if match:
             candidates.append((match.group(1), match.group(2), path))
     if not candidates:
-        raise FileNotFoundError(f"Project-005 未找到规范命名的铂钯仓单 CSV: {PROJECT005 / 'data'}")
+        raise FileNotFoundError(f"未找到规范命名的铂钯仓单 CSV: {SRC_GFEX}")
     _, _, source = max(candidates)
 
     frame = pd.read_csv(source, encoding="utf-8-sig", dtype={"仓库代码": str})
@@ -988,7 +1093,7 @@ def step_pp_warehouse() -> None:
         "generatedAt": now_iso(),
         "asOfDate": as_of,
         "source": {
-            "project": "Project-005-广期所仓单拉取",
+            "project": "Project-002-白银数据网页可视化",
             "file": f"data/{source.name}",
             "unit": "千克",
         },
@@ -997,7 +1102,7 @@ def step_pp_warehouse() -> None:
             "notes": [
                 "逐行校验：昨日仓单 + 今日注册 - 今日注销 = 今日仓单。",
                 "逐行校验：今日仓单 - 昨日仓单 = 增减。",
-                "仓库/厂库分类沿用 Project-005 classify_warehouse.py 的品种专属名单。",
+                "仓库/厂库分类沿用 src/collectors/gfex_classify_warehouse.py 的品种专属名单。",
             ],
         },
         "metals": metals,
@@ -1139,12 +1244,13 @@ def profit_payload(
     agtd: np.ndarray,
     foreign: np.ndarray,
     fx: np.ndarray,
-) -> tuple[np.ndarray, np.ndarray]:
+) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     import_external_cny_kg = (foreign - OUTER_PRICE_DEDUCTION) / TROY_OUNCE_GRAM * fx * 1000
     export_external_cny_kg = foreign / TROY_OUNCE_GRAM * fx * 1000
     return (
         np.round(domestic - import_external_cny_kg * VAT, 1),
         np.round(export_external_cny_kg - agtd / VAT, 1),
+        np.round(export_external_cny_kg - agtd, 1),
     )
 
 
@@ -1177,8 +1283,12 @@ def step_import_profit() -> None:
     if not times:
         raise RuntimeError("主力合约对齐后无最近10个交易日分钟数据")
 
-    imp, exp = profit_payload(al["domestic"], al["agtd"], al["foreign"], al["fx"])
-    si, se = spread_stats(imp), spread_stats(exp)
+    imp, processing_exp, general_exp = profit_payload(
+        al["domestic"], al["agtd"], al["foreign"], al["fx"]
+    )
+    si = spread_stats(imp)
+    spe = spread_stats(processing_exp)
+    sge = spread_stats(general_exp)
     write_json("import_profit.json", {
         "generatedAt": now_iso(),
         "frequency": "minute",
@@ -1191,13 +1301,18 @@ def step_import_profit() -> None:
         "fxContract": CTX.fx_min_code,
         "mainQuoteCount": quote_count,
         "importFormula": "内盘期货价格-(外盘期货价格-0.2)/31.1035*外汇价格*1000*1.13",
-        "exportFormula": "外盘主力期货价格/31.1035*外汇价格*1000-Ag(T+D)/1.13",
+        "processingExportFormula": "外盘主力期货价格/31.1035*外汇价格*1000-Ag(T+D)/1.13",
+        "generalExportFormula": "外盘主力期货价格/31.1035*外汇价格*1000-Ag(T+D)",
         "times": times,
         "importProfit": imp.tolist(),
-        "exportProfit": exp.tolist(),
+        "processingExportProfit": processing_exp.tolist(),
+        "generalExportProfit": general_exp.tolist(),
         "stats": {
             "importLatest": si["latest"], "importMean": si["mean"], "importPercentile": si["percentile"],
-            "exportLatest": se["latest"], "exportMean": se["mean"], "exportPercentile": se["percentile"],
+            "processingExportLatest": spe["latest"], "processingExportMean": spe["mean"],
+            "processingExportPercentile": spe["percentile"],
+            "generalExportLatest": sge["latest"], "generalExportMean": sge["mean"],
+            "generalExportPercentile": sge["percentile"],
         },
     })
 
@@ -1217,10 +1332,12 @@ def step_import_profit_daily() -> None:
     if missing:
         raise RuntimeError(f"日度进出口盈亏缺少序列: {missing}")
     times, aligned = align_minute_series({key: CTX.profit_daily[code] for key, code in required.items()})
-    imp, exp = profit_payload(
+    imp, processing_exp, general_exp = profit_payload(
         aligned["domestic"], aligned["agtd"], aligned["foreign"], aligned["fx"]
     )
-    si, se = spread_stats(imp), spread_stats(exp)
+    si = spread_stats(imp)
+    spe = spread_stats(processing_exp)
+    sge = spread_stats(general_exp)
     write_json("import_profit_daily.json", {
         "generatedAt": now_iso(),
         "frequency": "daily",
@@ -1230,13 +1347,18 @@ def step_import_profit_daily() -> None:
         "fxContract": fx_contract,
         "mainQuoteCount": quote_count,
         "importFormula": "内盘期货价格-(外盘期货价格-0.2)/31.1035*外汇价格*1000*1.13",
-        "exportFormula": "外盘主力期货价格/31.1035*外汇价格*1000-Ag(T+D)/1.13",
+        "processingExportFormula": "外盘主力期货价格/31.1035*外汇价格*1000-Ag(T+D)/1.13",
+        "generalExportFormula": "外盘主力期货价格/31.1035*外汇价格*1000-Ag(T+D)",
         "times": [pd.Timestamp(t).strftime("%Y-%m-%d") for t in times],
         "importProfit": imp.tolist(),
-        "exportProfit": exp.tolist(),
+        "processingExportProfit": processing_exp.tolist(),
+        "generalExportProfit": general_exp.tolist(),
         "stats": {
             "importLatest": si["latest"], "importMean": si["mean"], "importPercentile": si["percentile"],
-            "exportLatest": se["latest"], "exportMean": se["mean"], "exportPercentile": se["percentile"],
+            "processingExportLatest": spe["latest"], "processingExportMean": spe["mean"],
+            "processingExportPercentile": spe["percentile"],
+            "generalExportLatest": sge["latest"], "generalExportMean": sge["mean"],
+            "generalExportPercentile": sge["percentile"],
         },
     })
 
@@ -1380,7 +1502,7 @@ def verify() -> None:
             check(all(v is not None and v >= 0 and math.isfinite(v) for v in ys),
                   f"{contract['code']} y 非负且有限")
 
-    # Project-004 SHFE/SGE 持仓排名与趋势
+    # 统一目录中的 SHFE/SGE 持仓排名与趋势
     sp = load_out("shfe_positioning.json")
     check(sp.get("asOfDate") == sp["nonFuturesTrend"]["dates"][-1],
           f"shfe_positioning 截止日 {sp.get('asOfDate')} 与趋势末日一致")
@@ -1404,7 +1526,7 @@ def verify() -> None:
     check(all(v > 0 and math.isfinite(v) for key in ("shfeLongTons", "shfeShortTons", "sgeOpenInterestTons") for v in ct[key]),
           "shfe_positioning 综合趋势吨值全为正且有限")
 
-    # Project-005 铂钯仓单
+    # 统一目录中的铂钯仓单
     ppw = load_out("pp_warehouse.json")
     check(set(ppw.get("metals", {})) == {"pt", "pd"}, "pp_warehouse 含 pt/pd 两个品种")
     for metal_key in ("pt", "pd"):
@@ -1440,7 +1562,8 @@ def verify() -> None:
 
     # import_profit.json
     ip = load_out("import_profit.json")
-    check(len(ip["times"]) == len(ip["importProfit"]) == len(ip["exportProfit"]),
+    check(len(ip["times"]) == len(ip["importProfit"]) == len(ip["processingExportProfit"])
+          == len(ip["generalExportProfit"]),
           f"import_profit 序列长度一致 ({len(ip['times'])})")
     s = ip["stats"]
     check(abs(s["importLatest"]) < 2000, f"importLatest {s['importLatest']} 元/千克 量级合理")
@@ -1448,10 +1571,18 @@ def verify() -> None:
           f"进口盈亏内盘合约 {ip.get('domesticContract')} 合法")
     check(ip.get("importFormula") == "内盘期货价格-(外盘期货价格-0.2)/31.1035*外汇价格*1000*1.13",
           "进口盈亏公式与用户口径一致")
-    check(ip.get("exportFormula") == "外盘主力期货价格/31.1035*外汇价格*1000-Ag(T+D)/1.13",
-          "出口盈亏公式与用户口径一致")
+    check(ip.get("processingExportFormula") == "外盘主力期货价格/31.1035*外汇价格*1000-Ag(T+D)/1.13",
+          "加贸出口盈亏公式与用户口径一致")
+    check(ip.get("generalExportFormula") == "外盘主力期货价格/31.1035*外汇价格*1000-Ag(T+D)",
+          "一般出口盈亏公式与用户口径一致")
     check(set(s) == {"importLatest", "importMean", "importPercentile",
-                     "exportLatest", "exportMean", "exportPercentile"}, "import_profit stats 键齐全")
+                     "processingExportLatest", "processingExportMean", "processingExportPercentile",
+                     "generalExportLatest", "generalExportMean", "generalExportPercentile"},
+          "import_profit stats 键齐全")
+    check(all(
+        general <= processing
+        for general, processing in zip(ip["generalExportProfit"], ip["processingExportProfit"])
+    ), "一般出口盈亏不高于加贸出口盈亏")
     check(ip.get("frequency") == "minute" and ip.get("windowTradingDays") == 10,
           "import_profit 为最近10个交易日分钟数据")
     check(len({t[:10] for t in ip["times"]}) == 10,
@@ -1464,7 +1595,8 @@ def verify() -> None:
           f"分钟外汇 {ip.get('fxContract')} 为季度主力月")
 
     ipd = load_out("import_profit_daily.json")
-    check(len(ipd["times"]) == len(ipd["importProfit"]) == len(ipd["exportProfit"]) > 100,
+    check(len(ipd["times"]) == len(ipd["importProfit"]) == len(ipd["processingExportProfit"])
+          == len(ipd["generalExportProfit"]) > 100,
           f"import_profit_daily 日度序列长度一致 ({len(ipd['times'])})")
     check(ipd["times"] == sorted(set(ipd["times"])), "import_profit_daily 日期升序且唯一")
     check(ipd.get("foreignContract") == ip.get("foreignContract") and
@@ -1473,8 +1605,10 @@ def verify() -> None:
           "分钟与日度进出口盈亏使用同一主力合约对")
     check(abs(ipd["stats"]["importLatest"]) < 2000,
           f"daily importLatest {ipd['stats']['importLatest']} 元/千克量级合理")
-    check(abs(ipd["stats"]["exportLatest"]) < 10000,
-          f"daily exportLatest {ipd['stats']['exportLatest']} 元/千克量级合理")
+    check(abs(ipd["stats"]["processingExportLatest"]) < 10000,
+          f"daily processingExportLatest {ipd['stats']['processingExportLatest']} 元/千克量级合理")
+    check(abs(ipd["stats"]["generalExportLatest"]) < 10000,
+          f"daily generalExportLatest {ipd['stats']['generalExportLatest']} 元/千克量级合理")
 
     # 静态拷贝
     for name, keys in [("monitoring.json", ["generatedAt", "indicators"]),
@@ -1508,9 +1642,10 @@ def verify() -> None:
           len(d["series"]) == 25, "daily.json 顶层键(含新增 lastActual)与 25 个 series 无回归")
     check(sorted(se.keys()) == ["dates", "generatedAt", "years"], "seasonality.json 顶层键无回归")
     check(sorted(lr.keys()) == ["dates", "generatedAt", "series"], "lease_rates.json 顶层键无回归")
-    check(sorted(ip.keys()) == ["domesticContract", "exportFormula", "exportProfit", "foreignContract",
-                                "frequency", "fxContract", "generatedAt", "importFormula", "importProfit",
-                                "mainQuoteCount", "selectionMethod", "stats", "times", "windowEnd",
+    check(sorted(ip.keys()) == ["domesticContract", "foreignContract", "frequency", "fxContract",
+                                "generalExportFormula", "generalExportProfit", "generatedAt", "importFormula",
+                                "importProfit", "mainQuoteCount", "processingExportFormula",
+                                "processingExportProfit", "selectionMethod", "stats", "times", "windowEnd",
                                 "windowStart", "windowTradingDays"],
           "import_profit.json 顶层键无回归")
 
