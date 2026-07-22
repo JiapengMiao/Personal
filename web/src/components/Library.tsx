@@ -19,7 +19,7 @@ export function DynamicsSection({
   const reversed = [...monitoring.triggers].reverse();
   return (
     <section className="section-block" id="dynamics">
-      <SectionHeading index="10" title="信号动态" desc="触发记录与市场平衡历年信号分数" id="dynamics" />
+      <SectionHeading index="11" title="信号动态" desc="触发记录与市场平衡历年信号分数" id="dynamics" />
       <div className="dynamics-grid">
         <article className="panel trigger-panel">
           <div className="panel-heading">
@@ -202,7 +202,7 @@ export function IndicatorLibrarySection({
 
   return (
     <section className="section-block indicators-section" id="indicators">
-      <SectionHeading index="11" title="十七项指标库" desc="主题 / 状态 / 文本三维筛选，点击行打开详情抽屉" id="indicators" />
+      <SectionHeading index="12" title="十七项指标库" desc="主题 / 状态 / 文本三维筛选，点击行打开详情抽屉" id="indicators" />
       <div className="filterbar">
         <div className="radar-filter" role="tablist" aria-label="主题筛选">
           <button className={`radar-node ${selectedTheme === null ? "active" : ""}`} onClick={() => onSelectTheme(null)}>

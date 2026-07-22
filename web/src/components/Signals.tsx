@@ -22,7 +22,7 @@ export function SignalsSection({
   };
   return (
     <section className="section-block" id="signals">
-      <SectionHeading index="01" title="五项固定监测" desc="点击信号卡可筛选下方指标库主题，再次点击取消" id="signals" />
+      <SectionHeading index="09" title="五项固定监测" desc="点击信号卡可筛选下方指标库主题，再次点击取消" id="signals" />
       <div className="signal-grid">
         {monitoring.themeSummaries.map((t) => {
           const selected = selectedTheme === t.theme;
@@ -57,7 +57,7 @@ export function SignalsSection({
 export function TrendsSection({ monitoring, theme }: { monitoring: MonitoringData; theme: ThemeMode }) {
   return (
     <section className="section-block" id="trends">
-      <SectionHeading index="02" title="趋势与结构" desc="全球市场平衡与工业用银需求结构（World Silver Survey）" id="trends" />
+      <SectionHeading index="10" title="趋势与结构" desc="全球市场平衡与工业用银需求结构（World Silver Survey）" id="trends" />
       <div className="analytics-grid">
         <article className="panel chart-panel balance-panel">
           <span className="year-watermark">Ag</span>

@@ -26,7 +26,7 @@ export function PositionsSection({
   }[ratioMetal];
   return (
     <section className="section-block" id="positions">
-      <SectionHeading index="05" title="持仓量与虚实比" desc="白银持仓，以及白银/铂金/钯金分合约虚实比走势" id="positions" />
+      <SectionHeading index="03" title="持仓量与虚实比" desc="白银持仓，以及白银/铂金/钯金分合约虚实比走势" id="positions" />
       <div className="stack-grid">
         <article className="panel chart-panel">
           <div className="panel-heading">
@@ -263,7 +263,7 @@ export function ComexSection({ daily, theme }: { daily: DailyData; theme: ThemeM
 
   return (
     <section className="section-block" id="comex">
-      <SectionHeading index="06" title="COMEX 头寸" desc="非商业净头寸（周频）与伦敦银现货对照" id="comex" />
+      <SectionHeading index="04" title="COMEX 头寸" desc="非商业净头寸（周频）与伦敦银现货对照" id="comex" />
       <article className="panel chart-panel">
         <div className="panel-heading">
           <div>

@@ -65,7 +65,7 @@ export function LhbSection({ data }: { data: LhbData | null }) {
 
   return (
     <section className="section-block" id="lhb">
-      <SectionHeading index="06b" title="龙虎榜" desc={`上期所 AG ${snapshot.date} 成交持仓排名（多/空 TOP20）`} id="lhb" />
+      <SectionHeading index="06" title="龙虎榜" desc={`上期所 AG ${snapshot.date} 成交持仓排名（多/空 TOP20）`} id="lhb" />
       <article className="panel chart-panel">
         <div className="panel-heading">
           <div>

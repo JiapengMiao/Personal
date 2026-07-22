@@ -73,50 +73,48 @@ export function HkTradeSection({ theme }: { theme: ThemeMode }) {
     <section className="section-block" id="hktrade">
       <SectionHeading index="07" title="香港白银进出口 · 月度" desc="政府统计处 HS7106（吨）· 净出口折线 + 进出口柱状" id="hktrade" />
 
-      {/* 关键指标 */}
-      <div className="hk-stats">
-        <div className="hk-stat">
-          <small>最新月（{toMonth(data.asOf)}）净出口</small>
-          <strong style={{ color: stats.last < 0 ? p.down : p.up }}>
-            {stats.last >= 0 ? "+" : ""}{formatNumber(stats.last, 0)} 吨
-          </strong>
-          <small>{stats.last < 0 ? "白银净流入（滞留）" : "白银净流出"}</small>
-        </div>
-        <div className="hk-stat">
-          <small>2026 年迄今累计净出口</small>
-          <strong style={{ color: stats.ytd < 0 ? p.down : p.up }}>
-            {stats.ytd >= 0 ? "+" : ""}{formatNumber(stats.ytd, 0)} 吨
-          </strong>
-          <small>{stats.ytd < 0 ? "持续净流入" : "净流出"}</small>
-        </div>
-        <div className="hk-stat">
-          <small>历史峰值净出口</small>
-          <strong>{formatNumber(stats.peak, 0)} 吨</strong>
-          <small>{toMonth(stats.peakM)}</small>
-        </div>
-        <div className="hk-stat">
-          <small>最大单月净流入</small>
-          <strong style={{ color: p.down }}>{formatNumber(stats.trough, 0)} 吨</strong>
-          <small>{toMonth(stats.troughM)}</small>
-        </div>
-      </div>
-
-      <div className="stack-grid">
-        <article className="panel chart-panel">
-          <div className="panel-heading">
-            <div>
-              <span>贸易 · HK TRADE</span>
-              <h3>月度进出口与净出口（吨）</h3>
-            </div>
-            <div className="panel-stat">
-              <small>数据截至</small>
-              <strong>{toMonth(data.asOf)}</strong>
-            </div>
+      <article className="panel chart-panel hk-trade-panel">
+        {/* 关键指标 */}
+        <div className="hk-stats">
+          <div className="hk-stat">
+            <small>最新月（{toMonth(data.asOf)}）净出口</small>
+            <strong style={{ color: stats.last < 0 ? p.down : p.up }}>
+              {stats.last >= 0 ? "+" : ""}{formatNumber(stats.last, 0)} 吨
+            </strong>
+            <small>{stats.last < 0 ? "白银净流入（滞留）" : "白银净流出"}</small>
           </div>
-          <HkTradeChart data={data} netExport={netExport} impColor={impColor} expColor={expColor} netColor={netColor} theme={theme} />
-          <p className="chart-note">净出口 = 出口 − 进口：正值 = 白银净流出（转口），负值 = 白银净流入（滞留香港）· 数量为官方 6 位 HS 口径（710610+710691+710692）</p>
-        </article>
-      </div>
+          <div className="hk-stat">
+            <small>2026 年迄今累计净出口</small>
+            <strong style={{ color: stats.ytd < 0 ? p.down : p.up }}>
+              {stats.ytd >= 0 ? "+" : ""}{formatNumber(stats.ytd, 0)} 吨
+            </strong>
+            <small>{stats.ytd < 0 ? "持续净流入" : "净流出"}</small>
+          </div>
+          <div className="hk-stat">
+            <small>历史峰值净出口</small>
+            <strong>{formatNumber(stats.peak, 0)} 吨</strong>
+            <small>{toMonth(stats.peakM)}</small>
+          </div>
+          <div className="hk-stat">
+            <small>最大单月净流入</small>
+            <strong style={{ color: p.down }}>{formatNumber(stats.trough, 0)} 吨</strong>
+            <small>{toMonth(stats.troughM)}</small>
+          </div>
+        </div>
+
+        <div className="panel-heading">
+          <div>
+            <span>贸易 · HK TRADE</span>
+            <h3>月度进出口与净出口（吨）</h3>
+          </div>
+          <div className="panel-stat">
+            <small>数据截至</small>
+            <strong>{toMonth(data.asOf)}</strong>
+          </div>
+        </div>
+        <HkTradeChart data={data} netExport={netExport} impColor={impColor} expColor={expColor} netColor={netColor} theme={theme} />
+        <p className="chart-note">净出口 = 出口 − 进口：正值 = 白银净流出（转口），负值 = 白银净流入（滞留香港）· 数量为官方 6 位 HS 口径（710610+710691+710692）</p>
+      </article>
     </section>
   );
 }

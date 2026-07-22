@@ -9,7 +9,7 @@ export function ShfePositioningSection({ data, theme }: { data: ShfePositioningD
   return (
     <section className="section-block" id="shfe-positioning">
       <SectionHeading
-        index="06a"
+        index="05"
         title="上期所持仓"
         desc={`Project-004 跨项目数据 · 最新 ${data.asOfDate} · SHFE ${data.quality.shfeTradingDays} 个交易日`}
         id="shfe-positioning"

@@ -34,17 +34,17 @@ export function Ticker({ triggers, onOpen }: { triggers: Trigger[]; onOpen: (tri
 
 // ——— 顶栏 ———
 export const NAV_ITEMS = [
-  { id: "signals", label: "监测" },
-  { id: "trends", label: "趋势" },
   { id: "market", label: "市场" },
-  { id: "daily", label: "库存" },
+  { id: "inventory", label: "库存" },
   { id: "positions", label: "持仓" },
-  { id: "pp-warehouse", label: "铂钯仓单" },
+  { id: "comex", label: "COMEX" },
   { id: "shfe-positioning", label: "上期持仓" },
   { id: "lhb", label: "龙虎" },
-  { id: "hktrade", label: "贸易" },
-  { id: "basis", label: "基差" },
-  { id: "season", label: "季节" },
+  { id: "trade-basis", label: "贸易基差" },
+  { id: "lease", label: "租赁" },
+  { id: "signals", label: "监测" },
+  { id: "trends", label: "趋势" },
+  { id: "dynamics", label: "动态" },
   { id: "indicators", label: "指标库" },
 ];
 

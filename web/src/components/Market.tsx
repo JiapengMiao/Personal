@@ -10,7 +10,7 @@ import { formatNumber, lastPoint } from "../lib/format";
 export function MarketSection({ market, theme }: { market: MarketData; theme: ThemeMode }) {
   return (
     <section className="section-block" id="market">
-      <SectionHeading index="03" title="市场脉搏 · 日频" desc="伦敦银 / 沪银 / Ag(T+D) / 金银比 / 白银基金" id="market" />
+      <SectionHeading index="01" title="市场脉搏 · 日频" desc="伦敦银 / 沪银 / Ag(T+D) / 金银比 / 白银基金" id="market" />
       <div className="stack-grid">
         <PricePanel market={market} theme={theme} />
         <FundPanel market={market} theme={theme} />

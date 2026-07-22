@@ -10,7 +10,7 @@ export function PpWarehouseSection({ data, theme }: { data: PpWarehouseData; the
   const metal = data.metals[metalKey];
   return (
     <section className="section-block" id="pp-warehouse">
-      <SectionHeading index="05b" title="铂钯仓单" desc={`广期所仓单 · Project-005 跨项目数据 · 截至 ${data.asOfDate}`} id="pp-warehouse" />
+      <SectionHeading index="02" title="铂钯仓单" desc={`广期所仓单 · Project-005 跨项目数据 · 截至 ${data.asOfDate}`} id="pp-warehouse" />
       <article className="panel chart-panel">
         <div className="panel-heading">
           <div><span>GFEX · WARRANTS</span><h3>{metal.label}仓单结构与日度变化</h3></div>

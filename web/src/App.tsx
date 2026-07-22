@@ -13,6 +13,7 @@ import { HkTradeSection } from "./components/HkTrade";
 import { LhbSection, type LhbData } from "./components/Lhb";
 import { ShfePositioningSection } from "./components/ShfePositioning";
 import { PpWarehouseSection } from "./components/PpWarehouse";
+import { SectionHeading } from "./components/shared";
 
 const THEME_KEY = "ag-monitor-theme";
 
@@ -157,25 +158,45 @@ export default function App() {
       />
       <main>
         <Hero data={data} />
-        <SignalsSection monitoring={data.monitoring} selectedTheme={selectedTheme} onSelectTheme={setSelectedTheme} />
-        <TrendsSection monitoring={data.monitoring} theme={theme} />
         <MarketSection market={data.market} theme={theme} />
-        <DailySection daily={data.daily} theme={theme} onLoadHistory={loadDailyHistory} historyLoaded={historyLoaded} historyLoading={historyLoading} />
+        <section className="section-block section-group" id="inventory">
+          <SectionHeading
+            index="02"
+            title="库存、递延费与铂钯仓单"
+            desc="白银递延费与境内外库存 / 广期所铂金、钯金仓单"
+            id="inventory"
+          />
+          <div className="section-group-content">
+            <DailySection daily={data.daily} theme={theme} onLoadHistory={loadDailyHistory} historyLoaded={historyLoaded} historyLoading={historyLoading} />
+            <PpWarehouseSection data={data.ppWarehouse} theme={theme} />
+          </div>
+        </section>
         <PositionsSection
           positions={data.positions}
           virtualRatio={data.virtualRatio}
           metalVirtualRatio={data.metalVirtualRatio}
           theme={theme}
         />
-        <PpWarehouseSection data={data.ppWarehouse} theme={theme} />
-        <SpotQuotesSection />
         <ComexSection daily={data.daily} theme={theme} />
         <ShfePositioningSection data={data.shfePositioning} theme={theme} />
         <LhbSection data={lhb} />
-        <HkTradeSection theme={theme} />
-        <BasisSection theme={theme} />
-        <SeasonalitySection data={data.seasonality} asOfDate={data.daily.asOfDate} theme={theme} />
+        <section className="section-block section-group" id="trade-basis">
+          <SectionHeading
+            index="07"
+            title="贸易、现货基差与进出口盈亏"
+            desc="香港白银进出口 / 现货基差报价 / 分钟与日度基差 / 盈亏季节性"
+            id="trade-basis"
+          />
+          <div className="section-group-content">
+            <HkTradeSection theme={theme} />
+            <SpotQuotesSection />
+            <BasisSection theme={theme} />
+            <SeasonalitySection data={data.seasonality} asOfDate={data.daily.asOfDate} theme={theme} />
+          </div>
+        </section>
         <LeaseSection data={data.leaseRates} theme={theme} />
+        <SignalsSection monitoring={data.monitoring} selectedTheme={selectedTheme} onSelectTheme={setSelectedTheme} />
+        <TrendsSection monitoring={data.monitoring} theme={theme} />
         <DynamicsSection monitoring={data.monitoring} theme={theme} onOpenTrigger={openTrigger} />
         <IndicatorLibrarySection
           monitoring={data.monitoring}

@@ -981,6 +981,10 @@ footer {
 .hk-stat strong { font-family: var(--mono); font-size: 20px; font-weight: 600; color: var(--text); }
 
 /* ——— 龙虎榜 ——— */
+.section-group > .section-heading { margin-bottom: 12px; }
+.section-group-content > .section-block { margin-top: 14px; padding: 0; }
+.section-group-content > .section-block:first-child { margin-top: 0; }
+.section-group-content > .section-block > .section-heading { display: none; }
 .lhb-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
 .lhb-controls { display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
 .lhb-date-picker { display: inline-flex; align-items: center; gap: 7px; color: var(--weak); font-family: var(--mono); font-size: 11.5px; }

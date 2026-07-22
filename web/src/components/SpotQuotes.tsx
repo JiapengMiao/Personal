@@ -66,7 +66,7 @@ export function SpotQuotesSection() {
   return (
     <section className="section-block" id="spot-quotes">
       <SectionHeading
-        index="05b"
+        index="07"
         title="现货基差报价"
         desc={`${day.date} · ${day.quoted}/${day.count} 家有报价${day.tdSpread ? ` · ${day.tdSpread}` : ""}`}
         id="spot-quotes"
