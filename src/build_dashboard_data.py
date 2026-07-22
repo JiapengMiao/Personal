@@ -30,6 +30,9 @@ ROOT = Path(__file__).resolve().parent.parent
 SRC010 = ROOT / "data" / "010源数据"
 SRC006 = ROOT / "data" / "006源数据"
 OUT_DIR = ROOT / "web" / "public" / "data"
+PROJECT004 = ROOT.parent / "Project-004-白银数据拉取"
+PROJECT005 = ROOT.parent / "Project-005-广期所仓单拉取"
+PROJECT006 = ROOT.parent / "Project-006-白银客户搜集"
 # 主表以项目 010（日度会议数据整理）为准——用户每日在此维护，含"网页数据" sheet
 MAIN_XLSX = Path(r"C:\Users\56558\Nutstore\1\我的坚果云\agent\Project-010-日度会议数据整理\data\白银所有数据.xlsx")
 
@@ -52,6 +55,8 @@ ERRORS: list[tuple[str, str]] = []   # (步骤名, 错误信息)
 
 OZ_TO_KG = 32.1507466                # 美元/盎司 -> 元/千克 换算系数（×汇率）
 VAT = 1.13                           # 进口增值税因子
+TROY_OUNCE_GRAM = 31.1035            # 1 金衡盎司克数
+OUTER_PRICE_DEDUCTION = 0.2          # 外盘期货价格扣减（美元/盎司）
 
 # 白银数据主表：原文列名 -> (输出 key, 小数精度)；精度 0 表示取整
 DAILY_COLS: list[tuple[str, str, int]] = [
@@ -205,8 +210,67 @@ def spread_stats(vals: np.ndarray) -> dict:
 
 SHEETS_NEEDED = [
     "白银数据", "AG（T+D）", "AG所有合约数据", "SPTAGUSDOZ_IDZ",
-    "外汇价格", "白银合约参数", "虚实比数据", "季节图表",
+    "进出口盈亏计算数据", "外汇价格", "白银合约参数", "广期合约参数",
+    "虚实比数据", "季节图表", "铂钯",
 ]
+
+COMEX_MONTHS = {"F": 1, "G": 2, "H": 3, "J": 4, "K": 5, "M": 6,
+                "N": 7, "Q": 8, "U": 9, "V": 10, "X": 11, "Z": 12}
+MONTH_TO_COMEX = {month: letter for letter, month in COMEX_MONTHS.items()}
+
+
+def comex_year_month(code: str) -> tuple[int, int] | None:
+    match = re.fullmatch(r"SI([FGHJKMNQUVXZ])(\d{2})E\.CMX", code.upper())
+    if not match:
+        return None
+    return 2000 + int(match.group(2)), COMEX_MONTHS[match.group(1)]
+
+
+def month_after(year: int, month: int) -> tuple[int, int]:
+    return (year + 1, 1) if month == 12 else (year, month + 1)
+
+
+def matched_domestic_code(comex_code: str) -> str | None:
+    ym = comex_year_month(comex_code)
+    if ym is None:
+        return None
+    year, month = month_after(*ym)
+    return f"AG{year % 100:02d}{month:02d}"
+
+
+def fx_year_month(code: str) -> tuple[int, int] | None:
+    match = re.fullmatch(r"UC([FGHJKMNQUVXZ])(\d{2})\.SG", code.upper())
+    if not match:
+        return None
+    return 2000 + int(match.group(2)), COMEX_MONTHS[match.group(1)]
+
+
+def select_quarterly_fx_contract(domestic_code: str, as_of: pd.Timestamp, available: set[str]) -> str:
+    match = re.fullmatch(r"AG(\d{2})(\d{2})", domestic_code.upper())
+    if not match:
+        raise RuntimeError(f"无法解析内盘合约月份: {domestic_code}")
+    target_ordinal = (2000 + int(match.group(1))) * 12 + int(match.group(2))
+    as_of_ordinal = as_of.year * 12 + as_of.month
+    candidates: list[tuple[int, int, str]] = []
+    for code in available:
+        ym = fx_year_month(code)
+        if ym is None or ym[1] not in {3, 6, 9, 12}:
+            continue
+        ordinal = ym[0] * 12 + ym[1]
+        if ordinal < as_of_ordinal:
+            continue
+        candidates.append((abs(ordinal - target_ordinal), ordinal, code))
+    if not candidates:
+        raise RuntimeError(f"未找到 {as_of:%Y-%m} 之后可用的 UC 季度主力合约")
+    return min(candidates)[2]
+
+PP_WINDOW_TRADING_DAYS = 120
+GFEX_HOLIDAYS = pd.DatetimeIndex(pd.to_datetime([
+    "2026-01-01", "2026-01-02", "2026-02-16", "2026-02-17", "2026-02-18",
+    "2026-02-19", "2026-02-20", "2026-02-23", "2026-04-06", "2026-05-01",
+    "2026-05-04", "2026-05-05", "2026-06-19", "2026-09-25", "2026-10-01",
+    "2026-10-02", "2026-10-05", "2026-10-06", "2026-10-07",
+]))
 
 
 def defensive_sheet_check() -> None:
@@ -246,8 +310,21 @@ class Ctx:
 
         # ---- 分钟序列
         self.agtd = minute_frame(sheets["AG（T+D）"].iloc[6:], 0, 1)
-        self.xagusd = minute_frame(sheets["SPTAGUSDOZ_IDZ"].iloc[6:], 0, 1)
-        self.usdcnh = minute_frame(sheets["外汇价格"].iloc[6:], 0, 1)
+        raw_outer = sheets["SPTAGUSDOZ_IDZ"]
+        self.xagusd = minute_frame(raw_outer.iloc[6:], 0, 1)
+        self.comex_min: dict[str, pd.DataFrame] = {}
+        for k in range(raw_outer.shape[1] // 2):
+            code = str(raw_outer.iloc[2, 2 * k + 1]).strip().upper()
+            if comex_year_month(code) is None:
+                continue
+            frame = minute_frame(raw_outer.iloc[6:], 2 * k, 2 * k + 1)
+            if len(frame):
+                self.comex_min[code] = frame
+        print(f"  COMEX 分钟合约解析: {sorted(self.comex_min)}")
+        raw_fx = sheets["外汇价格"]
+        self.fx_min_code = str(raw_fx.iloc[2, 1]).strip().upper()
+        self.usdcnh = minute_frame(raw_fx.iloc[6:], 0, 1)
+        print(f"  外汇分钟合约: {self.fx_min_code}")
 
         # ---- AG 所有合约（合约代码从第 3 行动态读取）
         raw_all = sheets["AG所有合约数据"]
@@ -262,6 +339,20 @@ class Ctx:
             key = code.strip().replace(".SHF", "")
             self.contracts_min[key] = minute_frame(raw_all.iloc[6:], 2 * k, 2 * k + 1)
         print(f"  分钟合约解析: {sorted(self.contracts_min)}")
+
+        # ---- 进出口盈亏日度数据：沪银 / COMEX / 离岸人民币分月合约
+        raw_profit_daily = sheets["进出口盈亏计算数据"]
+        profit_dates = pd.to_datetime(raw_profit_daily.iloc[5:, 0], errors="coerce")
+        self.profit_daily: dict[str, pd.DataFrame] = {}
+        for j in range(1, raw_profit_daily.shape[1]):
+            code = str(raw_profit_daily.iloc[4, j]).strip().upper()
+            if not code or code == "NAN":
+                continue
+            values = pd.to_numeric(raw_profit_daily.iloc[5:, j], errors="coerce")
+            frame = pd.DataFrame({"time": profit_dates, "close": values}).dropna()
+            if len(frame):
+                self.profit_daily[code] = frame.drop_duplicates(subset="time", keep="last").sort_values("time")
+        print(f"  进出口盈亏日度序列: {len(self.profit_daily)} 个")
 
         # ---- 合约参数: code(lower) -> expiry datetime
         raw_p = sheets["白银合约参数"]
@@ -320,6 +411,30 @@ class Ctx:
                 self.oi[code] = d.sort_values("date").reset_index(drop=True)
         print(f"  虚实比 oi 合约: {sorted(self.oi)}")
 
+        # ---- 广期所铂钯合约参数 + Wind 仓单/持仓复合表
+        raw_gp = sheets["广期合约参数"]
+        self.gfex_expiry: dict[str, datetime] = {}
+        self.gfex_unit_kg: dict[str, float] = {}
+        self.gfex_label_mismatches: list[tuple[str, str]] = []
+        for _, row in raw_gp.iloc[1:].iterrows():
+            code = str(row.iloc[1]).strip().lower()
+            if not re.fullmatch(r"(?:pt|pd)\d{4}", code):
+                continue
+            exp = parse_yyyymmdd(row.iloc[5])
+            unit_g = to_float(row.iloc[2])
+            if exp is not None:
+                self.gfex_expiry[code] = exp
+            if unit_g is not None and unit_g > 0:
+                self.gfex_unit_kg[code] = unit_g / 1000.0
+            expected_label = "铂" if code.startswith("pt") else "钯"
+            actual_label = str(row.iloc[0]).strip()
+            if actual_label != expected_label:
+                self.gfex_label_mismatches.append((code, actual_label))
+        self.pp_raw = sheets["铂钯"]
+        print(f"  广期铂钯合约参数: 到期日 {len(self.gfex_expiry)} 个, 交易单位 {len(self.gfex_unit_kg)} 个")
+        if self.gfex_label_mismatches:
+            print(f"  警告: 广期合约参数品种标签与代码前缀不一致，按代码识别: {self.gfex_label_mismatches}")
+
         # ---- 季节图表
         raw_s = sheets["季节图表"]
         yr_header = raw_s.iloc[1].tolist()
@@ -340,14 +455,17 @@ CTX: Ctx | None = None
 
 
 def step_copy_static() -> None:
-    # monitoring.json 仍原样拷贝 006 抽取结果
-    src = SRC006 / "monitoring-data.json"
+    # monitoring.json 直接读取 Project-006 最新生成物；本地 006源数据 仅作为灾备，不再作为主源。
+    live_src = PROJECT006 / "web" / "app" / "monitoring-data.json"
+    fallback_src = SRC006 / "monitoring-data.json"
+    src = live_src if live_src.exists() else fallback_src
     with open(src, encoding="utf-8") as fh:
         json.load(fh)
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(src, OUT_DIR / "monitoring.json")
     size_kb = (OUT_DIR / "monitoring.json").stat().st_size / 1024
-    print(f"  [OK] monitoring.json (原样拷贝, {size_kb:.1f} KB)")
+    source_label = "Project-006 最新生成物" if src == live_src else "本地灾备快照"
+    print(f"  [OK] monitoring.json ({source_label}, {size_kb:.1f} KB)")
 
     # market.json 改为从 010 主表"网页数据" sheet 生成（用户手工维护的万得数据）
     build_market_from_web_sheet()
@@ -568,6 +686,324 @@ def step_virtual_ratio() -> None:
         y_func, {"formula": "oi*15/st_stock_kg"}))
 
 
+def _find_exact_col(row: pd.Series, target: str) -> int:
+    target = target.strip().upper()
+    for idx, value in row.items():
+        if str(value).strip().upper() == target:
+            return int(idx)
+    raise ValueError(f"铂钯工作表未找到字段 {target}")
+
+
+def _build_pp_metal_curve(prefix: str, label: str, warehouse_code: str) -> dict:
+    """复刻 010 铂钯虚实比口径：1kg/手 × OI ÷ 注册仓单，按最后交易日对齐。"""
+    assert CTX is not None
+    raw = CTX.pp_raw
+    security_row = raw.iloc[2]
+    header_row = raw.iloc[5]
+    body = raw.iloc[6:].copy()
+
+    stock_col = _find_exact_col(security_row, warehouse_code)
+    stock_date_col = stock_col - 1
+    contract_cols: dict[str, int] = {}
+    pattern = re.compile(rf"^({prefix}\d{{4}})(?:\.GFE)?$", re.IGNORECASE)
+    for idx, value in header_row.items():
+        match = pattern.fullmatch(str(value).strip())
+        if match:
+            contract_cols[match.group(1).lower()] = int(idx)
+    if not contract_cols:
+        raise ValueError(f"铂钯工作表未识别到 {prefix} 合约持仓列")
+
+    warehouse = pd.DataFrame({
+        "date": pd.to_datetime(body.iloc[:, stock_date_col], errors="coerce"),
+        "stock": pd.to_numeric(body.iloc[:, stock_col], errors="coerce"),
+    }).dropna()
+    warehouse = warehouse[warehouse["stock"] > 0]
+    warehouse = warehouse.groupby("date", as_index=False).first().sort_values("date")
+
+    oi_date_col = min(contract_cols.values()) - 1
+    positions = pd.DataFrame({
+        "date": pd.to_datetime(body.iloc[:, oi_date_col], errors="coerce"),
+    })
+    for code, col in contract_cols.items():
+        positions[code] = pd.to_numeric(body.iloc[:, col], errors="coerce")
+    # Wind 复合表的日期区块会纵向重复，后一个重复行常为空；按日期逐列取首个非空值，
+    # 不能 drop_duplicates(keep="last")，否则会把绝大多数历史持仓覆盖成 NaN。
+    positions = positions.dropna(subset=["date"]).groupby("date", as_index=False).first().sort_values("date")
+    merged = warehouse.merge(positions, on="date", how="inner").sort_values("date").reset_index(drop=True)
+    if merged.empty:
+        raise ValueError(f"{label}仓单与持仓量无可匹配日期")
+
+    expiry = {code: pd.Timestamp(CTX.gfex_expiry[code]) for code in contract_cols if code in CTX.gfex_expiry}
+    latest = pd.Timestamp(merged["date"].max()).normalize()
+    maximum = max([latest, *expiry.values()]) if expiry else latest
+    historical = pd.DatetimeIndex(merged["date"]).normalize().unique().sort_values()
+    future = pd.bdate_range(latest + pd.Timedelta(days=1), maximum) if maximum > latest else pd.DatetimeIndex([])
+    future = future[~future.isin(GFEX_HOLIDAYS)]
+    calendar = historical.union(future).sort_values()
+    calendar_pos = {pd.Timestamp(d).normalize(): i for i, d in enumerate(calendar)}
+
+    contracts: list[dict] = []
+    for code in sorted(contract_cols):
+        if code not in expiry or code not in CTX.gfex_unit_kg:
+            print(f"  警告: {code} 缺少到期日或交易单位，跳过")
+            continue
+        exp = expiry[code].normalize()
+        available_dates = calendar[calendar <= exp]
+        if not len(available_dates):
+            continue
+        exp_pos = calendar_pos[pd.Timestamp(available_dates[-1]).normalize()]
+        subset = merged[["date", "stock", code]].copy()
+        multiplier = CTX.gfex_unit_kg[code]
+        subset["ratio"] = (multiplier * subset[code].where(subset[code] > 0) / subset["stock"])
+        subset.loc[subset["date"].eq(exp) & subset[code].eq(0), "ratio"] = 0.0
+        subset = subset.dropna(subset=["ratio"])
+        subset = subset[subset["date"] <= exp]
+        subset["cal_pos"] = subset["date"].map(lambda d: calendar_pos.get(pd.Timestamp(d).normalize()))
+        subset = subset.dropna(subset=["cal_pos"])
+        subset["x"] = subset["cal_pos"].astype(int) - exp_pos
+        subset = subset[subset["x"].between(-PP_WINDOW_TRADING_DAYS, 0)].sort_values("x")
+        print(f"  {code.upper()}: 窗口内 {len(subset)} 个有效点")
+        if len(subset) < 2:
+            continue
+        contracts.append({
+            "code": code.upper(),
+            "expiry": exp.strftime("%Y-%m-%d"),
+            "points": [
+                {"x": int(x), "y": round(float(y), 4)}
+                for x, y in zip(subset["x"], subset["ratio"])
+            ],
+        })
+
+    if not contracts:
+        raise ValueError(f"{label}没有至少含 2 个有效点的合约")
+    contracts.sort(key=lambda c: c["expiry"])
+    return {
+        "label": label,
+        "symbol": prefix,
+        "asOfDate": latest.strftime("%Y-%m-%d"),
+        "windowTradingDays": PP_WINDOW_TRADING_DAYS,
+        "formula": "oi*contract_multiplier_kg/st_stock_kg",
+        "contracts": contracts,
+    }
+
+
+def step_metal_virtual_ratio() -> None:
+    assert CTX is not None
+    write_json("metal_virtual_ratio.json", {
+        "generatedAt": now_iso(),
+        "source": {
+            "workbook": "Project-010-日度会议数据整理/data/白银所有数据.xlsx",
+            "warehouseSheet": "铂钯",
+            "contractSheet": "广期合约参数",
+        },
+        "qualityNotes": [
+            f"合约代码优先于品种标签识别；已纠正 {code} 的源标签 {actual}"
+            for code, actual in CTX.gfex_label_mismatches
+        ],
+        "metals": {
+            "pt": _build_pp_metal_curve("PT", "铂金", "PT.GFE"),
+            "pd": _build_pp_metal_curve("PD", "钯金", "PD.GFE"),
+        },
+    })
+
+
+def step_shfe_positioning() -> None:
+    """跨项目读取 Project-004 的 SHFE 会员汇总与 SGE 持仓，统一输出网页数据。"""
+    ranking_root = PROJECT004 / "data"
+    date_dirs = sorted(
+        path for path in ranking_root.iterdir()
+        if path.is_dir() and re.fullmatch(r"\d{8}", path.name)
+    )
+    if not date_dirs:
+        raise FileNotFoundError(f"Project-004 未找到持仓排名日期目录: {ranking_root}")
+
+    records: list[dict] = []
+    for date_dir in date_dirs:
+        source = date_dir / f"silver_ranking_{date_dir.name}.json"
+        if not source.exists():
+            raise FileNotFoundError(f"持仓排名目录缺少 JSON: {source}")
+        rows = json.loads(source.read_text(encoding="utf-8"))
+        summary_rows = {
+            int(row.get("RANK")): row
+            for row in rows
+            if str(row.get("INSTRUMENTID", "")).lower() == "agall"
+            and int(row.get("RANK", -999)) in (-1, 0)
+        }
+        if set(summary_rows) != {-1, 0}:
+            raise ValueError(f"{source.name} 缺少 agall 的 RANK=-1/0 汇总行")
+        item = {"date": datetime.strptime(date_dir.name, "%Y%m%d").strftime("%Y-%m-%d")}
+        for rank, prefix in ((-1, "futures"), (0, "nonFutures")):
+            row = summary_rows[rank]
+            item[prefix] = {
+                "label": str(row.get("PARTICIPANTABBR1") or row.get("PARTICIPANTID1") or prefix),
+                "long": int(row["CJ2"]),
+                "longChange": int(row["CJ2_CHG"]),
+                "short": int(row["CJ3"]),
+                "shortChange": int(row["CJ3_CHG"]),
+            }
+        records.append(item)
+
+    dates = [row["date"] for row in records]
+    if dates != sorted(set(dates)):
+        raise ValueError("Project-004 SHFE 持仓日期不唯一或未升序")
+
+    sge_path = PROJECT004 / "data" / "sge" / "ag_td_daily_2026.csv"
+    sge = pd.read_csv(sge_path, encoding="utf-8-sig")
+    sge["date"] = pd.to_datetime(sge["date"], errors="coerce")
+    sge["open_interest"] = pd.to_numeric(sge["open_interest"], errors="coerce")
+    sge = sge.dropna(subset=["date", "open_interest"]).sort_values("date")
+    if sge["date"].duplicated().any():
+        raise ValueError("Project-004 SGE Ag(T+D) 存在重复日期")
+    sge_map = dict(zip(sge["date"].dt.strftime("%Y-%m-%d"), sge["open_interest"]))
+
+    common = [row for row in records if row["date"] in sge_map]
+    latest = records[-1]
+    quality_notes = [
+        "SHFE 会员汇总取 INSTRUMENTID=agall；RANK=-1 为期货公司会员，RANK=0 为非期货公司会员。",
+        "趋势中的 SHFE CJ2/CJ3 为非期货公司会员持买/持卖单量；统一吨口径按 1 手=15 千克换算。",
+        "SGE Ag(T+D) open_interest 按 1 手=1 千克换算；综合图仅使用 SHFE 与 SGE 共同交易日。",
+    ]
+    write_json("shfe_positioning.json", {
+        "generatedAt": now_iso(),
+        "asOfDate": latest["date"],
+        "source": {
+            "project": "Project-004-白银数据拉取",
+            "rankingPattern": "data/YYYYMMDD/silver_ranking_YYYYMMDD.json",
+            "sgeFile": "data/sge/ag_td_daily_2026.csv",
+        },
+        "quality": {
+            "shfeTradingDays": len(records),
+            "sgeTradingDays": len(sge),
+            "commonTradingDays": len(common),
+            "notes": quality_notes,
+        },
+        "summary": [
+            {"category": "期货公司会员", **latest["futures"]},
+            {"category": "非期货公司会员", **latest["nonFutures"]},
+        ],
+        "nonFuturesTrend": {
+            "dates": dates,
+            "longLots": [row["nonFutures"]["long"] for row in records],
+            "shortLots": [row["nonFutures"]["short"] for row in records],
+            "netLots": [row["nonFutures"]["long"] - row["nonFutures"]["short"] for row in records],
+        },
+        "combinedTrend": {
+            "dates": [row["date"] for row in common],
+            "shfeLongTons": [round(row["nonFutures"]["long"] * 0.015, 3) for row in common],
+            "shfeShortTons": [round(row["nonFutures"]["short"] * 0.015, 3) for row in common],
+            "sgeOpenInterestTons": [round(float(sge_map[row["date"]]) * 0.001, 3) for row in common],
+        },
+    })
+
+
+def step_pp_warehouse() -> None:
+    """跨项目读取 Project-005 最新铂钯仓单原始 CSV，并重算仓库/厂库趋势。"""
+    candidates: list[tuple[str, str, Path]] = []
+    pattern = re.compile(r"铂钯仓单数据_\d{8}_(\d{8})_(\d{8}_\d{6})\.csv$")
+    for path in (PROJECT005 / "data").glob("铂钯仓单数据_*.csv"):
+        match = pattern.fullmatch(path.name)
+        if match:
+            candidates.append((match.group(1), match.group(2), path))
+    if not candidates:
+        raise FileNotFoundError(f"Project-005 未找到规范命名的铂钯仓单 CSV: {PROJECT005 / 'data'}")
+    _, _, source = max(candidates)
+
+    frame = pd.read_csv(source, encoding="utf-8-sig", dtype={"仓库代码": str})
+    required = {"品种", "日期", "仓库代码", "仓库名称", "昨日仓单", "今日注册", "今日注销", "今日仓单", "增减"}
+    missing = sorted(required - set(frame.columns))
+    if missing:
+        raise ValueError(f"{source.name} 缺少列: {missing}")
+    frame["date"] = pd.to_datetime(frame["日期"].astype(str), format="%Y%m%d", errors="coerce")
+    numeric_cols = ["昨日仓单", "今日注册", "今日注销", "今日仓单", "增减"]
+    for column in numeric_cols:
+        frame[column] = pd.to_numeric(frame[column], errors="coerce")
+    if frame[["date", *numeric_cols]].isna().any().any():
+        raise ValueError(f"{source.name} 存在无法解析的日期或数值")
+    if frame.duplicated(subset=["品种", "date", "仓库代码"]).any():
+        raise ValueError(f"{source.name} 存在 品种+日期+仓库代码 重复行")
+    if not (frame["昨日仓单"] + frame["今日注册"] - frame["今日注销"] == frame["今日仓单"]).all():
+        raise ValueError(f"{source.name} 不满足 昨日仓单+注册-注销=今日仓单")
+    if not (frame["今日仓单"] - frame["昨日仓单"] == frame["增减"]).all():
+        raise ValueError(f"{source.name} 不满足 今日仓单-昨日仓单=增减")
+
+    pt_warehouses = {"中工美上海虹桥", "外运华东上海虹桥", "深圳威豹"}
+    pd_warehouses = {"中储吴淞", "中工美上海虹桥", "外运华东上海虹桥", "深圳威豹"}
+    frame["仓库类型"] = [
+        "仓库" if name in (pt_warehouses if metal == "铂" else pd_warehouses) else "厂库"
+        for metal, name in zip(frame["品种"], frame["仓库名称"])
+    ]
+
+    metals: dict[str, dict] = {}
+    for metal_cn, metal_key, label in (("铂", "pt", "铂金"), ("钯", "pd", "钯金")):
+        subset = frame[frame["品种"] == metal_cn].copy()
+        if subset.empty:
+            raise ValueError(f"{source.name} 缺少{metal_cn}仓单数据")
+        dates = pd.DatetimeIndex(subset["date"].drop_duplicates().sort_values())
+        warehouse = subset[subset["仓库类型"] == "仓库"].groupby("date")["今日仓单"].sum()
+        factory = subset[subset["仓库类型"] == "厂库"].groupby("date")["今日仓单"].sum()
+        registered = subset.groupby("date")["今日注册"].sum()
+        cancelled = subset.groupby("date")["今日注销"].sum()
+        change = subset.groupby("date")["增减"].sum()
+        warehouse_vals = warehouse.reindex(dates, fill_value=0).astype(int).tolist()
+        factory_vals = factory.reindex(dates, fill_value=0).astype(int).tolist()
+        total_vals = [w + f for w, f in zip(warehouse_vals, factory_vals)]
+        latest_date = dates[-1]
+        latest_rows = subset[subset["date"] == latest_date].sort_values("今日仓单", ascending=False)
+        locations = [
+            {
+                "code": str(row["仓库代码"]),
+                "name": str(row["仓库名称"]),
+                "type": str(row["仓库类型"]),
+                "quantityKg": int(row["今日仓单"]),
+                "registeredKg": int(row["今日注册"]),
+                "cancelledKg": int(row["今日注销"]),
+                "changeKg": int(row["增减"]),
+            }
+            for _, row in latest_rows.iterrows()
+        ]
+        metals[metal_key] = {
+            "label": label,
+            "symbol": metal_key.upper(),
+            "dates": dates.strftime("%Y-%m-%d").tolist(),
+            "warehouseKg": warehouse_vals,
+            "factoryKg": factory_vals,
+            "totalKg": total_vals,
+            "registeredKg": registered.reindex(dates, fill_value=0).astype(int).tolist(),
+            "cancelledKg": cancelled.reindex(dates, fill_value=0).astype(int).tolist(),
+            "netChangeKg": change.reindex(dates, fill_value=0).astype(int).tolist(),
+            "latest": {
+                "date": latest_date.strftime("%Y-%m-%d"),
+                "warehouseKg": warehouse_vals[-1],
+                "factoryKg": factory_vals[-1],
+                "totalKg": total_vals[-1],
+                "registeredKg": int(registered.get(latest_date, 0)),
+                "cancelledKg": int(cancelled.get(latest_date, 0)),
+                "netChangeKg": int(change.get(latest_date, 0)),
+            },
+            "locations": locations,
+        }
+
+    as_of = min(metal["latest"]["date"] for metal in metals.values())
+    write_json("pp_warehouse.json", {
+        "generatedAt": now_iso(),
+        "asOfDate": as_of,
+        "source": {
+            "project": "Project-005-广期所仓单拉取",
+            "file": f"data/{source.name}",
+            "unit": "千克",
+        },
+        "quality": {
+            "rowCount": len(frame),
+            "notes": [
+                "逐行校验：昨日仓单 + 今日注册 - 今日注销 = 今日仓单。",
+                "逐行校验：今日仓单 - 昨日仓单 = 增减。",
+                "仓库/厂库分类沿用 Project-005 classify_warehouse.py 的品种专属名单。",
+            ],
+        },
+        "metals": metals,
+    })
+
+
 def step_seasonality() -> None:
     assert CTX is not None
     years = {}
@@ -673,17 +1109,89 @@ def step_basis() -> None:
         })
 
 
+def select_main_comex_contract() -> tuple[str, str, list[pd.Timestamp], int]:
+    """以最近10个交易日的有效分钟报价数作为主力代理，并要求存在次月沪银配对。"""
+    assert CTX is not None
+    all_dates = sorted({
+        pd.Timestamp(ts).normalize()
+        for frame in CTX.comex_min.values()
+        for ts in frame["time"]
+    })
+    if len(all_dates) < 10:
+        raise RuntimeError("COMEX 分钟数据不足10个交易日")
+    window_dates = all_dates[-10:]
+    window_set = set(window_dates)
+    candidates: list[tuple[int, str, str]] = []
+    for foreign_code, frame in CTX.comex_min.items():
+        domestic_code = matched_domestic_code(foreign_code)
+        if domestic_code not in CTX.contracts_min:
+            continue
+        count = int(frame["time"].map(lambda ts: pd.Timestamp(ts).normalize() in window_set).sum())
+        candidates.append((count, foreign_code, domestic_code))
+    if not candidates:
+        raise RuntimeError("COMEX 合约均无法匹配次月沪银合约")
+    quote_count, foreign_contract, domestic_contract = max(candidates)
+    return foreign_contract, domestic_contract, window_dates, quote_count
+
+
+def profit_payload(
+    domestic: np.ndarray,
+    agtd: np.ndarray,
+    foreign: np.ndarray,
+    fx: np.ndarray,
+) -> tuple[np.ndarray, np.ndarray]:
+    import_external_cny_kg = (foreign - OUTER_PRICE_DEDUCTION) / TROY_OUNCE_GRAM * fx * 1000
+    export_external_cny_kg = foreign / TROY_OUNCE_GRAM * fx * 1000
+    return (
+        np.round(domestic - import_external_cny_kg * VAT, 1),
+        np.round(export_external_cny_kg - agtd / VAT, 1),
+    )
+
+
 def step_import_profit() -> None:
     assert CTX is not None
+    foreign_contract, domestic_contract, window_dates, quote_count = select_main_comex_contract()
+    foreign_frame = CTX.comex_min[foreign_contract]
+    daily_fx_contract = select_quarterly_fx_contract(
+        domestic_contract,
+        pd.Timestamp(foreign_frame["time"].max()).normalize(),
+        set(CTX.profit_daily),
+    )
+    if CTX.fx_min_code != daily_fx_contract:
+        raise RuntimeError(
+            f"分钟外汇合约 {CTX.fx_min_code} 与季度主力规则选择 {daily_fx_contract} 不一致"
+        )
     times, al = align_minute_series({
-        "agtd": CTX.agtd, "xagusd": CTX.xagusd, "usdcnh": CTX.usdcnh,
+        "domestic": CTX.contracts_min[domestic_contract],
+        "agtd": CTX.agtd,
+        "foreign": foreign_frame,
+        "fx": CTX.usdcnh,
     })
-    xagcny = al["xagusd"] * al["usdcnh"] * OZ_TO_KG          # 元/千克
-    imp = np.round(al["agtd"] - xagcny * VAT, 1)              # 进口盈亏
-    exp = np.round(xagcny - al["agtd"] / VAT, 1)              # 加贸出口盈亏
+    aligned_time = pd.to_datetime(pd.Series(times))
+    mask = (
+        aligned_time.dt.normalize().isin(window_dates)
+        & (aligned_time <= foreign_frame["time"].max())
+    ).to_numpy()
+    times = [time for time, keep in zip(times, mask) if keep]
+    al = {key: values[mask] for key, values in al.items()}
+    if not times:
+        raise RuntimeError("主力合约对齐后无最近10个交易日分钟数据")
+
+    imp, exp = profit_payload(al["domestic"], al["agtd"], al["foreign"], al["fx"])
     si, se = spread_stats(imp), spread_stats(exp)
     write_json("import_profit.json", {
         "generatedAt": now_iso(),
+        "frequency": "minute",
+        "windowTradingDays": 10,
+        "windowStart": window_dates[0].strftime("%Y-%m-%d"),
+        "windowEnd": window_dates[-1].strftime("%Y-%m-%d"),
+        "selectionMethod": "最近10个交易日有效分钟报价数最多（主力代理）",
+        "foreignContract": foreign_contract,
+        "domesticContract": domestic_contract,
+        "fxContract": CTX.fx_min_code,
+        "mainQuoteCount": quote_count,
+        "importFormula": "内盘期货价格-(外盘期货价格-0.2)/31.1035*外汇价格*1000*1.13",
+        "exportFormula": "外盘主力期货价格/31.1035*外汇价格*1000-Ag(T+D)/1.13",
         "times": times,
         "importProfit": imp.tolist(),
         "exportProfit": exp.tolist(),
@@ -692,6 +1200,53 @@ def step_import_profit() -> None:
             "exportLatest": se["latest"], "exportMean": se["mean"], "exportPercentile": se["percentile"],
         },
     })
+
+
+def step_import_profit_daily() -> None:
+    assert CTX is not None
+    foreign_contract, domestic_contract, _, quote_count = select_main_comex_contract()
+    as_of = pd.Timestamp(CTX.comex_min[foreign_contract]["time"].max()).normalize()
+    fx_contract = select_quarterly_fx_contract(domestic_contract, as_of, set(CTX.profit_daily))
+    required = {
+        "domestic": f"{domestic_contract}.SHF",
+        "agtd": "AG(T+D).SGE",
+        "foreign": foreign_contract,
+        "fx": fx_contract,
+    }
+    missing = [code for code in required.values() if code not in CTX.profit_daily]
+    if missing:
+        raise RuntimeError(f"日度进出口盈亏缺少序列: {missing}")
+    times, aligned = align_minute_series({key: CTX.profit_daily[code] for key, code in required.items()})
+    imp, exp = profit_payload(
+        aligned["domestic"], aligned["agtd"], aligned["foreign"], aligned["fx"]
+    )
+    si, se = spread_stats(imp), spread_stats(exp)
+    write_json("import_profit_daily.json", {
+        "generatedAt": now_iso(),
+        "frequency": "daily",
+        "selectionMethod": "沿用分钟数据主力合约，内盘与汇率选择次月合约",
+        "foreignContract": foreign_contract,
+        "domesticContract": domestic_contract,
+        "fxContract": fx_contract,
+        "mainQuoteCount": quote_count,
+        "importFormula": "内盘期货价格-(外盘期货价格-0.2)/31.1035*外汇价格*1000*1.13",
+        "exportFormula": "外盘主力期货价格/31.1035*外汇价格*1000-Ag(T+D)/1.13",
+        "times": [pd.Timestamp(t).strftime("%Y-%m-%d") for t in times],
+        "importProfit": imp.tolist(),
+        "exportProfit": exp.tolist(),
+        "stats": {
+            "importLatest": si["latest"], "importMean": si["mean"], "importPercentile": si["percentile"],
+            "exportLatest": se["latest"], "exportMean": se["mean"], "exportPercentile": se["percentile"],
+        },
+    })
+
+
+def step_lhb() -> None:
+    """重建全部可用交易日的龙虎榜历史数据。"""
+    from build_lhb import main as build_lhb_main
+
+    if build_lhb_main() != 0:
+        raise RuntimeError("龙虎榜历史数据生成失败")
 
 
 # ---------------------------------------------------------------- 内容校验
@@ -713,8 +1268,10 @@ def load_out(name: str) -> dict:
 def verify() -> None:
     print("\n========== 内容校验 ==========")
     expected = (["monitoring.json", "market.json", "daily.json", "positions_curve.json",
-                 "virtual_ratio.json", "seasonality.json", "lease_rates.json",
-                 "import_profit.json"]
+                 "virtual_ratio.json", "metal_virtual_ratio.json", "shfe_positioning.json",
+                 "pp_warehouse.json",
+                 "seasonality.json", "lease_rates.json",
+                 "import_profit.json", "import_profit_daily.json"]
                 + [f"basis_{p}.json" for p in
                    ["AGTD-AG2608", "AGTD-AG2609", "AGTD-AG2610",
                     "AG2608-AG2609", "AG2609-AG2610", "AG2610-AG2611"]])
@@ -802,6 +1359,71 @@ def verify() -> None:
     vr = load_out("virtual_ratio.json")
     check(vr.get("formula") == "oi*15/st_stock_kg", "virtual_ratio.formula 元信息正确")
 
+    # 铂钯虚实比：以合约代码识别品种，交易单位由广期合约参数换算为 kg/手
+    mvr = load_out("metal_virtual_ratio.json")
+    check(set(mvr.get("metals", {})) == {"pt", "pd"}, "metal_virtual_ratio 含 pt/pd 两个品种")
+    for metal_key in ("pt", "pd"):
+        metal = mvr["metals"][metal_key]
+        contracts = metal.get("contracts", [])
+        codes = [c["code"] for c in contracts]
+        check(len(contracts) >= 3, f"metal_virtual_ratio.{metal_key} 合约数 {len(contracts)} ({codes})")
+        check(metal.get("windowTradingDays") == 120, f"metal_virtual_ratio.{metal_key} 窗口 120 交易日")
+        check(metal.get("formula") == "oi*contract_multiplier_kg/st_stock_kg",
+              f"metal_virtual_ratio.{metal_key} 公式元信息正确")
+        for contract in contracts:
+            xs = [p["x"] for p in contract["points"]]
+            ys = [p["y"] for p in contract["points"]]
+            check(len(xs) >= 10, f"{contract['code']} 至少 10 个有效点 ({len(xs)})")
+            check(len(xs) == len(set(xs)), f"{contract['code']} x 无重复 ({len(xs)} 点)")
+            check(min(xs) >= -120 and max(xs) <= 0,
+                  f"{contract['code']} x∈[{min(xs)},{max(xs)}]")
+            check(all(v is not None and v >= 0 and math.isfinite(v) for v in ys),
+                  f"{contract['code']} y 非负且有限")
+
+    # Project-004 SHFE/SGE 持仓排名与趋势
+    sp = load_out("shfe_positioning.json")
+    check(sp.get("asOfDate") == sp["nonFuturesTrend"]["dates"][-1],
+          f"shfe_positioning 截止日 {sp.get('asOfDate')} 与趋势末日一致")
+    check(len(sp.get("summary", [])) == 2,
+          f"shfe_positioning 最新汇总含两类会员 ({len(sp.get('summary', []))})")
+    check({row["category"] for row in sp["summary"]} == {"期货公司会员", "非期货公司会员"},
+          "shfe_positioning 汇总会员类别齐全")
+    nt = sp["nonFuturesTrend"]
+    n = len(nt["dates"])
+    check(n >= 100, f"shfe_positioning SHFE 交易日 {n} (期望 >=100)")
+    check(nt["dates"] == sorted(set(nt["dates"])), "shfe_positioning SHFE 日期升序且唯一")
+    check(all(len(nt[key]) == n for key in ("longLots", "shortLots", "netLots")),
+          "shfe_positioning 非期货公司趋势序列长度一致")
+    check(all(l - s == net for l, s, net in zip(nt["longLots"], nt["shortLots"], nt["netLots"])),
+          "shfe_positioning 净持仓 = 持买 - 持卖")
+    ct = sp["combinedTrend"]
+    cn = len(ct["dates"])
+    check(cn >= 100, f"shfe_positioning SHFE×SGE 共同交易日 {cn} (期望 >=100)")
+    check(all(len(ct[key]) == cn for key in ("shfeLongTons", "shfeShortTons", "sgeOpenInterestTons")),
+          "shfe_positioning 综合趋势序列长度一致")
+    check(all(v > 0 and math.isfinite(v) for key in ("shfeLongTons", "shfeShortTons", "sgeOpenInterestTons") for v in ct[key]),
+          "shfe_positioning 综合趋势吨值全为正且有限")
+
+    # Project-005 铂钯仓单
+    ppw = load_out("pp_warehouse.json")
+    check(set(ppw.get("metals", {})) == {"pt", "pd"}, "pp_warehouse 含 pt/pd 两个品种")
+    for metal_key in ("pt", "pd"):
+        metal = ppw["metals"][metal_key]
+        dates = metal["dates"]
+        n = len(dates)
+        check(n >= 40, f"pp_warehouse.{metal_key} 交易日 {n} (期望 >=40)")
+        check(dates == sorted(set(dates)), f"pp_warehouse.{metal_key} 日期升序且唯一")
+        series_keys = ("warehouseKg", "factoryKg", "totalKg", "registeredKg", "cancelledKg", "netChangeKg")
+        check(all(len(metal[key]) == n for key in series_keys), f"pp_warehouse.{metal_key} 序列长度一致")
+        check(all(w + f == t for w, f, t in zip(metal["warehouseKg"], metal["factoryKg"], metal["totalKg"])),
+              f"pp_warehouse.{metal_key} 总量 = 仓库 + 厂库")
+        check(metal["latest"]["date"] == dates[-1], f"pp_warehouse.{metal_key} 最新日期与趋势末日一致")
+        check(metal["latest"]["totalKg"] == metal["totalKg"][-1], f"pp_warehouse.{metal_key} 最新总量自洽")
+        check(sum(row["quantityKg"] for row in metal["locations"]) == metal["latest"]["totalKg"],
+              f"pp_warehouse.{metal_key} 最新仓库明细合计自洽")
+        check(all(v >= 0 and math.isfinite(v) for key in ("warehouseKg", "factoryKg", "totalKg", "registeredKg", "cancelledKg") for v in metal[key]),
+              f"pp_warehouse.{metal_key} 库存/注册/注销非负且有限")
+
     # basis 文件
     for name, hi in [("basis_AGTD-AG2608.json", 1000), ("basis_AGTD-AG2609.json", 1000),
                      ("basis_AGTD-AG2610.json", 1000), ("basis_AG2608-AG2609.json", 1000),
@@ -822,14 +1444,49 @@ def verify() -> None:
           f"import_profit 序列长度一致 ({len(ip['times'])})")
     s = ip["stats"]
     check(abs(s["importLatest"]) < 2000, f"importLatest {s['importLatest']} 元/千克 量级合理")
+    check(re.fullmatch(r"AG\d{4}", ip.get("domesticContract", "")) is not None,
+          f"进口盈亏内盘合约 {ip.get('domesticContract')} 合法")
+    check(ip.get("importFormula") == "内盘期货价格-(外盘期货价格-0.2)/31.1035*外汇价格*1000*1.13",
+          "进口盈亏公式与用户口径一致")
+    check(ip.get("exportFormula") == "外盘主力期货价格/31.1035*外汇价格*1000-Ag(T+D)/1.13",
+          "出口盈亏公式与用户口径一致")
     check(set(s) == {"importLatest", "importMean", "importPercentile",
                      "exportLatest", "exportMean", "exportPercentile"}, "import_profit stats 键齐全")
+    check(ip.get("frequency") == "minute" and ip.get("windowTradingDays") == 10,
+          "import_profit 为最近10个交易日分钟数据")
+    check(len({t[:10] for t in ip["times"]}) == 10,
+          f"import_profit 覆盖10个交易日 ({ip['windowStart']}→{ip['windowEnd']})")
+    check(comex_year_month(ip.get("foreignContract", "")) is not None and
+          ip.get("domesticContract") == matched_domestic_code(ip.get("foreignContract", "")),
+          f"主力外盘 {ip.get('foreignContract')} 匹配次月内盘 {ip.get('domesticContract')}")
+    fx_ym = fx_year_month(ip.get("fxContract", ""))
+    check(fx_ym is not None and fx_ym[1] in {3, 6, 9, 12},
+          f"分钟外汇 {ip.get('fxContract')} 为季度主力月")
+
+    ipd = load_out("import_profit_daily.json")
+    check(len(ipd["times"]) == len(ipd["importProfit"]) == len(ipd["exportProfit"]) > 100,
+          f"import_profit_daily 日度序列长度一致 ({len(ipd['times'])})")
+    check(ipd["times"] == sorted(set(ipd["times"])), "import_profit_daily 日期升序且唯一")
+    check(ipd.get("foreignContract") == ip.get("foreignContract") and
+          ipd.get("domesticContract") == ip.get("domesticContract") and
+          ipd.get("fxContract") == ip.get("fxContract"),
+          "分钟与日度进出口盈亏使用同一主力合约对")
+    check(abs(ipd["stats"]["importLatest"]) < 2000,
+          f"daily importLatest {ipd['stats']['importLatest']} 元/千克量级合理")
+    check(abs(ipd["stats"]["exportLatest"]) < 10000,
+          f"daily exportLatest {ipd['stats']['exportLatest']} 元/千克量级合理")
 
     # 静态拷贝
     for name, keys in [("monitoring.json", ["generatedAt", "indicators"]),
                        ("market.json", ["fetchedAt", "items"])]:
         j = load_out(name)
         check(all(k in j for k in keys), f"{name} 顶层键含 {keys}")
+    mon = load_out("monitoring.json")
+    ind16 = next((item for item in mon["indicators"] if item.get("id") == 16), None)
+    check(mon.get("asOfDate") >= "2026-07-21", f"monitoring.asOfDate = {mon.get('asOfDate')} (期望 >=2026-07-21)")
+    check(ind16 is not None and ind16.get("dataStatus") == "已接入", "monitoring 指标16 已接入")
+    check(ind16 is not None and ind16.get("period") == ind16.get("updatedAt"),
+          f"monitoring 指标16 数据期 {ind16.get('period') if ind16 else None} = 更新时间 {ind16.get('updatedAt') if ind16 else None}")
 
     # 无回归：记录数与上一版一致
     print("    ---- 回归检查: 记录数 ----")
@@ -838,6 +1495,7 @@ def verify() -> None:
         "seasonality.json": (len(se["dates"]), 366),
         "lease_rates.json": (len(lr["dates"]), 261),
         "import_profit.json": (len(ip["times"]), len(ip["times"])),  # dynamic
+        "import_profit_daily.json": (len(ipd["times"]), len(ipd["times"])),
     }
     for name in ["basis_AGTD-AG2608.json", "basis_AGTD-AG2609.json", "basis_AGTD-AG2610.json",
                  "basis_AG2608-AG2609.json", "basis_AG2609-AG2610.json", "basis_AG2610-AG2611.json"]:
@@ -850,8 +1508,26 @@ def verify() -> None:
           len(d["series"]) == 25, "daily.json 顶层键(含新增 lastActual)与 25 个 series 无回归")
     check(sorted(se.keys()) == ["dates", "generatedAt", "years"], "seasonality.json 顶层键无回归")
     check(sorted(lr.keys()) == ["dates", "generatedAt", "series"], "lease_rates.json 顶层键无回归")
-    check(sorted(ip.keys()) == ["exportProfit", "generatedAt", "importProfit", "stats", "times"],
+    check(sorted(ip.keys()) == ["domesticContract", "exportFormula", "exportProfit", "foreignContract",
+                                "frequency", "fxContract", "generatedAt", "importFormula", "importProfit",
+                                "mainQuoteCount", "selectionMethod", "stats", "times", "windowEnd",
+                                "windowStart", "windowTradingDays"],
           "import_profit.json 顶层键无回归")
+
+    lhb = load_out("lhb.json")
+    lhb_dates = lhb.get("dates", [])
+    date_values = [item.get("date") for item in lhb_dates]
+    check(len(lhb_dates) >= 2, f"龙虎榜历史交易日 {len(lhb_dates)} 个")
+    check(date_values == sorted(set(date_values)), "龙虎榜历史日期升序且唯一")
+    check(bool(lhb_dates) and lhb.get("date") == lhb_dates[-1].get("date"),
+          "龙虎榜顶层日期与最新历史快照一致")
+    check(all(item.get("contracts") for item in lhb_dates), "龙虎榜每个交易日均有合约数据")
+    check(all(
+        0 < len(side) <= 20
+        for item in lhb_dates
+        for contract in item.get("contracts", [])
+        for side in (contract.get("long", []), contract.get("short", []))
+    ), "龙虎榜多空榜单每侧 1~20 个席位")
 
 
 # ---------------------------------------------------------------- 主流程
@@ -872,29 +1548,35 @@ def main() -> int:
         global CTX
         CTX = Ctx(sheets)
 
-    print("\n[1/9] 加载输入")
-    run_step("加载输入", _load)
-
     steps = [
         ("拷贝静态 JSON", step_copy_static),
         ("daily.json", step_daily),
         ("positions_curve.json", step_positions_curve),
         ("virtual_ratio.json", step_virtual_ratio),
+        ("metal_virtual_ratio.json", step_metal_virtual_ratio),
+        ("shfe_positioning.json", step_shfe_positioning),
+        ("pp_warehouse.json", step_pp_warehouse),
         ("seasonality.json", step_seasonality),
         ("lease_rates.json", step_lease_rates),
         ("minute exports", step_minute_exports),
         ("basis_*.json", step_basis),
         ("import_profit.json", step_import_profit),
+        ("import_profit_daily.json", step_import_profit_daily),
+        ("lhb.json", step_lhb),
     ]
+    total_steps = len(steps) + 2  # 输入 + 生成步骤 + 校验
+    print(f"\n[1/{total_steps}] 加载输入")
+    run_step("加载输入", _load)
+
     for i, (label, fn) in enumerate(steps, start=2):
-        print(f"\n[{i}/9] {label}")
+        print(f"\n[{i}/{total_steps}] {label}")
         if CTX is None and label != "拷贝静态 JSON":
             print("  跳过：输入加载失败")
             ERRORS.append((label, "输入加载失败，跳过"))
             continue
         run_step(label, fn)
 
-    print("\n[10/10] 校验输出")
+    print(f"\n[{total_steps}/{total_steps}] 校验输出")
     run_step("内容校验", verify)
 
     print("\n" + "=" * 60)

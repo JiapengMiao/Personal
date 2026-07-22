@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import type { CurveData, DailyData } from "../lib/types";
+import { useMemo, useState } from "react";
+import type { CurveData, DailyData, MetalVirtualRatioData } from "../lib/types";
 import { baseAxis, baseLegend, baseTooltip, getPalette, zoomFill, type ThemeMode } from "../lib/echarts";
 import { useEChart } from "../lib/useEChart";
 import { SectionHeading } from "./shared";
@@ -9,15 +9,24 @@ import { formatNumber } from "../lib/format";
 export function PositionsSection({
   positions,
   virtualRatio,
+  metalVirtualRatio,
   theme,
 }: {
   positions: CurveData;
   virtualRatio: CurveData;
+  metalVirtualRatio: MetalVirtualRatioData;
   theme: ThemeMode;
 }) {
+  const [ratioMetal, setRatioMetal] = useState<"ag" | "pt" | "pd">("ag");
+  const ratioData = ratioMetal === "ag" ? virtualRatio : metalVirtualRatio.metals[ratioMetal];
+  const ratioMeta = {
+    ag: { label: "白银", title: "白银到期前虚实比（倍）", multiplier: 15, window: 90 },
+    pt: { label: "铂金", title: "铂金到期前虚实比（倍）", multiplier: 1, window: 120 },
+    pd: { label: "钯金", title: "钯金到期前虚实比（倍）", multiplier: 1, window: 120 },
+  }[ratioMetal];
   return (
     <section className="section-block" id="positions">
-      <SectionHeading index="05" title="持仓量与虚实比" desc="各合约到期日前 90 个交易日的持仓与虚实比走势" id="positions" />
+      <SectionHeading index="05" title="持仓量与虚实比" desc="白银持仓，以及白银/铂金/钯金分合约虚实比走势" id="positions" />
       <div className="stack-grid">
         <article className="panel chart-panel">
           <div className="panel-heading">
@@ -32,11 +41,28 @@ export function PositionsSection({
           <div className="panel-heading">
             <div>
               <span>虚实比 · RATIO</span>
-              <h3>到期前虚实比（倍）</h3>
+              <h3>{ratioMeta.title}</h3>
+            </div>
+            <div className="lhb-tabs" role="tablist" aria-label="虚实比品种切换">
+              {(["ag", "pt", "pd"] as const).map((key) => (
+                <button
+                  key={key}
+                  type="button"
+                  role="tab"
+                  aria-selected={ratioMetal === key}
+                  className={`lhb-tab${ratioMetal === key ? " active" : ""}`}
+                  onClick={() => setRatioMetal(key)}
+                >
+                  {{ ag: "白银", pt: "铂金", pd: "钯金" }[key]}
+                </button>
+              ))}
             </div>
           </div>
-          <CurveChart data={virtualRatio} theme={theme} decimals={2} unit="倍" />
-          <p className="chart-note">口径：虚实比 = 持仓量 × 15 千克 ÷ 注册仓单（{virtualRatio.formula ?? "oi*15/st_stock_kg"}）；横轴为距到期日的交易日数。</p>
+          <CurveChart data={ratioData} theme={theme} decimals={ratioMetal === "ag" ? 2 : 4} unit="倍" xMin={-ratioMeta.window} />
+          <p className="chart-note">
+            口径：{ratioMeta.label}虚实比 = 持仓量 × {ratioMeta.multiplier} 千克 ÷ 注册仓单；横轴为距最后交易日的交易日数，展示最近 {ratioMeta.window} 个交易日
+            {ratioData.asOfDate ? `；数据截至 ${ratioData.asOfDate}` : ""}。
+          </p>
         </article>
       </div>
     </section>
@@ -48,11 +74,13 @@ function CurveChart({
   theme,
   decimals,
   unit = "",
+  xMin = -90,
 }: {
   data: CurveData;
   theme: ThemeMode;
   decimals: number;
   unit?: string;
+  xMin?: number;
 }) {
   const build = useMemo(() => {
     return () => {
@@ -60,7 +88,7 @@ function CurveChart({
       const expiryMap = new Map(data.contracts.map((c) => [c.code, c.expiry]));
       return {
         animationDuration: 400,
-        grid: { top: 40, right: 120, bottom: 30, left: 66 },
+        grid: { top: 40, right: 30, bottom: 30, left: 66 },
         tooltip: {
           trigger: "axis",
           ...baseTooltip(p),
@@ -78,7 +106,7 @@ function CurveChart({
         legend: { ...baseLegend(p), top: 0, left: 0, type: "scroll" },
         xAxis: {
           type: "value",
-          min: -90,
+          min: xMin,
           max: 0,
           ...baseAxis(p),
           axisLabel: { ...baseAxis(p).axisLabel, formatter: (v: number) => `${v}` },
@@ -127,7 +155,7 @@ function CurveChart({
                   itemStyle: { color, borderColor: halo, borderWidth: 1.5 },
                   label: {
                     show: true,
-                    position: "right" as const,
+                    position: tail.days <= 12 ? ("left" as const) : ("right" as const),
                     distance: 7,
                     formatter: `{c|${tail.code}}  {v|${tail.val}${unit}}\n{d|距到期 ${tail.days} 交易日}`,
                     backgroundColor: theme === "light" ? "rgba(255,255,255,0.92)" : "rgba(10,16,27,0.9)",
@@ -150,8 +178,8 @@ function CurveChart({
         }),
       };
     };
-  }, [data, theme, decimals, unit]);
-  const ref = useEChart(build, [data, decimals, unit], theme);
+  }, [data, theme, decimals, unit, xMin]);
+  const ref = useEChart(build, [data, decimals, unit, xMin], theme);
   return <div ref={ref} className="echart chart-wrap" style={{ height: 360 }} />;
 }
 

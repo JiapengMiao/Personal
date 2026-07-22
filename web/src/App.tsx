@@ -11,6 +11,8 @@ import { DynamicsSection, IndicatorDrawer, IndicatorLibrarySection } from "./com
 import { SpotQuotesSection } from "./components/SpotQuotes";
 import { HkTradeSection } from "./components/HkTrade";
 import { LhbSection, type LhbData } from "./components/Lhb";
+import { ShfePositioningSection } from "./components/ShfePositioning";
+import { PpWarehouseSection } from "./components/PpWarehouse";
 
 const THEME_KEY = "ag-monitor-theme";
 
@@ -46,12 +48,15 @@ export default function App() {
       fetchJson<DashboardData["daily"]>("data/daily_recent.json"),
       fetchJson<DashboardData["positions"]>("data/positions_curve.json"),
       fetchJson<DashboardData["virtualRatio"]>("data/virtual_ratio.json"),
+      fetchJson<DashboardData["metalVirtualRatio"]>("data/metal_virtual_ratio.json"),
+      fetchJson<DashboardData["shfePositioning"]>("data/shfe_positioning.json"),
+      fetchJson<DashboardData["ppWarehouse"]>("data/pp_warehouse.json"),
       fetchJson<DashboardData["seasonality"]>("data/seasonality.json"),
       fetchJson<DashboardData["leaseRates"]>("data/lease_rates.json"),
     ])
-      .then(([monitoring, market, daily, positions, virtualRatio, seasonality, leaseRates]) => {
+      .then(([monitoring, market, daily, positions, virtualRatio, metalVirtualRatio, shfePositioning, ppWarehouse, seasonality, leaseRates]) => {
         if (!cancelled) {
-          setData({ monitoring, market, daily, positions, virtualRatio, seasonality, leaseRates });
+          setData({ monitoring, market, daily, positions, virtualRatio, metalVirtualRatio, shfePositioning, ppWarehouse, seasonality, leaseRates });
         }
       })
       .catch((e: Error) => {
@@ -156,9 +161,16 @@ export default function App() {
         <TrendsSection monitoring={data.monitoring} theme={theme} />
         <MarketSection market={data.market} theme={theme} />
         <DailySection daily={data.daily} theme={theme} onLoadHistory={loadDailyHistory} historyLoaded={historyLoaded} historyLoading={historyLoading} />
-        <PositionsSection positions={data.positions} virtualRatio={data.virtualRatio} theme={theme} />
+        <PositionsSection
+          positions={data.positions}
+          virtualRatio={data.virtualRatio}
+          metalVirtualRatio={data.metalVirtualRatio}
+          theme={theme}
+        />
+        <PpWarehouseSection data={data.ppWarehouse} theme={theme} />
         <SpotQuotesSection />
         <ComexSection daily={data.daily} theme={theme} />
+        <ShfePositioningSection data={data.shfePositioning} theme={theme} />
         <LhbSection data={lhb} />
         <HkTradeSection theme={theme} />
         <BasisSection theme={theme} />

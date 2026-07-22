@@ -50,6 +50,18 @@ const PRESETS = [
   { left: "AG2610", right: "AG2611", label: "AG2610-AG2611" },
 ];
 
+const CONTRACT_MONTH: Record<string, string> = {
+  F: "01", G: "02", H: "03", J: "04", K: "05", M: "06",
+  N: "07", Q: "08", U: "09", V: "10", X: "11", Z: "12",
+};
+
+function readableOverseasContract(code: string): string {
+  const match = code.match(/^([A-Z]+)([FGHJKMNQUVXZ])(\d{2})E?\.[A-Z]+$/);
+  if (!match) return code;
+  const [, product, monthCode, year] = match;
+  return `${product}${year}${CONTRACT_MONTH[monthCode]}（${code}）`;
+}
+
 export function BasisSection({ theme }: { theme: ThemeMode }) {
   const [contracts, setContracts] = useState<MinContract[]>([]);
   const [leftCode, setLeftCode] = useState("AGTD");
@@ -59,7 +71,9 @@ export function BasisSection({ theme }: { theme: ThemeMode }) {
   const [error, setError] = useState<string | null>(null);
   const cacheRef = useRef(new Map<string, MinData>());
   const [profit, setProfit] = useState<ImportProfitData | null>(null);
+  const [dailyProfit, setDailyProfit] = useState<ImportProfitData | null>(null);
   const [profitLoading, setProfitLoading] = useState(true);
+  const [dailyProfitLoading, setDailyProfitLoading] = useState(true);
 
   useEffect(() => {
     fetch("data/min_contracts.json").then(r => r.json()).then((d: { contracts: MinContract[] }) => setContracts(d.contracts)).catch(() => {});
@@ -68,6 +82,7 @@ export function BasisSection({ theme }: { theme: ThemeMode }) {
   useEffect(() => {
     let cancelled = false;
     fetch("data/import_profit.json").then(r => r.json()).then((d: ImportProfitData) => { if (!cancelled) { setProfit(d); setProfitLoading(false); } }).catch(() => { if (!cancelled) setProfitLoading(false); });
+    fetch("data/import_profit_daily.json").then(r => r.json()).then((d: ImportProfitData) => { if (!cancelled) { setDailyProfit(d); setDailyProfitLoading(false); } }).catch(() => { if (!cancelled) setDailyProfitLoading(false); });
     return () => { cancelled = true; };
   }, []);
 
@@ -118,10 +133,23 @@ export function BasisSection({ theme }: { theme: ThemeMode }) {
       </article>
       <article className="panel chart-panel" style={{ marginTop: 14 }}>
         <div className="panel-heading">
-          <div><span>进出口盈亏 · ARBITRAGE</span><h3>进口盈亏 / 出口盈亏</h3></div>
-          <div className="panel-stat"><small>进口盈亏 &gt; 0 表示国内存在套利</small><strong>{profit ? `最新 ${formatNumber(profit.stats.importLatest, 1)}` : "—"}</strong></div>
+          <div><span>10D MINUTE · ARBITRAGE</span><h3>最近10个交易日进出口盈亏</h3></div>
+          <div className="panel-stat"><small>{profit ? `${readableOverseasContract(profit.foreignContract)} → ${profit.domesticContract} · ${readableOverseasContract(profit.fxContract)}` : "主力合约自动匹配"}</small><strong>{profit ? `最新 ${formatNumber(profit.stats.importLatest, 1)}` : "—"}</strong></div>
         </div>
         {profitLoading ? <div className="chart-loading">加载进出口盈亏数据…</div> : profit ? <ProfitChart data={profit} theme={theme} /> : <div className="chart-loading">数据不可用</div>}
+        {profit && <div className="chart-note formula-note">
+          <span>进口公式：{profit.importFormula}</span>
+          <span>出口公式：{profit.exportFormula}</span>
+          <span>主力识别：{profit.selectionMethod}。</span>
+        </div>}
+      </article>
+      <article className="panel chart-panel" style={{ marginTop: 14 }}>
+        <div className="panel-heading">
+          <div><span>DAILY · ARBITRAGE</span><h3>日度进出口盈亏</h3></div>
+          <div className="panel-stat"><small>{dailyProfit ? `${readableOverseasContract(dailyProfit.foreignContract)} → ${dailyProfit.domesticContract} · ${readableOverseasContract(dailyProfit.fxContract)}` : "沿用分钟主力合约对"}</small><strong>{dailyProfit ? `最新 ${formatNumber(dailyProfit.stats.importLatest, 1)}` : "—"}</strong></div>
+        </div>
+        {dailyProfitLoading ? <div className="chart-loading">加载日度进出口盈亏数据…</div> : dailyProfit ? <ProfitChart data={dailyProfit} theme={theme} /> : <div className="chart-loading">数据不可用</div>}
+        {dailyProfit && <p className="chart-note">进口、出口公式与10日分钟级一致；日度外汇限定季度主力月（3/6/9/12），当前使用 {readableOverseasContract(dailyProfit.fxContract)}。</p>}
       </article>
     </section>
   );

@@ -336,6 +336,8 @@ main { width: min(1440px, calc(100% - 48px)); margin: 0 auto; position: relative
 
 .chart-wrap { position: relative; width: 100%; min-width: 0; margin-top: 10px; }
 .chart-note { margin: 12px 0 0; color: var(--weak); font-size: 13.5px; line-height: 1.75; }
+.formula-note { display: grid; gap: 2px; }
+.formula-note span { display: block; overflow-wrap: anywhere; }
 .echart { width: 100%; }
 .chart-loading {
   display: grid; place-items: center;
@@ -980,6 +982,13 @@ footer {
 
 /* ——— 龙虎榜 ——— */
 .lhb-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.lhb-controls { display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
+.lhb-date-picker { display: inline-flex; align-items: center; gap: 7px; color: var(--weak); font-family: var(--mono); font-size: 11.5px; }
+.lhb-date-picker input[type="date"] { min-width: 144px; border: 1px solid var(--edge); border-radius: 7px; background: var(--raised); color: var(--text); padding: 6px 9px 6px 10px; font: inherit; line-height: 1.35; cursor: pointer; color-scheme: dark; }
+.lhb-date-picker input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; opacity: .72; }
+.lhb-date-picker input[type="date"]:hover { border-color: var(--gold); }
+.lhb-date-picker input[type="date"]:focus-visible { outline: 2px solid color-mix(in srgb, var(--gold) 55%, transparent); outline-offset: 2px; }
+.light-mode .lhb-date-picker input[type="date"] { color-scheme: light; }
 .lhb-tab { background: var(--raised); border: 1px solid var(--edge); border-radius: 6px; color: var(--sub); padding: 5px 14px; font-size: 12.5px; font-family: var(--mono); cursor: pointer; transition: all .15s ease; }
 .lhb-tab:hover { border-color: var(--gold); color: var(--text); }
 .lhb-tab.active { background: var(--gold); color: #04070d; border-color: var(--gold); font-weight: 700; }
@@ -994,12 +1003,52 @@ footer {
 .lhb-table td.lhb-rank { color: var(--weak); width: 28px; text-align: center; }
 .lhb-table td.lhb-member { text-align: left; font-weight: 500; max-width: 120px; overflow: hidden; text-overflow: ellipsis; }
 .lhb-table tr:hover td { background: rgba(217,164,65,.04); }
+.lhb-table tbody tr.is-linked td { background: rgba(217,164,65,.15); box-shadow: inset 0 1px rgba(217,164,65,.18), inset 0 -1px rgba(217,164,65,.18); }
+.lhb-table tbody tr.is-linked td:first-child { box-shadow: inset 3px 0 var(--gold), inset 0 1px rgba(217,164,65,.18), inset 0 -1px rgba(217,164,65,.18); }
+.lhb-table tbody tr:focus-visible { outline: 2px solid color-mix(in srgb, var(--gold) 60%, transparent); outline-offset: -2px; }
 .light-mode .lhb-table tr:hover td { background: rgba(154,109,18,.04); }
+.light-mode .lhb-table tbody tr.is-linked td { background: rgba(154,109,18,.12); }
 .lhb-table .val-up { color: var(--up); }
 .lhb-table .val-down { color: var(--down); }
 .lhb-table tfoot td { padding: 7px 8px; text-align: right; border-top: 2px solid var(--edge); color: var(--text); font-size: 12px; }
 .lhb-table tfoot .lhb-member { text-align: left; color: var(--sub); font-weight: 600; }
 .lhb-table tfoot strong { font-weight: 700; }
 @media (max-width: 900px) { .lhb-grid { grid-template-columns: 1fr; } }
+
+/* Project-004 上期所会员持仓 */
+.positioning-summary-panel { margin-bottom: 14px; }
+.positioning-table-wrap { margin-top: 14px; overflow-x: auto; }
+.positioning-table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 12.5px; }
+.positioning-table th { padding: 8px 10px; color: var(--weak); background: var(--raised); border-bottom: 1px solid var(--edge); text-align: right; white-space: nowrap; }
+.positioning-table th:first-child { text-align: left; }
+.positioning-table td { padding: 9px 10px; color: var(--text); border-bottom: 1px solid var(--hairline); text-align: right; white-space: nowrap; }
+.positioning-table td:first-child { text-align: left; font-family: var(--sans); font-weight: 600; }
+.positioning-table tr:last-child td { border-bottom: 0; }
+.positioning-table .val-up { color: var(--up); }
+.positioning-table .val-down { color: var(--down); }
+.positioning-chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 1100px) { .positioning-chart-grid { grid-template-columns: 1fr; } }
+
+/* Project-005 广期所铂钯仓单 */
+.pp-stat-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; margin: 16px 0 8px; }
+.pp-stat-grid > div { padding: 10px 12px; border: 1px solid var(--hairline); border-radius: 8px; background: var(--raised); display: grid; gap: 3px; }
+.pp-stat-grid span { color: var(--weak); font-size: 11px; }
+.pp-stat-grid strong { color: var(--text); font-family: var(--mono); font-size: 17px; }
+.pp-stat-grid small { color: var(--weak); font-family: var(--mono); font-size: 10px; }
+.pp-stat-grid .val-up, .pp-location-table .val-up { color: var(--up); }
+.pp-stat-grid .val-down, .pp-location-table .val-down { color: var(--down); }
+.pp-location-panel { margin-top: 14px; }
+.pp-location-wrap { margin-top: 14px; overflow-x: auto; }
+.pp-location-table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 12px; }
+.pp-location-table th { padding: 7px 9px; text-align: right; color: var(--weak); background: var(--raised); border-bottom: 1px solid var(--edge); white-space: nowrap; }
+.pp-location-table th:first-child { text-align: left; }
+.pp-location-table td { padding: 7px 9px; text-align: right; color: var(--text); border-bottom: 1px solid var(--hairline); white-space: nowrap; }
+.pp-location-table td:first-child { text-align: left; font-family: var(--sans); font-weight: 500; }
+.pp-location-table tr:last-child td { border-bottom: 0; }
+.pp-type { display: inline-flex; padding: 2px 7px; border-radius: 999px; font-family: var(--sans); font-size: 10px; border: 1px solid var(--edge); }
+.pp-type.warehouse { color: var(--up); background: color-mix(in srgb, var(--up) 9%, transparent); }
+.pp-type.factory { color: var(--down); background: color-mix(in srgb, var(--down) 9%, transparent); }
+@media (max-width: 900px) { .pp-stat-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .pp-stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 

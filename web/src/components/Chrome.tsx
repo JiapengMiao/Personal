@@ -39,6 +39,8 @@ export const NAV_ITEMS = [
   { id: "market", label: "市场" },
   { id: "daily", label: "库存" },
   { id: "positions", label: "持仓" },
+  { id: "pp-warehouse", label: "铂钯仓单" },
+  { id: "shfe-positioning", label: "上期持仓" },
   { id: "lhb", label: "龙虎" },
   { id: "hktrade", label: "贸易" },
   { id: "basis", label: "基差" },
@@ -220,7 +222,7 @@ export function Methodology() {
         <h3>统一计量</h3>
         <p>
           白银库存统一为吨（金衡盎司 ÷ 32,150.7 换算）；虚实比 = 持仓量 × 15 千克 ÷ 注册仓单；
-          基差 = Ag(T+D) − 对应期货合约（元/千克）；进口盈亏 = Ag(T+D) − 伦敦银人民币到岸价 × 1.13（含增值税）。
+          基差 = Ag(T+D) − 对应期货合约（元/千克）；进口盈亏 = 晚外盘主力一个月的内盘期货 −（外盘主力期货 − 0.2）÷ 31.1035 × 季月外汇价格 × 1000 × 1.13；出口盈亏 = 外盘主力期货 ÷ 31.1035 × 季月外汇价格 × 1000 − Ag(T+D) ÷ 1.13。
         </p>
       </article>
       <article>

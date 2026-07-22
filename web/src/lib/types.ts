@@ -177,7 +177,105 @@ export interface CurveContract {
 export interface CurveData {
   generatedAt?: string;
   formula?: string;
+  label?: string;
+  symbol?: string;
+  asOfDate?: string;
+  windowTradingDays?: number;
   contracts: CurveContract[];
+}
+
+export interface MetalVirtualRatioData {
+  generatedAt?: string;
+  source?: {
+    workbook: string;
+    warehouseSheet: string;
+    contractSheet: string;
+  };
+  qualityNotes?: string[];
+  metals: {
+    pt: CurveData;
+    pd: CurveData;
+  };
+}
+
+// ——— shfe_positioning.json（Project-004） ———
+export interface PositioningSummaryRow {
+  category: string;
+  label: string;
+  long: number;
+  longChange: number;
+  short: number;
+  shortChange: number;
+}
+
+export interface ShfePositioningData {
+  generatedAt: string;
+  asOfDate: string;
+  source: {
+    project: string;
+    rankingPattern: string;
+    sgeFile: string;
+  };
+  quality: {
+    shfeTradingDays: number;
+    sgeTradingDays: number;
+    commonTradingDays: number;
+    notes: string[];
+  };
+  summary: PositioningSummaryRow[];
+  nonFuturesTrend: {
+    dates: string[];
+    longLots: number[];
+    shortLots: number[];
+    netLots: number[];
+  };
+  combinedTrend: {
+    dates: string[];
+    shfeLongTons: number[];
+    shfeShortTons: number[];
+    sgeOpenInterestTons: number[];
+  };
+}
+
+// ——— pp_warehouse.json（Project-005） ———
+export interface PpWarehouseLocation {
+  code: string;
+  name: string;
+  type: "仓库" | "厂库";
+  quantityKg: number;
+  registeredKg: number;
+  cancelledKg: number;
+  changeKg: number;
+}
+
+export interface PpWarehouseMetal {
+  label: string;
+  symbol: string;
+  dates: string[];
+  warehouseKg: number[];
+  factoryKg: number[];
+  totalKg: number[];
+  registeredKg: number[];
+  cancelledKg: number[];
+  netChangeKg: number[];
+  latest: {
+    date: string;
+    warehouseKg: number;
+    factoryKg: number;
+    totalKg: number;
+    registeredKg: number;
+    cancelledKg: number;
+    netChangeKg: number;
+  };
+  locations: PpWarehouseLocation[];
+}
+
+export interface PpWarehouseData {
+  generatedAt: string;
+  asOfDate: string;
+  source: { project: string; file: string; unit: string };
+  quality: { rowCount: number; notes: string[] };
+  metals: { pt: PpWarehouseMetal; pd: PpWarehouseMetal };
 }
 
 // ——— basis_*.json ———
@@ -209,6 +307,17 @@ export interface ImportProfitStats {
 
 export interface ImportProfitData {
   generatedAt?: string;
+  frequency: "minute" | "daily";
+  selectionMethod: string;
+  foreignContract: string;
+  domesticContract: string;
+  fxContract: string;
+  mainQuoteCount: number;
+  windowTradingDays?: number;
+  windowStart?: string;
+  windowEnd?: string;
+  importFormula: string;
+  exportFormula: string;
   times: string[];
   importProfit: number[];
   exportProfit: number[];
@@ -236,6 +345,9 @@ export interface DashboardData {
   daily: DailyData;
   positions: CurveData;
   virtualRatio: CurveData;
+  metalVirtualRatio: MetalVirtualRatioData;
+  shfePositioning: ShfePositioningData;
+  ppWarehouse: PpWarehouseData;
   seasonality: SeasonalityData;
   leaseRates: LeaseRatesData;
 }

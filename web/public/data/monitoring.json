@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-19T09:52:47.776Z",
-  "asOfDate": "2026-07-19",
+  "generatedAt": "2026-07-22T02:21:11.018Z",
+  "asOfDate": "2026-07-21",
   "overallPulse": {
     "score": 0.4,
     "status": "偏紧",
@@ -695,40 +695,32 @@
       "theme": "供应与投资",
       "role": "库存",
       "name": "交易所及伦敦可用库存",
-      "period": "2026-07-17",
-      "value": 11208.3,
-      "priorPeriod": "2026-07-16",
-      "priorValue": 11155,
+      "period": "2026-07-20",
+      "value": 11196.2,
+      "priorPeriod": "2026-07-17",
+      "priorValue": 11208.4,
       "unit": "吨",
       "direction": "越低越利多",
       "upperThreshold": 500,
       "lowerThreshold": -500,
       "thresholdNote": "期间变动 ±500 吨",
-      "score": -1,
-      "status": "偏利空",
-      "tone": "negative",
+      "score": 1,
+      "status": "偏利多",
+      "tone": "positive",
       "dataStatus": "已接入",
       "frequency": "日度",
-      "updatedAt": "2026-07-19",
+      "updatedAt": "2026-07-20",
       "sourceLabel": "Wind 万得（日频行情与库存）",
       "sourceUrl": "https://www.wind.com.cn/",
       "note": "建议分COMEX注册库存、LBMA库存和ETF托管库存记录。 COMEX 库存（金衡制原始单位已换算为吨）+ 上期所仓单（千克换算为吨），Wind 日频。",
       "history": [
         {
-          "period": "2026-05-20",
-          "kind": "actual",
-          "value": 10819,
-          "delta": null,
-          "score": null,
-          "status": "基线"
-        },
-        {
           "period": "2026-05-21",
           "kind": "actual",
           "value": 10776.4,
-          "delta": -42.6,
-          "score": 1,
-          "status": "偏利多"
+          "delta": null,
+          "score": null,
+          "status": "基线"
         },
         {
           "period": "2026-05-22",
@@ -757,8 +749,8 @@
         {
           "period": "2026-05-28",
           "kind": "actual",
-          "value": 10832,
-          "delta": 18.5,
+          "value": 10831.9,
+          "delta": 18.4,
           "score": -1,
           "status": "偏利空"
         },
@@ -766,15 +758,15 @@
           "period": "2026-05-29",
           "kind": "actual",
           "value": 10820.8,
-          "delta": -11.2,
+          "delta": -11.1,
           "score": 1,
           "status": "偏利多"
         },
         {
           "period": "2026-06-01",
           "kind": "actual",
-          "value": 10822.5,
-          "delta": 1.7,
+          "value": 10822.6,
+          "delta": 1.8,
           "score": -1,
           "status": "偏利空"
         },
@@ -782,7 +774,7 @@
           "period": "2026-06-02",
           "kind": "actual",
           "value": 10870.5,
-          "delta": 48,
+          "delta": 47.9,
           "score": -1,
           "status": "偏利空"
         },
@@ -853,8 +845,8 @@
         {
           "period": "2026-06-15",
           "kind": "actual",
-          "value": 10823.3,
-          "delta": 4.1,
+          "value": 10823.4,
+          "delta": 4.2,
           "score": -1,
           "status": "偏利空"
         },
@@ -862,22 +854,22 @@
           "period": "2026-06-16",
           "kind": "actual",
           "value": 10857.5,
-          "delta": 34.2,
+          "delta": 34.1,
           "score": -1,
           "status": "偏利空"
         },
         {
           "period": "2026-06-17",
           "kind": "actual",
-          "value": 10836.8,
-          "delta": -20.7,
+          "value": 10836.9,
+          "delta": -20.6,
           "score": 1,
           "status": "偏利多"
         },
         {
           "period": "2026-06-18",
           "kind": "actual",
-          "value": 10862.4,
+          "value": 10862.5,
           "delta": 25.6,
           "score": -1,
           "status": "偏利空"
@@ -886,7 +878,7 @@
           "period": "2026-06-22",
           "kind": "actual",
           "value": 10889.4,
-          "delta": 27,
+          "delta": 26.9,
           "score": -1,
           "status": "偏利空"
         },
@@ -933,8 +925,8 @@
         {
           "period": "2026-06-30",
           "kind": "actual",
-          "value": 10855.3,
-          "delta": 7.5,
+          "value": 10855.4,
+          "delta": 7.6,
           "score": -1,
           "status": "偏利空"
         },
@@ -942,7 +934,7 @@
           "period": "2026-07-01",
           "kind": "actual",
           "value": 10854.7,
-          "delta": -0.6,
+          "delta": -0.7,
           "score": 1,
           "status": "偏利多"
         },
@@ -957,8 +949,8 @@
         {
           "period": "2026-07-06",
           "kind": "actual",
-          "value": 10888.5,
-          "delta": 9.1,
+          "value": 10888.6,
+          "delta": 9.2,
           "score": -1,
           "status": "偏利空"
         },
@@ -966,7 +958,7 @@
           "period": "2026-07-07",
           "kind": "actual",
           "value": 10984.3,
-          "delta": 95.8,
+          "delta": 95.7,
           "score": -1,
           "status": "偏利空"
         },
@@ -1021,18 +1013,26 @@
         {
           "period": "2026-07-16",
           "kind": "actual",
-          "value": 11155,
-          "delta": -1.9,
+          "value": 11155.1,
+          "delta": -1.8,
           "score": 1,
           "status": "偏利多"
         },
         {
           "period": "2026-07-17",
           "kind": "actual",
-          "value": 11208.3,
+          "value": 11208.4,
           "delta": 53.3,
           "score": -1,
           "status": "偏利空"
+        },
+        {
+          "period": "2026-07-20",
+          "kind": "actual",
+          "value": 11196.2,
+          "delta": -12.2,
+          "score": 1,
+          "status": "偏利多"
         }
       ]
     },
