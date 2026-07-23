@@ -10,17 +10,17 @@ import { BasisSection, LeaseSection, SeasonalitySection } from "./components/Bas
 import { DynamicsSection, IndicatorDrawer, IndicatorLibrarySection } from "./components/Library";
 import { SpotQuotesSection } from "./components/SpotQuotes";
 import { HkTradeSection } from "./components/HkTrade";
+import { WorldTradeSection } from "./components/WorldTrade";
 import { LhbSection, type LhbData } from "./components/Lhb";
 import { ShfePositioningSection } from "./components/ShfePositioning";
 import { PpWarehouseSection } from "./components/PpWarehouse";
 import { SectionHeading } from "./components/shared";
+import { fetchData } from "./lib/data";
 
 const THEME_KEY = "ag-monitor-theme";
 
 async function fetchJson<T>(url: string): Promise<T> {
-  const r = await fetch(url);
-  if (!r.ok) throw new Error(`${url}: HTTP ${r.status}`);
-  return r.json() as Promise<T>;
+  return fetchData<T>(url);
 }
 
 export default function App() {
@@ -184,11 +184,12 @@ export default function App() {
           <SectionHeading
             index="07"
             title="贸易、现货基差与进出口盈亏"
-            desc="香港白银进出口 / 现货基差报价 / 分钟与日度基差 / 盈亏季节性"
+            desc="香港及美英印白银进出口 / 现货基差报价 / 分钟与日度基差 / 盈亏季节性"
             id="trade-basis"
           />
           <div className="section-group-content">
             <HkTradeSection theme={theme} />
+            <WorldTradeSection theme={theme} />
             <SpotQuotesSection />
             <BasisSection theme={theme} />
             <SeasonalitySection data={data.seasonality} asOfDate={data.daily.asOfDate} theme={theme} />

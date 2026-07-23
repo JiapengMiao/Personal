@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { SectionHeading } from "./shared";
+import { fetchData } from "../lib/data";
 
 interface QuoteRow {
   name: string;
@@ -40,11 +41,7 @@ export function SpotQuotesSection() {
   const [selectedDate, setSelectedDate] = useState<string>("");
 
   useEffect(() => {
-    fetch("data/spot_quotes.json")
-      .then((r) => {
-        if (!r.ok) throw new Error(`HTTP ${r.status}`);
-        return r.json();
-      })
+    fetchData<SpotQuotesAll>("data/spot_quotes.json")
       .then((d: SpotQuotesAll) => {
         setData(d);
         if (d.dates.length) setSelectedDate(d.dates[d.dates.length - 1]);

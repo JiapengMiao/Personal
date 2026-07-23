@@ -4,6 +4,7 @@ import { baseAxis, baseLegend, baseTooltip, echarts, getPalette, zoomFill, type 
 import { useEChart } from "../lib/useEChart";
 import { SectionHeading } from "./shared";
 import { formatNumber, lastNonNull } from "../lib/format";
+import { fetchData } from "../lib/data";
 
 interface WindowStats { mean: number | null; subset: number[]; }
 
@@ -50,7 +51,6 @@ const PRESETS = [
   { left: "AG2610", right: "AG2611", label: "AG2610-AG2611" },
 ];
 
-const PROFIT_DATA_VERSION = "20260722-general-export";
 
 const CONTRACT_MONTH: Record<string, string> = {
   F: "01", G: "02", H: "03", J: "04", K: "05", M: "06",
@@ -78,13 +78,13 @@ export function BasisSection({ theme }: { theme: ThemeMode }) {
   const [dailyProfitLoading, setDailyProfitLoading] = useState(true);
 
   useEffect(() => {
-    fetch("data/min_contracts.json").then(r => r.json()).then((d: { contracts: MinContract[] }) => setContracts(d.contracts)).catch(() => {});
+    fetchData<{ contracts: MinContract[] }>("data/min_contracts.json").then((d: { contracts: MinContract[] }) => setContracts(d.contracts)).catch(() => {});
   }, []);
 
   useEffect(() => {
     let cancelled = false;
-    fetch(`data/import_profit.json?v=${PROFIT_DATA_VERSION}`).then(r => r.json()).then((d: ImportProfitData) => { if (!cancelled) { setProfit(d); setProfitLoading(false); } }).catch(() => { if (!cancelled) setProfitLoading(false); });
-    fetch(`data/import_profit_daily.json?v=${PROFIT_DATA_VERSION}`).then(r => r.json()).then((d: ImportProfitData) => { if (!cancelled) { setDailyProfit(d); setDailyProfitLoading(false); } }).catch(() => { if (!cancelled) setDailyProfitLoading(false); });
+    fetchData<ImportProfitData>("data/import_profit.json").then((d: ImportProfitData) => { if (!cancelled) { setProfit(d); setProfitLoading(false); } }).catch(() => { if (!cancelled) setProfitLoading(false); });
+    fetchData<ImportProfitData>("data/import_profit_daily.json").then((d: ImportProfitData) => { if (!cancelled) { setDailyProfit(d); setDailyProfitLoading(false); } }).catch(() => { if (!cancelled) setDailyProfitLoading(false); });
     return () => { cancelled = true; };
   }, []);
 
@@ -95,7 +95,7 @@ export function BasisSection({ theme }: { theme: ThemeMode }) {
     const fetchMin = (code: string): Promise<MinData> => {
       const cached = cacheRef.current.get(code);
       if (cached) return Promise.resolve(cached);
-      return fetch(`data/min_${code}.json`).then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); }).then((d: MinData) => { cacheRef.current.set(code, d); return d; });
+      return fetchData<MinData>(`data/min_${code}.json`).then((d: MinData) => { cacheRef.current.set(code, d); return d; });
     };
     Promise.all([fetchMin(leftCode), fetchMin(rightCode)]).then(([a, b]) => {
       if (cancelled) return;

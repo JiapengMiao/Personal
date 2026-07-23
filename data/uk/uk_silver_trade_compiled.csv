@@ -1,0 +1,18 @@
+﻿period_type,period,flow,import_tonnes,export_tonnes,net_import_tonnes,source,notes,confidence,series
+month,2025-01,both,363.8,2457.0,-2093.2,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
+month,2025-02,both,158.5,1658.6,-1500.0,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
+month,2025-03,both,234.9,766.9,-532.0,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
+month,2025-04,both,641.1,297.4,343.8,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
+month,2025-05,both,704.3,241.4,463.0,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
+month,2025-06,both,589.4,1.2,588.1,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
+month,2025-07,both,512.1,98.9,413.2,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
+month,2025-08,both,395.3,25.8,369.6,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
+month,2025-09,both,896.8,609.9,286.9,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
+month,2025-10,both,2199.5,643.2,1556.3,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
+month,2025-11,both,795.9,100.2,695.8,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
+month,2025-12,both,1002.3,159.5,842.8,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
+month,2026-01,both,1309.6,1115.3,194.2,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
+month,2026-02,both,1197.4,1800.4,-603.0,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
+month,2026-03,both,869.0,697.8,171.1,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
+month,2026-04,both,337.9,492.7,-154.7,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
+month,2026-05,both,210.1,36.7,173.4,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100

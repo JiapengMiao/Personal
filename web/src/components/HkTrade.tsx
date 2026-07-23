@@ -3,6 +3,7 @@ import { baseAxis, baseLegend, baseTooltip, echarts, getPalette, hexToRgba, zoom
 import { useEChart } from "../lib/useEChart";
 import { SectionHeading } from "./shared";
 import { formatNumber } from "../lib/format";
+import { fetchData } from "../lib/data";
 
 // ——— 07 香港白银进出口 · 月度 ———
 
@@ -30,11 +31,7 @@ export function HkTradeSection({ theme }: { theme: ThemeMode }) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("data/hk_trade.json")
-      .then((r) => {
-        if (!r.ok) throw new Error(`HTTP ${r.status}`);
-        return r.json();
-      })
+    fetchData<HkTradeData>("data/hk_trade.json")
       .then((d: HkTradeData) => setData(d))
       .catch((e: Error) => setError(e.message));
   }, []);

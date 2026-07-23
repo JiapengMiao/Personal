@@ -1714,5 +1714,18 @@
     "volume_kg": "355736",
     "turnover_yuan": "5156210730",
     "open_interest": "2977282"
+  },
+  {
+    "date": "2026-07-23",
+    "open": "14488.00",
+    "high": "14870.00",
+    "low": "14384.00",
+    "close": "14494.00",
+    "change": "0",
+    "change_pct": "0.00%",
+    "avg_price": "14617.00",
+    "volume_kg": "390902",
+    "turnover_yuan": "5714093674",
+    "open_interest": "3008444"
   }
 ]

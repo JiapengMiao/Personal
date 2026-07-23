@@ -12,3 +12,6 @@ _check_pits.py
 conversation_logs/
 **/*对话记录*
 **/conversation*
+
+# UK BDS bulk archives (~134MB, re-downloadable from uktradeinfo.com)
+data/uk/_*.zip

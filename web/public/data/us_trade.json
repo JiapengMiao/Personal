@@ -1,0 +1,82 @@
+{
+  "generatedAt": "2026-07-23T18:39:27+08:00",
+  "country": "US",
+  "source": "USGS silver content (primary) · Comtrade HS7106 / WSS bullion cross-check",
+  "unit": "吨",
+  "basis": "net_import",
+  "netImportFormula": "进口 − 出口（正值 = 净流入美国）",
+  "primarySeries": "usgs_silver_content",
+  "asOf": "2025",
+  "years": [
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025"
+  ],
+  "imports": [
+    5930,
+    6160,
+    5040,
+    4840,
+    4760,
+    6730,
+    6160,
+    4490,
+    4950,
+    4430,
+    7600
+  ],
+  "exports": [
+    817,
+    289,
+    157,
+    604,
+    220,
+    141,
+    137,
+    276,
+    73,
+    113,
+    300
+  ],
+  "netImport": [
+    5113.0,
+    5871.0,
+    4883.0,
+    4236.0,
+    4540.0,
+    6589.0,
+    6023.0,
+    4214.0,
+    4877.0,
+    4317.0,
+    7300.0
+  ],
+  "partialYears": {
+    "2025": "USGS MCS 2026 preliminary estimate"
+  },
+  "stats": {
+    "latestCompleteYear": 2024,
+    "latestImport": 4430,
+    "latestExport": 113,
+    "latestNetImport": 4317.0,
+    "ytdYear": 2025,
+    "ytdImport": 7600,
+    "ytdExport": 300,
+    "ytdNetImport": 7300.0,
+    "ytdNote": "全年初估 e，非 YTD",
+    "peakImport": 7600,
+    "peakImportYear": 2025,
+    "peakNetImport": 7300.0,
+    "peakNetImportYear": 2025
+  },
+  "partners": "进口主源：墨西哥、加拿大等",
+  "disclaimer": "主序列为 USGS 银含量（含矿石/精矿/精炼/多雷等，不含硬币与废料）。与纯 HS7106 毛重、WSS 金条口径不同，不可直接横向加总。2025 为 MCS 2026 初估，可修订。"
+}

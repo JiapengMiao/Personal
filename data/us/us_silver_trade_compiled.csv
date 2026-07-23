@@ -1,0 +1,18 @@
+﻿period_type,period,flow,import_tonnes,export_tonnes,net_import_tonnes,source,notes,confidence,series
+calendar_year,2015,both,5930,817,5113.0,USGS MCS / Historical Statistics,USGS hist,high,usgs_silver_content
+calendar_year,2016,both,6160,289,5871.0,USGS MCS / Historical Statistics,USGS hist,high,usgs_silver_content
+calendar_year,2017,both,5040,157,4883.0,USGS MCS / Historical Statistics,USGS hist,high,usgs_silver_content
+calendar_year,2018,both,4840,604,4236.0,USGS MCS / Historical Statistics,USGS hist,high,usgs_silver_content
+calendar_year,2019,both,4760,220,4540.0,USGS MCS / Historical Statistics,USGS hist,high,usgs_silver_content
+calendar_year,2020,both,6730,141,6589.0,USGS MCS / Historical Statistics,USGS MCS,high,usgs_silver_content
+calendar_year,2021,both,6160,137,6023.0,USGS MCS / Historical Statistics,USGS MCS,high,usgs_silver_content
+calendar_year,2022,both,4490,276,4214.0,USGS MCS / Historical Statistics,USGS MCS revised,high,usgs_silver_content
+calendar_year,2023,both,4950,73,4877.0,USGS MCS / Historical Statistics,USGS MCS revised,high,usgs_silver_content
+calendar_year,2024,both,4430,113,4317.0,USGS MCS / Historical Statistics,USGS MCS 2026,high,usgs_silver_content
+calendar_year,2025,both,7600,300,7300.0,USGS MCS / Historical Statistics,USGS MCS 2026 estimate e,medium,usgs_silver_content
+calendar_year,2020,both,8918.5,2622.0,6296.5,WITS/UN Comtrade HS7106,gross weight; different scope vs USGS content,high,comtrade_hs7106
+calendar_year,2021,both,8216.3,3236.2,4980.1,WITS/UN Comtrade HS7106,gross weight; different scope vs USGS content,high,comtrade_hs7106
+calendar_year,2022,both,7389.0,2333.6,5055.4,WITS/UN Comtrade HS7106,gross weight; different scope vs USGS content,high,comtrade_hs7106
+calendar_year,2023,both,7740.0,1730.8,6009.2,WITS/UN Comtrade HS7106,gross weight; different scope vs USGS content,high,comtrade_hs7106
+calendar_year,2024,both,5812.8,1464.4,4348.4,WITS/UN Comtrade HS7106,gross weight; different scope vs USGS content,high,comtrade_hs7106
+calendar_year,2024,both,4636,445,4191.0,Metals Focus / WSS,WSS 2025: imp -12% to 15y low; exp -34%,high,wss_bullion

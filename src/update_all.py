@@ -29,6 +29,33 @@ DIST = WEB / "dist"
 DOCS = ROOT / "docs"
 RUNS_DIR = ROOT / "output" / "update_runs"
 
+# 用户日常维护的主数据仍在 Project-010，更新前自动同步到本项目 data/wind
+P010_DATA = ROOT.parent / "Project-010-日度会议数据整理" / "data"
+
+
+def sync_p010_sources() -> None:
+    """把 010 中较新的 Wind 主工作簿与租赁利率表同步进 data/wind（仅当源更新时复制）。"""
+    if not P010_DATA.exists():
+        print(f"[skip] 010 数据目录不存在：{P010_DATA}")
+        return
+    pairs = [
+        (P010_DATA / "白银所有数据.xlsx", ROOT / "data" / "wind" / "白银所有数据.xlsx"),
+    ]
+    for src, dst in pairs:
+        if src.exists() and (not dst.exists() or src.stat().st_mtime > dst.stat().st_mtime):
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src, dst)
+            print(f"[sync] 010 主工作簿 → {dst.relative_to(ROOT)}（{datetime.fromtimestamp(src.stat().st_mtime):%m-%d %H:%M}）")
+    src_lease = P010_DATA / "租赁利率"
+    dst_lease = ROOT / "data" / "wind" / "租赁利率"
+    if src_lease.exists():
+        dst_lease.mkdir(parents=True, exist_ok=True)
+        for f in sorted(src_lease.glob("*.xlsx")):
+            dst_f = dst_lease / f.name
+            if not dst_f.exists() or f.stat().st_mtime > dst_f.stat().st_mtime:
+                shutil.copy2(f, dst_f)
+                print(f"[sync] 010 租赁利率 → {dst_f.relative_to(ROOT)}")
+
 
 def _latest(pattern: str) -> Path | None:
     matches = sorted(ROOT.glob(pattern))
@@ -120,6 +147,7 @@ def main() -> int:
             steps.append(sync_docs())
             write_report(started_at, sources, steps, "success")
             return 0
+        sync_p010_sources()
         sources = preflight()
         steps.append(run_step("生成看板数据", [sys.executable, str(ROOT / "src" / "build_dashboard_data.py")]))
 
@@ -131,6 +159,8 @@ def main() -> int:
             print(f"[SKIP] 共享报价源不存在，保留现有 spot_quotes.json: {spot_source}")
 
         steps.append(run_step("生成香港贸易数据", [sys.executable, str(ROOT / "src" / "build_hk_trade.py")]))
+        steps.append(run_step("生成英美贸易数据", [sys.executable, str(ROOT / "src" / "build_us_uk_silver_trade.py")]))
+        steps.append(run_step("生成龙虎榜数据", [sys.executable, str(ROOT / "src" / "build_lhb.py")]))
         if not args.data_only:
             node = shutil.which("node")
             if not node:

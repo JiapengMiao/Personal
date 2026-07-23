@@ -1,0 +1,36 @@
+period_type,period,flow,quantity_tonnes,value_usd_million,source,notes,confidence
+calendar_year,2015,import,8093,,Metals Focus / Business Standard,record at the time,medium
+calendar_year,2016,import,3000,,LiveMint / Business Standard,approx 3000-3500 after stock offload,medium
+calendar_year,2017,import,5133,,GFMS / Business Standard,range also cited ~5677,medium
+calendar_year,2018,import,6942,,GFMS estimate,+35% y/y,medium
+calendar_year,2019,import,5969,,Reuters citing industry,pre-pandemic,medium
+calendar_year,2020,import,2218,,Reuters citing industry,pandemic low,medium
+calendar_year,2021,import,2773,,Reuters citing industry,subdued recovery,medium
+calendar_year,2022,import,9450,,Metals Focus / Business Standard,all-time record,high
+calendar_year,2023,import,3574,,Silver Institute WSS 2025 / Metals Focus,114.9 Moz; also ~3625,high
+calendar_year,2024,import,7695,,Silver Institute WSS 2025 / Metals Focus,247.4 Moz; also ~7669,high
+calendar_year,2025,import,7222,,Silver Institute WSS 2026 / Metals Focus,232.2 Moz; -6% y/y,high
+fiscal_year,FY2024-25,import,,4800,Reuters citing govt,value only; prior year to FY25-26,medium
+fiscal_year,FY2025-26,import,7335,12000,Reuters citing govt,volume +42%; value +150% record,high
+month,2024-01to04,import,4172,,DeepDive / industry,already exceeded full 2023,medium
+month,2024-H1,import,4554,,Reuters,Jan-Jun,medium
+month,2024-JantoAug,import,5695,,Reuters / industry,base for 2025 comparison,medium
+month,2025-01to08,import,2580,,Reuters / industry,more than halved vs 2024 same period,medium
+month,2025-05,import,534,,Reuters YoY base / industry,also cited 534.3 or ~544,medium
+month,2025-06,import,197,,industry compilation,approx,low
+month,2025-08,import,410.8,451.6,Kitco citing trade data,value+volume,medium
+month,2025-09,import,,1310,Canara Bank trade data note,value only,medium
+month,2025-10,import,,2720,Canara Bank trade data note,value +529% y/y,medium
+month,2025-AprtoDec,import,,7770,Moneycontrol citing ministry,value +129% y/y; qty also up,medium
+month,2026-01,import,747,,WSS 2026 Metals Focus,24 Moz,high
+month,2026-01to02,import,1263,,WSS 2026 Metals Focus,40.6 Moz; +25% vs 10y avg,high
+month,2026-04,import,182,411,Deccan Chronicle / ET,value +157% y/y,medium
+month,2026-05,import,33,75.57,Reuters 2026-06-15 govt data,provisional; later revision also cited 46.8t; -94% vol,high
+month,2026-06,import,,60.17,CEIC / quick estimates,value only; volumes near halt,medium
+month,2026-YTD-midJul,import,1837,,MoneyMetals / industry,-16% y/y to mid-Jul,medium
+calendar_year,2020,export,217.9,160.7,WITS/UN Comtrade HS7106,kg converted,high
+calendar_year,2021,export,440.0,346.1,WITS/UN Comtrade HS7106,,high
+calendar_year,2022,export,94.7,46.7,WITS/UN Comtrade HS7106,,high
+calendar_year,2023,export,170.4,88.3,WITS/UN Comtrade HS7106,,high
+calendar_year,2024,export,524.9,417.4,WITS/UN Comtrade HS7106,,high
+calendar_year,2025,export,130.8,88.5,WITS/UN Comtrade HS7106,may be preliminary,medium

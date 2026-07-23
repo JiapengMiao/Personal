@@ -1,0 +1,121 @@
+{
+  "generatedAt": "2026-07-23T11:40:52+08:00",
+  "source": "Metals Focus/WSS + WITS/Comtrade + 印度商务部/路透等汇编 · HS7106",
+  "unit": "吨",
+  "asOf": "202607",
+  "frequency": "annual_primary",
+  "basis": "net_import",
+  "netImportFormula": "进口 − 出口（正值 = 白银净流入印度）",
+  "years": [
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+  ],
+  "imports": [
+    8093,
+    3000,
+    5133,
+    6942,
+    5969,
+    2218,
+    2773,
+    9450,
+    3574,
+    7695,
+    7222,
+    1837
+  ],
+  "exports": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    217.9,
+    440.0,
+    94.7,
+    170.4,
+    524.9,
+    130.8,
+    null
+  ],
+  "netImport": [
+    8093.0,
+    3000.0,
+    5133.0,
+    6942.0,
+    5969.0,
+    2000.1,
+    2333.0,
+    9355.3,
+    3403.6,
+    7170.1,
+    7091.2,
+    1837.0
+  ],
+  "partialYears": {
+    "2026": "约至7月中 · 行业YTD"
+  },
+  "monthly": {
+    "months": [
+      "2025-05",
+      "2025-06",
+      "2025-08",
+      "2026-01",
+      "2026-02",
+      "2026-04",
+      "2026-05"
+    ],
+    "imports": [
+      534.0,
+      197.0,
+      410.8,
+      747.0,
+      516.0,
+      182.0,
+      33.0
+    ],
+    "note": "稀疏月度进口：公开可得点；2026-05 为关税上调+限制后初值"
+  },
+  "events": [
+    {
+      "date": "2024-07-24",
+      "label": "关税 15%→6%",
+      "kind": "cut"
+    },
+    {
+      "date": "2026-05-13",
+      "label": "关税 6%→15% + 进口限制",
+      "kind": "hike"
+    }
+  ],
+  "stats": {
+    "latestCompleteYear": 2025,
+    "latestImport": 7222,
+    "latestExport": 130.8,
+    "latestNetImport": 7091.2,
+    "ytdYear": 2026,
+    "ytdImport": 1837,
+    "ytdExport": null,
+    "ytdNetImport": 1837.0,
+    "ytdNote": "约至7月中 · 行业YTD",
+    "ytdVsPriorYearImportPct": -74.6,
+    "peakNetImport": 9355.3,
+    "peakNetImportYear": 2022,
+    "peakImport": 9450,
+    "peakImportYear": 2022,
+    "fy2025_26_import_t": 7335,
+    "fy2025_26_import_usd_bn": 12.0,
+    "may2026_import_t": 33.0
+  },
+  "disclaimer": "口径以净进口为基准：净进口=进口−出口。年频进口以 Metals Focus/WSS 为主；出口为 Comtrade HS7106；2015–2019 缺出口数据时净进口暂按进口计（出口量级通常远小于进口）。2026 为不完整年（约至7月中 YTD≈1837吨，行业汇编，同比约-16%），柱体仅供对比，不可当全年。月度为公开汇编非完整官方序列。"
+}
