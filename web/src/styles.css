@@ -202,22 +202,32 @@ body:has(.dashboard-shell.light-mode) { background: #f5f7f9; }
 .product-tabs {
   display: flex;
   align-items: center;
-  gap: 3px;
-  padding: 3px;
+  gap: 5px;
+  padding: 5px;
   border: 1px solid var(--hairline);
-  border-radius: 9px;
-  background: var(--panel);
+  border-radius: 12px;
+  background: var(--raised);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
 }
 .product-tabs a {
-  padding: 6px 9px;
-  border-radius: 6px;
+  min-width: 82px;
+  padding: 11px 18px;
+  border-radius: 8px;
   color: var(--weak);
-  font-size: 12px;
+  font-size: 16px;
+  line-height: 1.2;
   font-family: var(--mono);
+  font-weight: 650;
+  text-align: center;
   transition: color .2s ease, background .2s ease;
 }
 .product-tabs a:hover { color: var(--text); }
-.product-tabs a.active { color: #04070d; background: var(--gold); font-weight: 700; }
+.product-tabs a.active {
+  color: #04070d;
+  background: var(--gold);
+  box-shadow: 0 3px 10px rgba(217, 164, 65, .24);
+  font-weight: 800;
+}
 .top-actions { display: flex; align-items: center; gap: 8px; }
 .data-clock { color: var(--weak); font-family: var(--mono); font-size: 12px; letter-spacing: .04em; white-space: nowrap; }
 .icon-button, .download-button {
@@ -975,6 +985,10 @@ footer {
   .threshold-labels { flex-direction: column; align-items: flex-start; gap: 4px; }
   footer { flex-direction: column; gap: 8px; }
   .stat-cards { grid-template-columns: 1fr; }
+}
+@media (max-width: 620px) {
+  .product-tabs { order: 3; width: 100%; justify-content: stretch; }
+  .product-tabs a { min-width: 0; flex: 1; padding: 9px 6px; font-size: 13px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
