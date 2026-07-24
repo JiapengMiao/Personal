@@ -69,6 +69,86 @@ export function PositionsSection({
   );
 }
 
+// ——— 白银页：白银持仓量与虚实比 ———
+export function SilverPositionsSection({
+  positions,
+  virtualRatio,
+  theme,
+}: {
+  positions: CurveData;
+  virtualRatio: CurveData;
+  theme: ThemeMode;
+}) {
+  return (
+    <section className="section-block" id="positions">
+      <SectionHeading index="03" title="持仓量与虚实比" desc="白银分合约到期前持仓量与虚实比走势" id="positions" />
+      <div className="stack-grid">
+        <article className="panel chart-panel">
+          <div className="panel-heading">
+            <div>
+              <span>持仓 · OPEN INTEREST</span>
+              <h3>白银到期前持仓量（手）</h3>
+            </div>
+          </div>
+          <CurveChart data={positions} theme={theme} decimals={0} unit="手" />
+        </article>
+        <article className="panel chart-panel">
+          <div className="panel-heading">
+            <div>
+              <span>虚实比 · RATIO</span>
+              <h3>白银到期前虚实比（倍）</h3>
+            </div>
+          </div>
+          <CurveChart data={virtualRatio} theme={theme} decimals={2} unit="倍" xMin={-90} />
+          <p className="chart-note">
+            口径：白银虚实比 = 持仓量 × 15 千克 ÷ 注册仓单；横轴为距最后交易日的交易日数，展示最近 90 个交易日
+            {virtualRatio.asOfDate ? "；数据截至 " + virtualRatio.asOfDate : ""}。
+          </p>
+        </article>
+      </div>
+    </section>
+  );
+}
+
+// ——— 铂钯页：铂金 / 钯金虚实比 ———
+export function PpVirtualRatioSection({ metalVirtualRatio, theme }: { metalVirtualRatio: MetalVirtualRatioData; theme: ThemeMode }) {
+  const [metalKey, setMetalKey] = useState<"pt" | "pd">("pt");
+  const ratioData = metalVirtualRatio.metals[metalKey];
+  const metalLabel = metalKey === "pt" ? "铂金" : "钯金";
+  return (
+    <section className="section-block" id="pp-virtual-ratio">
+      <SectionHeading index="02" title="铂钯虚实比" desc="铂金 / 钯金分合约到期前虚实比走势" id="pp-virtual-ratio" />
+      <article className="panel chart-panel">
+        <div className="panel-heading">
+          <div>
+            <span>虚实比 · RATIO</span>
+            <h3>{metalLabel}到期前虚实比（倍）</h3>
+          </div>
+          <div className="lhb-tabs" role="tablist" aria-label="铂钯虚实比品种切换">
+            {(["pt", "pd"] as const).map((key) => (
+              <button
+                key={key}
+                type="button"
+                role="tab"
+                aria-selected={metalKey === key}
+                className={"lhb-tab" + (metalKey === key ? " active" : "")}
+                onClick={() => setMetalKey(key)}
+              >
+                {key === "pt" ? "铂金" : "钯金"}
+              </button>
+            ))}
+          </div>
+        </div>
+        <CurveChart data={ratioData} theme={theme} decimals={4} unit="倍" xMin={-120} />
+        <p className="chart-note">
+          口径：{metalLabel}虚实比 = 持仓量 × 1 千克 ÷ 注册仓单；横轴为距最后交易日的交易日数，展示最近 120 个交易日
+          {ratioData.asOfDate ? "；数据截至 " + ratioData.asOfDate : ""}。
+        </p>
+      </article>
+    </section>
+  );
+}
+
 function CurveChart({
   data,
   theme,

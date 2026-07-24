@@ -199,6 +199,25 @@ body:has(.dashboard-shell.light-mode) { background: #f5f7f9; }
   height: 2px;
   background: var(--gold);
 }
+.product-tabs {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px;
+  border: 1px solid var(--hairline);
+  border-radius: 9px;
+  background: var(--panel);
+}
+.product-tabs a {
+  padding: 6px 9px;
+  border-radius: 6px;
+  color: var(--weak);
+  font-size: 12px;
+  font-family: var(--mono);
+  transition: color .2s ease, background .2s ease;
+}
+.product-tabs a:hover { color: var(--text); }
+.product-tabs a.active { color: #04070d; background: var(--gold); font-weight: 700; }
 .top-actions { display: flex; align-items: center; gap: 8px; }
 .data-clock { color: var(--weak); font-family: var(--mono); font-size: 12px; letter-spacing: .04em; white-space: nowrap; }
 .icon-button, .download-button {
@@ -253,6 +272,12 @@ main { width: min(1440px, calc(100% - 48px)); margin: 0 auto; position: relative
 .hero-badge-stack { display: flex; flex-direction: column; gap: 3px; align-items: flex-start; }
 .badge-note { color: var(--weak); font-family: var(--mono); font-size: 11px; letter-spacing: .02em; }
 .hero-meta-note { color: var(--weak); font-family: var(--mono); font-size: 11px; letter-spacing: .02em; margin-top: 6px; padding-left: 2px; }
+.page-hero-solo { grid-template-columns: minmax(0, 1fr); gap: 0; }
+.monitoring-pulse-card { min-height: 180px; display: flex; flex-direction: column; justify-content: center; gap: 7px; }
+.monitoring-pulse-card > span { color: var(--weak); font-family: var(--mono); font-size: 12px; }
+.monitoring-pulse-card > b { color: var(--gold-bright); font: 700 32px/1 var(--mono); }
+.monitoring-pulse-value { color: var(--text); font-size: 32px; line-height: 1.1; }
+.page-footer { display: flex; justify-content: space-between; gap: 16px; }
 
 /* 紧张度仪表卡 */
 .pulse-card {

@@ -12,5 +12,13 @@ export default defineConfig({
   },
   build: {
     chunkSizeWarningLimit: 1200,
+    rollupOptions: {
+      input: {
+        index: "index.html",
+        silver: "silver/index.html",
+        platinumPalladium: "platinum-palladium/index.html",
+        monitoring: "monitoring/index.html",
+      },
+    },
   },
 });

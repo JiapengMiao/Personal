@@ -8,8 +8,12 @@ const BUILD_VERSION: string =
   typeof __BUILD_VERSION__ !== "undefined" ? __BUILD_VERSION__ : "dev";
 
 export function dataUrl(path: string): string {
-  const sep = path.includes("?") ? "&" : "?";
-  return `${path}${sep}v=${encodeURIComponent(BUILD_VERSION)}`;
+ const sep = path.includes("?") ? "&" : "?";
+  // 三个静态入口页位于 /silver/、/platinum-palladium/、/monitoring/。
+  // 它们需要回到站点根目录读取同一套 data/*.json；根入口页则保持原相对路径。
+  const page = document.documentElement.dataset.dashboardPage;
+  const resolvedPath = page ? "../" + path.replace(/^\.\//, "") : path;
+  return resolvedPath + sep + "v=" + encodeURIComponent(BUILD_VERSION);
 }
 
 export async function fetchData<T>(path: string): Promise<T> {
