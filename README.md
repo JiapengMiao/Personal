@@ -21,12 +21,15 @@
 
 ## 当前状态
 
-- 最近一次全量基础数据更新：2026-07-24 09:33—09:36
+- 最近一次全量基础数据更新：2026-07-24 17:16—17:18（11/11 环节成功）
 - 2026-07-24 定向更新：香港贸易卡片补回可见国别标题；印度、美国、英国均改用官方连续月度数据
-- 更新结果：印度、美国、英国官方月度历史数据全部拉取并通过连续性、重复月份和净进口公式校验；update_all.py 统一更新全链路验证通过；已提交并推送（commit 39f2b66），EdgeOne Pages 已部署上线
+- 2026-07-24 研究记录：已完成秘鲁 HS7106 与镜像口径核验，但因量级较小且出口结构无法形成完整同口径表，原始研究保留于 `data/peru/`、`output/`，不在 07C 网页展示。
+- 更新结果：印度、美国、英国官方月度历史数据全部拉取并通过连续性、重复月份和净进口公式校验；本轮 `update_all.py` 统一更新、TypeScript 校验、Vite 生产构建和 `docs/` 同步全部通过。
 - 当前本地数据与功能：
-  - SGE、SHFE、GFEX、龙虎榜、现货报价、基差及租赁利率更新至 2026-07-23
+  - Wind 主工作簿与租赁利率已同步至 2026-07-24；SGE、SHFE、GFEX 与龙虎榜最新底稿为 2026-07-23
+  - 产业监测底稿最新为 2026-07-22，香港贸易原始表最新为 2026-07-21；页面已按现有底稿全量重建
   - 美、英、印三国白银贸易区块已接入 Part 07
+  - 全球银条流向已展示瑞士、英国、香港、美国、印度的 2025 年进出口伙伴结构（10 组、100 个伙伴记录）；秘鲁不在网页展示
   - 美国 USITC DataWeb / Census HS/HTS 7106 真实月度数据连续覆盖 1989-01 至 2026-05，共 449 个月；2026-06 尚未发布，页面保留空档
   - 英国 HMRC BDS CN8 71069100 真实月度数据连续覆盖 2016-01 至 2026-05，共 125 个月；2026-06 尚未发布，页面保留空档
   - 印度 TradeStat / DGCI&S HS 7106 月度进口、出口及净进口连续覆盖 2018-01 至 2026-05，共 101 个月、无缺月
@@ -53,7 +56,8 @@ Project-002-白银数据网页可视化/
 │   ├── monitoring/                 # 产业监测底稿
 │   ├── us/                         # 美国白银贸易
 │   ├── uk/                         # 英国白银贸易
-│   └── india/                      # 印度白银贸易
+│   ├── india/                      # 印度白银贸易
+│   └── peru/                       # 秘鲁伙伴结构：SUNAT 进口表与出口镜像样本
 ├── web/                            # Vite + React 前端
 │   └── public/data/                # 页面读取的 JSON
 ├── docs/                           # Pages 发布目录，仅放构建产物
@@ -145,6 +149,7 @@ npm run build
 | USITC DataWeb（美国 Census 官方贸易统计）HS/HTS 7106 | `src/fetch_us_trade_data.py`、`src/fetch_us_trade_history.py` | 1989 年起美国月度 CSV、`us_trade.json` |
 | HMRC UK Trade Info BDS archive CN8 71069100 | `src/fetch_uk_trade_data.py`、`src/fetch_uk_trade_history.py` | 2016 年起英国月度 CSV、`uk_trade.json` |
 | 印度 TradeStat / DGCI&S HS 7106 | `src/fetch_india_trade_data.py`、`src/preview_india_trade_chart.py` | 印度月度 CSV、`india_trade.json` |
+| SUNAT HS7106 年度税则号/国家 + 瑞士/美国/印度进口镜像 | `data/peru/` | 秘鲁口径研究底稿；当前不接入网页 |
 | 白银每日报价共享工作簿 | `src/extract_spot_quotes.py` | `spot_quotes.json` |
 
 美国贸易管道通过 DataWeb 公开报表一次取得 1989 年以来的 Census 月度第一数量，并分别汇总 GM（克）与 CGM（含量克）。英国贸易管道会下载 HMRC replacement archives，检查档案月份是否重叠；2026 年 1—4 月档案与只含 5 月的 `2605` 文件分开拼接，避免重复计数。旧年度汇编脚本会识别两条新主序列，不再覆盖。

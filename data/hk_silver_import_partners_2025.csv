@@ -1,0 +1,31 @@
+﻿flow,partner_en,tonnes,year,source
+import,CHINESE MAINLAND,4965.345
+import,KOREA,280.881
+import,RUSSIA,216.901
+import,JAPAN,110.404
+import,GERMANY,54.165
+import,USA,41.468
+import,SERBIA,39.677
+import,ARMENIA,37.032
+import,TAIWAN,34.752
+import,INDONESIA,30.434
+import,PHILIPPINES,24.245
+import,SWITZERLAND,24.17
+import,FRANCE,15.916
+import,AUSTRALIA,6.57
+import,SINGAPORE,6.07
+import,UNITED ARAB EMIRATES,6.004
+import,ITALY,4.24
+import,TAJIKISTAN,3.872
+import,UNITED KINGDOM,3.615
+import,CANADA,2.62
+import,SOUTH AFRICA,2.043
+import,THAILAND,1.355
+import,HONG KONG,0.952
+import,TURKIYE,0.918
+import,SPAIN,0.805
+import,NETHERLANDS,0.772
+import,POLAND,0.13
+import,HUNGARY,0.03
+import,INDIA,0.022
+import,PUERTO RICO,0.001

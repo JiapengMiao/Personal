@@ -1,0 +1,144 @@
+﻿flow,partner_en,tonnes,year,source
+export,United Kingdom,3146.867631
+export,Canada,868.600186
+export,Switzerland,337.670393
+export,India,333.269964
+export,Mexico,184.062358
+export,United Arab Emirates,155.675117
+export,Turkey,131.526382
+export,China,91.18454
+export,France,76.936713
+export,Taiwan,68.218764
+export,South Korea,67.303706
+export,Japan,51.538365
+export,Germany,41.392187
+export,Italy,37.402691
+export,Netherlands,26.844642
+export,Australia,24.073328
+export,Singapore,21.681362
+export,Malaysia,20.70316
+export,Cayman Islands,11.154593
+export,Hong Kong,11.02083
+export,Belgium,10.406335
+export,Portugal,7.573111
+export,Israel,6.657326
+export,Thailand,6.184106
+export,Spain,5.9303
+export,Romania,5.91161
+export,Costa Rica,4.420958
+export,Brazil,4.047356
+export,Hungary,2.886189
+export,Vietnam,2.843917
+export,Panama,2.233046
+export,Saudi Arabia,2.103009
+export,Indonesia,2.095807
+export,New Zealand,1.967247
+export,Colombia,1.890206
+export,Dominican Republic,1.845392
+export,South Africa,1.497129
+export,Poland,1.31537
+export,Ireland,0.86796
+export,Philippines,0.790005
+export,Morocco,0.744973
+export,Peru,0.611778
+export,Czechia (Czech Republic),0.492765
+export,Ecuador,0.386507
+export,Guatemala,0.335617
+export,Oman,0.290106
+export,Estonia,0.285382
+export,Chile,0.272363
+export,Honduras,0.233474
+export,Armenia,0.192142
+export,El Salvador,0.190573
+export,Finland,0.187409
+export,Argentina,0.153045
+export,Norway,0.143437
+export,Pakistan,0.127836
+export,Jordan,0.115325
+export,Trinidad and Tobago,0.104914
+export,Sweden,0.055571
+export,Bahrain,0.045954
+export,Venezuela,0.045788
+export,Kuwait,0.04536
+export,Bermuda,0.040415
+export,Austria,0.039443
+export,French Polynesia,0.032618
+export,Iraq,0.031284
+export,Egypt,0.022957
+export,Ukraine,0.022362
+export,Nicaragua,0.021848
+export,Tunisia,0.018
+export,Antigua and Barbuda,0.017693
+export,Sri Lanka,0.014998
+export,Lithuania,0.012887
+export,Mauritius,0.010293
+export,Serbia,0.008723
+export,Bahamas,0.007165
+export,Cameroon,0.006923
+export,Denmark,0.005667
+export,Suriname,0.005098
+export,Turks and Caicos Islands,0.004753
+export,Barbados,0.003709
+export,Belize,0.00251
+export,Sint Maarten,0.002144
+import,Mexico,3156.035164
+import,Canada,1041.636904
+import,South Korea,754.89283
+import,Kazakhstan,425.953598
+import,Germany,367.511892
+import,Poland,300.580648
+import,Japan,188.887488
+import,Chile,187.023985
+import,Belgium,129.534743
+import,Switzerland,128.76437
+import,Taiwan,120.83577
+import,United Kingdom,112.875478
+import,Australia,85.682928
+import,Uzbekistan,76.363502
+import,Sweden,76.172504
+import,Italy,62.607873
+import,Peru,58.628115
+import,India,47.082261
+import,Argentina,30.288752
+import,France,18.486515
+import,Colombia,13.295956
+import,Hungary,13.120129
+import,Turkey,9.742296
+import,Malaysia,4.941242
+import,Nicaragua,4.385815
+import,Brazil,4.262899
+import,Bulgaria,2.595309
+import,South Africa,2.053905
+import,Singapore,1.915293
+import,Israel,1.704981
+import,Czechia (Czech Republic),1.081513
+import,Netherlands,0.948055
+import,Russia,0.803
+import,Uganda,0.775862
+import,China,0.729614
+import,Spain,0.717169
+import,Panama,0.43997
+import,New Zealand,0.433688
+import,Ecuador,0.387057
+import,Romania,0.28
+import,Malta,0.27033
+import,Dominican Republic,0.201221
+import,Costa Rica,0.192465
+import,Slovenia,0.162
+import,Bolivia,0.152565
+import,El Salvador,0.15
+import,Cameroon,0.063566
+import,Curaçao,0.050175
+import,Hong Kong,0.04503
+import,Fiji,0.03211
+import,Samoa,0.0305
+import,Tanzania,0.0221
+import,Guatemala,0.018039
+import,Thailand,0.014506
+import,Philippines,0.011
+import,Ireland,0.010283
+import,Saudi Arabia,0.009
+import,Denmark,0.004
+import,Austria,0.002555
+import,Jordan,0.0006
+import,Bahamas,4e-06

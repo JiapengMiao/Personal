@@ -11,6 +11,7 @@ import { DynamicsSection, IndicatorDrawer, IndicatorLibrarySection } from "./com
 import { SpotQuotesSection } from "./components/SpotQuotes";
 import { HkTradeSection } from "./components/HkTrade";
 import { WorldTradeSection } from "./components/WorldTrade";
+import { SilverFlowsSection } from "./components/SilverFlows";
 import { LhbSection, type LhbData } from "./components/Lhb";
 import { ShfePositioningSection } from "./components/ShfePositioning";
 import { PpWarehouseSection } from "./components/PpWarehouse";
@@ -190,6 +191,7 @@ export default function App() {
           <div className="section-group-content">
             <HkTradeSection theme={theme} />
             <WorldTradeSection theme={theme} />
+            <SilverFlowsSection theme={theme} />
             <SpotQuotesSection />
             <BasisSection theme={theme} />
             <SeasonalitySection data={data.seasonality} asOfDate={data.daily.asOfDate} theme={theme} />
