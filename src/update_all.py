@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 """Project-002 统一更新入口。
 
-默认流程：检查本地源数据 -> 生成全部 JSON -> TypeScript 校验 -> Vite 构建 ->
-同步 GitHub Pages 的 docs/。本脚本不会自动抓取网络数据，也不会提交或推送 Git。
+默认流程：同步 Project-010 底稿 -> 拉取可直连的交易所数据 -> 生成全部 JSON ->
+TypeScript 校验 -> Vite 构建 -> 同步 GitHub Pages 的 docs/。本脚本不会提交或推送 Git。
 
 用法：
   python src/update_all.py
@@ -66,11 +66,10 @@ def preflight() -> dict[str, Path]:
     required: dict[str, Path | None] = {
         "Wind 主工作簿": ROOT / "data" / "wind" / "白银所有数据.xlsx",
         "租赁利率": _latest("data/wind/租赁利率/*.xlsx"),
-        "SHFE 会员持仓": _latest("data/shfe/ranking/*"),
+        "SHFE 会员持仓与龙虎榜原始排名": _latest("data/shfe/ranking/*/silver_ranking_*.json"),
         "SGE Ag(T+D)": ROOT / "data" / "sge" / "ag_td_daily_2026.csv",
         "GFEX 仓单": _latest("data/gfex/铂钯仓单数据_*.csv"),
         "监测数据": ROOT / "data" / "monitoring" / "monitoring-data.json",
-        "龙虎榜历史": _latest("data/shfe/lhb/*.xlsx"),
         "香港白银贸易": ROOT / "data" / "hk_silver_trade.csv",
     }
     missing = [name for name, path in required.items() if path is None or not path.exists()]
@@ -137,6 +136,7 @@ def main() -> int:
     parser.add_argument("--data-only", action="store_true", help="只生成 JSON，不校验或构建前端")
     parser.add_argument("--skip-docs", action="store_true", help="构建前端但不覆盖 docs/")
     parser.add_argument("--sync-only", action="store_true", help="只把已有 web/dist 安全同步到 docs/")
+    parser.add_argument("--skip-exchange-fetch", action="store_true", help="跳过 SHFE、SGE、GFEX 的自动增量拉取")
     args = parser.parse_args()
 
     started_at = datetime.now().astimezone().isoformat(timespec="seconds")
@@ -148,6 +148,21 @@ def main() -> int:
             write_report(started_at, sources, steps, "success")
             return 0
         sync_p010_sources()
+        if args.skip_exchange_fetch:
+            print("[SKIP] 已跳过交易所自动拉取（--skip-exchange-fetch）")
+        else:
+            steps.append(run_step(
+                "拉取 SHFE 会员持仓与龙虎榜原始排名",
+                [sys.executable, str(ROOT / "src" / "collectors" / "shfe_incremental_fetch.py")],
+            ))
+            steps.append(run_step(
+                "拉取 SGE Ag(T+D) 日行情",
+                [sys.executable, str(ROOT / "src" / "collectors" / "sge_ag_td_fetch.py")],
+            ))
+            steps.append(run_step(
+                "拉取 GFEX 铂钯仓单明细",
+                [sys.executable, str(ROOT / "src" / "collectors" / "gfex_incremental_fetch.py")],
+            ))
         sources = preflight()
         steps.append(run_step("生成看板数据", [sys.executable, str(ROOT / "src" / "build_dashboard_data.py")]))
 

@@ -1,5 +1,6 @@
 node_modules/
 web/node_modules/
+web/server-*.log
 output/
 inspect/__pycache__/
 src/__pycache__/

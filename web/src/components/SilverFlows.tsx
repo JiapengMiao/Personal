@@ -32,11 +32,28 @@ interface SilverFlowsData {
   flows: FlowGroup[];
 }
 
+interface FlowPair {
+  hub: string;
+  importFlow?: FlowGroup;
+  exportFlow?: FlowGroup;
+}
+
 const T_PER_MOZ = 31.1035; // 1 Moz = 31.1035 吨
 
 // 语义色：出口橙 / 进口蓝（与主题无关的语义色，明暗两套主题下均可读，不走调色板轮换色）
 const EXPORT_COLOR = "#e07b39";
 const IMPORT_COLOR = "#3f8fd1";
+
+function pairFlowsByHub(flows: FlowGroup[]): FlowPair[] {
+  const pairs = new Map<string, FlowPair>();
+  for (const flow of flows) {
+    const pair = pairs.get(flow.hub) ?? { hub: flow.hub };
+    if (flow.direction === "import") pair.importFlow = flow;
+    else pair.exportFlow = flow;
+    pairs.set(flow.hub, pair);
+  }
+  return [...pairs.values()];
+}
 
 export function SilverFlowsSection({ theme }: { theme: ThemeMode }) {
   const [data, setData] = useState<SilverFlowsData | null>(null);
@@ -53,6 +70,7 @@ export function SilverFlowsSection({ theme }: { theme: ThemeMode }) {
 
   const wssCount = data.flows.filter((f) => f.kind !== "official").length;
   const officialCount = data.flows.length - wssCount;
+  const flowPairs = pairFlowsByHub(data.flows);
 
   return (
     <section className="section-block" id="silverflows">
@@ -75,16 +93,20 @@ export function SilverFlowsSection({ theme }: { theme: ThemeMode }) {
           </div>
         </div>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(min(430px, 100%), 1fr))",
-            gap: 14,
-            marginTop: 6,
-          }}
-        >
-          {data.flows.map((f) => (
-            <FlowCard key={`${f.hub}-${f.direction}-${f.kind ?? "wss"}`} flow={f} theme={theme} />
+        <div className="silver-flows-pairs">
+          {flowPairs.map((pair) => (
+            <div className="silver-flow-pair" key={pair.hub}>
+              {pair.importFlow ? (
+                <FlowCard flow={pair.importFlow} theme={theme} />
+              ) : (
+                <MissingFlowCard hub={pair.hub} direction="进口" />
+              )}
+              {pair.exportFlow ? (
+                <FlowCard flow={pair.exportFlow} theme={theme} />
+              ) : (
+                <MissingFlowCard hub={pair.hub} direction="出口" />
+              )}
+            </div>
           ))}
         </div>
 
@@ -100,6 +122,14 @@ export function SilverFlowsSection({ theme }: { theme: ThemeMode }) {
         </p>
       </article>
     </section>
+  );
+}
+
+function MissingFlowCard({ hub, direction }: { hub: string; direction: string }) {
+  return (
+    <div className="silver-flow-missing">
+      {hub}{direction}暂无可比口径数据
+    </div>
   );
 }
 
