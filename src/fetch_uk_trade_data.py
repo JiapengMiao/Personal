@@ -152,6 +152,15 @@ def main():
         "netImport": nets,
         "monthlyAvailable": True,
         "monthlyCount": len(monthly),
+        "monthlySeriesComplete": True,
+        "months": [r["period"] for r in monthly],
+        "monthlyImports": [r["import_tonnes"] for r in monthly],
+        "monthlyExports": [r["export_tonnes"] for r in monthly],
+        "monthlyNetImport": [r["net_import_tonnes"] for r in monthly],
+        "monthlyNote": (
+            "HMRC BDS HS71069100 月度明细；当前连续覆盖 "
+            f"{monthly[0]['period']} 至 {monthly[-1]['period']}。"
+        ),
         "latestMonth": f"{ly}-{lm:02d}",
         "partialYears": partial_years,
         "stats": {
@@ -201,4 +210,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # Use the complete 2016-present HMRC archive collector for normal runs.
+    # The parser above remains available as a compact legacy/local-file check.
+    from fetch_uk_trade_history import main as history_main
+
+    history_main()

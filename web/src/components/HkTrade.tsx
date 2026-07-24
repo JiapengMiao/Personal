@@ -102,7 +102,7 @@ export function HkTradeSection({ theme }: { theme: ThemeMode }) {
         <div className="panel-heading">
           <div>
             <span>贸易 · HK TRADE</span>
-            <h3>月度进出口与净出口（吨）</h3>
+            <h3>香港月度进出口与净出口（吨）</h3>
           </div>
           <div className="panel-stat">
             <small>数据截至</small>

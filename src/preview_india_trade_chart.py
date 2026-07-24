@@ -14,6 +14,7 @@
 """
 from __future__ import annotations
 
+import csv
 import json
 from datetime import datetime
 from pathlib import Path
@@ -23,8 +24,11 @@ from matplotlib.gridspec import GridSpec
 import numpy as np
 
 ROOT = Path(__file__).resolve().parent.parent
+MONTHLY_CSV = ROOT / "data" / "india" / "india_silver_trade_monthly.csv"
 OUT_JSON = ROOT / "web" / "public" / "data" / "india_trade.json"
 OUT_PNG = ROOT / "output" / "india_silver_trade_preview.png"
+IMPORT_URL = "https://tradestat.commerce.gov.in/meidb/commoditywise_import"
+EXPORT_URL = "https://tradestat.commerce.gov.in/meidb/commoditywise_export"
 
 # 与看板 dark palette 对齐
 C = {
@@ -44,7 +48,7 @@ C = {
     "event": "#f26d6d",
 }
 
-# 日历年进口（吨）— Metals Focus / WSS 为主；早期部分为行业汇编
+# 日历年历史参考。2018 年起会在 build_json() 中由官方月度 HS7106 汇总覆盖。
 ANNUAL_IMPORTS = {
     2015: 8093,
     2016: 3000,
@@ -57,11 +61,9 @@ ANNUAL_IMPORTS = {
     2023: 3574,
     2024: 7695,
     2025: 7222,
-    # 2026：不完整年（约至 7 月中），行业汇编 YTD
-    2026: 1837,
 }
 
-# HS7106 出口（吨）— WITS/UN Comtrade
+# 出口历史参考。2018 年起会在 build_json() 中由官方月度 HS7106 汇总覆盖。
 ANNUAL_EXPORTS = {
     2015: None,
     2016: None,
@@ -74,27 +76,92 @@ ANNUAL_EXPORTS = {
     2023: 170.4,
     2024: 524.9,
     2025: 130.8,
-    2026: None,  # 2026 出口尚未有可靠年累计
 }
 
-# 不完整年（柱体用斜线填充，x 轴标 *）
-PARTIAL_YEARS = {2026: "约至7月中 · 行业YTD"}
 
-MONTHLY_SERIES = [
-    ("2025-05", 534.0),
-    ("2025-06", 197.0),
-    ("2025-08", 410.8),
-    ("2026-01", 747.0),
-    ("2026-02", 516.0),
-    ("2026-04", 182.0),
-    ("2026-05", 33.0),
-]
+def load_monthly_series() -> list[dict[str, float | str]]:
+    if not MONTHLY_CSV.exists():
+        raise FileNotFoundError(
+            f"印度官方月度数据不存在，请先运行 src/fetch_india_trade_data.py: "
+            f"{MONTHLY_CSV}"
+        )
+
+    rows: list[dict[str, float | str]] = []
+    with MONTHLY_CSV.open("r", encoding="utf-8-sig", newline="") as handle:
+        for raw in csv.DictReader(handle):
+            month = raw["month"]
+            imports = float(raw["imports_tonnes"])
+            exports = float(raw["exports_tonnes"])
+            net_import = float(raw["net_import_tonnes"])
+            if abs((imports - exports) - net_import) > 0.001:
+                raise ValueError(f"{month}: 净进口不等于进口减出口")
+            rows.append(
+                {
+                    "month": month,
+                    "imports": imports,
+                    "exports": exports,
+                    "netImport": net_import,
+                }
+            )
+
+    if not rows:
+        raise ValueError(f"印度官方月度数据为空: {MONTHLY_CSV}")
+    months = [str(row["month"]) for row in rows]
+    if months != sorted(months) or len(months) != len(set(months)):
+        raise ValueError("印度官方月度数据的月份未排序或存在重复")
+    for previous, current in zip(months, months[1:]):
+        year, month = map(int, previous.split("-"))
+        expected = (
+            f"{year + 1:04d}-01"
+            if month == 12
+            else f"{year:04d}-{month + 1:02d}"
+        )
+        if current != expected:
+            raise ValueError(f"印度官方月度数据缺月: {previous} 后应为 {expected}")
+    return rows
 
 
 def build_json() -> dict:
-    years = sorted(ANNUAL_IMPORTS)
-    imports = [ANNUAL_IMPORTS[y] for y in years]
-    exports = [ANNUAL_EXPORTS.get(y) for y in years]
+    monthly_rows = load_monthly_series()
+    monthly_labels = [str(row["month"]) for row in monthly_rows]
+    monthly_imp = [float(row["imports"]) for row in monthly_rows]
+    monthly_exp = [float(row["exports"]) for row in monthly_rows]
+    monthly_net = [float(row["netImport"]) for row in monthly_rows]
+
+    latest_year = int(monthly_labels[-1][:4])
+    latest_month_number = int(monthly_labels[-1][5:7])
+    current_year_rows = [
+        row for row in monthly_rows if str(row["month"]).startswith(f"{latest_year}-")
+    ]
+    current_import = round(
+        sum(float(row["imports"]) for row in current_year_rows), 3
+    )
+    current_export = round(
+        sum(float(row["exports"]) for row in current_year_rows), 3
+    )
+
+    annual_imports = dict(ANNUAL_IMPORTS)
+    annual_exports = dict(ANNUAL_EXPORTS)
+    monthly_years = sorted({int(str(row["month"])[:4]) for row in monthly_rows})
+    for year in monthly_years:
+        year_rows = [
+            row
+            for row in monthly_rows
+            if str(row["month"]).startswith(f"{year}-")
+        ]
+        annual_imports[year] = round(
+            sum(float(row["imports"]) for row in year_rows), 3
+        )
+        annual_exports[year] = round(
+            sum(float(row["exports"]) for row in year_rows), 3
+        )
+    partial_years = {
+        latest_year: f"至{monthly_labels[-1]} · TradeStat 官方月度累计"
+    }
+
+    years = sorted(annual_imports)
+    imports = [annual_imports[y] for y in years]
+    exports = [annual_exports.get(y) for y in years]
 
     # 净进口 = 进口 − 出口（正值 = 净流入印度）
     # 缺出口年份：出口按 0 计，并在 netImportNote 标注（出口量级通常很小）
@@ -104,9 +171,6 @@ def build_json() -> dict:
             net_import.append(round(float(imp), 1))
         else:
             net_import.append(round(float(imp) - float(exp), 1))
-
-    monthly_labels = [m for m, _ in MONTHLY_SERIES]
-    monthly_imp = [v for _, v in MONTHLY_SERIES]
 
     # 仅在有出口数据的年份上算峰值净进口，避免缺出口年被当成“出口=0”虚高
     net_with_exp = [
@@ -120,19 +184,19 @@ def build_json() -> dict:
         peak_y, peak_ni = years[int(np.argmax(imports))], max(net_import)
 
     # 完整年 vs 不完整年：指标卡默认展示最近完整年；2026 YTD 单独列出
-    complete_years = [y for y in years if y not in PARTIAL_YEARS]
+    complete_years = [y for y in years if y not in partial_years]
     last_complete = complete_years[-1]
     idx_c = years.index(last_complete)
-    ytd_year = max(PARTIAL_YEARS) if PARTIAL_YEARS else None
+    ytd_year = max(partial_years) if partial_years else None
     idx_ytd = years.index(ytd_year) if ytd_year in years else None
 
     # 峰值只在完整年里算（避免 YTD 干扰）
-    complete_imps = [(y, ANNUAL_IMPORTS[y]) for y in complete_years]
+    complete_imps = [(y, annual_imports[y]) for y in complete_years]
     peak_imp_y, peak_imp = max(complete_imps, key=lambda t: t[1])
     net_with_exp_complete = [
         (y, ni)
         for y, exp, ni in zip(years, exports, net_import)
-        if exp is not None and y not in PARTIAL_YEARS
+        if exp is not None and y not in partial_years
     ]
     if net_with_exp_complete:
         peak_y, peak_ni = max(net_with_exp_complete, key=lambda t: t[1])
@@ -141,22 +205,47 @@ def build_json() -> dict:
 
     payload = {
         "generatedAt": datetime.now().astimezone().isoformat(timespec="seconds"),
-        "source": "Metals Focus/WSS + WITS/Comtrade + 印度商务部/路透等汇编 · HS7106",
+        "country": "India",
+        "source": "印度商务部 TradeStat / DGCI&S · HS7106 月度数量",
+        "sourceUrl": IMPORT_URL,
+        "sourceUrls": {
+            "imports": IMPORT_URL,
+            "exports": EXPORT_URL,
+        },
+        "primarySeries": "india_tradestat_hs7106_monthly",
         "unit": "吨",
-        "asOf": "202607",
-        "frequency": "annual_primary",
+        "asOf": monthly_labels[-1],
+        "frequency": "monthly",
         "basis": "net_import",
         "netImportFormula": "进口 − 出口（正值 = 白银净流入印度）",
         "years": [str(y) for y in years],
         "imports": imports,
         "exports": exports,
         "netImport": net_import,
-        "partialYears": {str(k): v for k, v in PARTIAL_YEARS.items()},
+        "partialYears": {str(k): v for k, v in partial_years.items()},
         "monthly": {
             "months": monthly_labels,
             "imports": monthly_imp,
-            "note": "稀疏月度进口：公开可得点；2026-05 为关税上调+限制后初值",
+            "exports": monthly_exp,
+            "netImport": monthly_net,
+            "note": (
+                "印度商务部 TradeStat / DGCI&S 官方月度数量；"
+                "HS7106，千克换算为吨。"
+            ),
         },
+        "monthlyAvailable": True,
+        "monthlySeriesComplete": True,
+        "months": monthly_labels,
+        "monthlyImports": monthly_imp,
+        "monthlyExports": monthly_exp,
+        "monthlyNetImport": monthly_net,
+        "monthlyNote": (
+            f"官方连续月度序列：{monthly_labels[0]}—{monthly_labels[-1]}，"
+            "进口、出口均无缺月；净进口=进口−出口。"
+        ),
+        "requestedThrough": monthly_labels[-1],
+        "latestPublished": monthly_labels[-1],
+        "unavailablePeriods": [],
         "events": [
             {"date": "2024-07-24", "label": "关税 15%→6%", "kind": "cut"},
             {"date": "2026-05-13", "label": "关税 6%→15% + 进口限制", "kind": "hike"},
@@ -170,10 +259,23 @@ def build_json() -> dict:
             "ytdImport": imports[idx_ytd] if idx_ytd is not None else None,
             "ytdExport": exports[idx_ytd] if idx_ytd is not None else None,
             "ytdNetImport": net_import[idx_ytd] if idx_ytd is not None else None,
-            "ytdNote": PARTIAL_YEARS.get(ytd_year, "") if ytd_year else "",
+            "ytdNote": partial_years.get(ytd_year, "") if ytd_year else "",
             "ytdVsPriorYearImportPct": (
-                round((imports[idx_ytd] / imports[idx_c] - 1.0) * 100.0, 1)
-                if idx_ytd is not None and imports[idx_c]
+                round(
+                    (
+                        current_import
+                        / sum(
+                            float(row["imports"])
+                            for row in monthly_rows
+                            if str(row["month"]).startswith(f"{latest_year - 1}-")
+                            and int(str(row["month"])[5:7]) <= latest_month_number
+                        )
+                        - 1.0
+                    )
+                    * 100.0,
+                    1,
+                )
+                if idx_ytd is not None
                 else None
             ),
             "peakNetImport": peak_ni,
@@ -182,14 +284,14 @@ def build_json() -> dict:
             "peakImportYear": peak_imp_y,
             "fy2025_26_import_t": 7335,
             "fy2025_26_import_usd_bn": 12.0,
-            "may2026_import_t": 33.0,
+            "may2026_import_t": monthly_imp[-1],
         },
         "disclaimer": (
             "口径以净进口为基准：净进口=进口−出口。"
-            "年频进口以 Metals Focus/WSS 为主；出口为 Comtrade HS7106；"
-            "2015–2019 缺出口数据时净进口暂按进口计（出口量级通常远小于进口）。"
-            "2026 为不完整年（约至7月中 YTD≈1837吨，行业汇编，同比约-16%），柱体仅供对比，不可当全年。"
-            "月度为公开汇编非完整官方序列。"
+            f"月度主序列为印度商务部 TradeStat / DGCI&S HS7106 官方数量，"
+            f"覆盖 {monthly_labels[0]}—{monthly_labels[-1]}，千克换算为吨。"
+            "2018 年起的年频值由同一官方月度序列汇总；"
+            "2015—2017 仅保留行业历史参考，口径不可直接拼接。"
         ),
     }
     return payload
@@ -245,7 +347,7 @@ def draw_chart(data: dict) -> None:
     fig.text(
         0.06,
         0.965,
-        "07′  印度白银进出口 · 年频（净进口口径）",
+        "07′  印度白银进出口 · 年频参考 + 官方月度",
         color=C["text"],
         fontsize=16,
         fontweight="600",
@@ -254,7 +356,7 @@ def draw_chart(data: dict) -> None:
     fig.text(
         0.06,
         0.935,
-        "Metals Focus/WSS 进口 + WITS/Comtrade 出口（HS7106，吨）· 净进口 = 进口 − 出口（正值 = 净流入印度）",
+        "2018 年起：印度商务部 TradeStat / DGCI&S HS7106 官方月度汇总（吨）· 净进口 = 进口 − 出口",
         color=C["sub"],
         fontsize=10,
         va="top",
@@ -276,7 +378,7 @@ def draw_chart(data: dict) -> None:
         (
             f"{y_complete} 进口（完整年）",
             f"{fmt_ton(st['latestImport'])} 吨",
-            "日历年 · WSS 2026",
+            "日历年 · TradeStat HS7106",
             C["imp"],
         ),
         (
@@ -457,11 +559,11 @@ def draw_chart(data: dict) -> None:
         fontweight="600",
     )
 
-    # 2026 YTD 标注
-    if 2026 in years:
-        i26 = years.index(2026)
+    # 最新不完整年 YTD 标注
+    if ytd_y in years:
+        i26 = years.index(ytd_y)
         ax1.annotate(
-            f"2026 YTD\n{fmt_ton(float(imports[i26]))}吨*",
+            f"{ytd_y} YTD\n{fmt_ton(float(imports[i26]))}吨*",
             xy=(i26, float(imports[i26])),
             xytext=(i26 - 0.15, float(imports[i26]) + 1100),
             ha="center",
@@ -508,33 +610,59 @@ def draw_chart(data: dict) -> None:
         va="bottom",
     )
 
-    # ——— 副图：近期月度进口 ———
+    # ——— 副图：官方近期月度进出口与净进口 ———
     ax2 = fig.add_subplot(gs[2, :])
     style_ax(ax2)
     ax2.set_title(
-        "近期月度进口（吨，稀疏公开点）· 政策冲击",
+        "官方月度进出口与净进口（吨）· 最近24个月",
         color=C["text"],
         fontsize=12,
         loc="left",
         pad=10,
     )
 
-    m_labels = data["monthly"]["months"]
-    m_vals = np.array(data["monthly"]["imports"], dtype=float)
+    m_labels = data["monthly"]["months"][-24:]
+    m_imports = np.array(data["monthly"]["imports"][-24:], dtype=float)
+    m_exports = np.array(data["monthly"]["exports"][-24:], dtype=float)
+    m_net = np.array(data["monthly"]["netImport"][-24:], dtype=float)
     mx = np.arange(len(m_labels))
-    colors = [C["event"] if lab == "2026-05" else C["imp"] for lab in m_labels]
-    ax2.bar(mx, m_vals, width=0.55, color=colors, alpha=0.8, zorder=3, label="进口")
-    ax2.plot(mx, m_vals, color=C["net"], linewidth=2.0, marker="o", markersize=6, zorder=4)
-
-    for i, (lab, v) in enumerate(zip(m_labels, m_vals)):
-        ax2.text(i, v + 18, f"{v:.0f}", ha="center", va="bottom", color=C["text"], fontsize=9)
+    width = 0.34
+    ax2.bar(
+        mx - width / 2,
+        m_imports,
+        width=width,
+        color=C["imp"],
+        alpha=0.75,
+        zorder=3,
+        label="进口",
+    )
+    ax2.bar(
+        mx + width / 2,
+        m_exports,
+        width=width,
+        color=C["exp"],
+        alpha=0.65,
+        zorder=3,
+        label="出口",
+    )
+    ax2.plot(
+        mx,
+        m_net,
+        color=C["net"],
+        linewidth=2.0,
+        marker="o",
+        markersize=3.5,
+        zorder=4,
+        label="净进口",
+    )
+    ax2.axhline(0, color=C["weak"], linestyle="--", linewidth=1, zorder=2)
 
     if "2026-05" in m_labels:
         idx = m_labels.index("2026-05")
         ax2.axvline(idx - 0.5, color=C["event"], linestyle="--", linewidth=1.2, alpha=0.9, zorder=2)
         ax2.text(
             idx - 0.45,
-            max(m_vals) * 0.92,
+            max(m_imports) * 0.92,
             "2026-05-13\n关税→15%+限制",
             color=C["event"],
             fontsize=9,
@@ -542,27 +670,20 @@ def draw_chart(data: dict) -> None:
         )
 
     ax2.set_xticks(mx)
-    ax2.set_xticklabels(m_labels, color=C["sub"])
+    ax2.set_xticklabels(m_labels, color=C["sub"], rotation=45, ha="right")
     ax2.set_ylabel("吨", color=C["sub"])
-    ax2.set_ylim(0, max(m_vals) * 1.28)
-
-    ax2.axhline(534, color=C["weak"], linestyle=":", linewidth=1, alpha=0.8)
-    ax2.text(
-        len(m_labels) - 0.05,
-        534,
-        " 2025-05≈534t",
-        color=C["weak"],
-        fontsize=8,
-        va="bottom",
-        ha="right",
-    )
+    legend = ax2.legend(loc="upper left", frameon=True, fontsize=8, ncol=3)
+    legend.get_frame().set_facecolor(C["raised"])
+    legend.get_frame().set_edgecolor(C["hairline"])
+    for text in legend.get_texts():
+        text.set_color(C["text"])
 
     fig.text(
         0.06,
         0.015,
-        "口径：净进口=进口−出口（正=净流入印度）。进口年频≈Metals Focus；出口=HS7106；"
-        "2026*=约至7月中YTD≈1837吨（行业汇编，约-16% vs 2025全年，不可当全年）；"
-        "2026-05初值约33吨。  生成：" + data["generatedAt"],
+        "月度主序列：印度商务部 TradeStat / DGCI&S HS7106 官方数量，千克换算为吨；"
+        f"连续覆盖 {data['monthly']['months'][0]}—{data['monthly']['months'][-1]}，"
+        "净进口=进口−出口；2018 年起年频值由同一月度序列汇总。 生成：" + data["generatedAt"],
         color=C["weak"],
         fontsize=8,
     )

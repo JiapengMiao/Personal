@@ -1,18 +1,126 @@
 ﻿period_type,period,flow,import_tonnes,export_tonnes,net_import_tonnes,source,notes,confidence,series
-month,2025-01,both,363.8,2457.0,-2093.2,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
-month,2025-02,both,158.5,1658.6,-1500.0,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
-month,2025-03,both,234.9,766.9,-532.0,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
-month,2025-04,both,641.1,297.4,343.8,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
-month,2025-05,both,704.3,241.4,463.0,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
-month,2025-06,both,589.4,1.2,588.1,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
-month,2025-07,both,512.1,98.9,413.2,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
-month,2025-08,both,395.3,25.8,369.6,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
-month,2025-09,both,896.8,609.9,286.9,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
-month,2025-10,both,2199.5,643.2,1556.3,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
-month,2025-11,both,795.9,100.2,695.8,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
-month,2025-12,both,1002.3,159.5,842.8,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
-month,2026-01,both,1309.6,1115.3,194.2,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
-month,2026-02,both,1197.4,1800.4,-603.0,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
-month,2026-03,both,869.0,697.8,171.1,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
-month,2026-04,both,337.9,492.7,-154.7,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
-month,2026-05,both,210.1,36.7,173.4,HMRC UK Trade Info bulk data (BDS),HS71069100 unwrought silver; kg->t,high,hmrc_ots_hs71069100
+month,2016-01,both,161.613,311.487,-149.874,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2016-02,both,272.953,199.137,73.816,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2016-03,both,256.819,160.577,96.242,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2016-04,both,320.747,114.65,206.097,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2016-05,both,129.928,136.077,-6.149,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2016-06,both,390.776,37.726,353.05,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2016-07,both,450.726,130.95,319.776,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2016-08,both,308.381,138.57,169.811,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2016-09,both,415.802,10.421,405.381,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2016-10,both,374.902,54.089,320.813,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2016-11,both,355.216,21.111,334.105,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2016-12,both,451.775,43.857,407.918,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2017-01,both,377.031,56.534,320.497,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2017-02,both,278.757,42.301,236.456,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2017-03,both,463.538,35.413,428.125,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2017-04,both,315.679,61.097,254.582,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2017-05,both,794.084,182.168,611.916,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2017-06,both,467.382,36.62,430.762,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2017-07,both,266.495,139.126,127.369,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2017-08,both,424.909,338.725,86.184,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2017-09,both,229.332,118.697,110.635,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2017-10,both,384.281,78.157,306.124,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2017-11,both,214.297,22.13,192.167,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2017-12,both,343.593,229.389,114.204,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2018-01,both,288.723,165.346,123.377,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2018-02,both,198.959,504.779,-305.82,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2018-03,both,288.246,583.99,-295.744,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2018-04,both,158.435,285.303,-126.868,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2018-05,both,350.222,52.949,297.273,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2018-06,both,249.014,42.68,206.334,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2018-07,both,206.635,41.442,165.193,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2018-08,both,460.5,42.641,417.859,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2018-09,both,206.352,320.361,-114.009,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2018-10,both,133.922,120.317,13.605,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2018-11,both,428.37,210.126,218.244,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2018-12,both,344.36,326.815,17.545,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2019-01,both,146.704,70.29,76.414,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2019-02,both,194.528,39.609,154.919,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2019-03,both,143.445,55.1,88.345,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2019-04,both,93.576,165.716,-72.14,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2019-05,both,224.942,433.229,-208.287,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2019-06,both,269.563,688.34,-418.777,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2019-07,both,227.164,169.753,57.411,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2019-08,both,249.922,224.595,25.327,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2019-09,both,456.48,98.297,358.183,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2019-10,both,329.634,110.334,219.3,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2019-11,both,226.604,9.072,217.532,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2019-12,both,313.534,22.139,291.395,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2020-01,both,243.439,73.95,169.489,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2020-02,both,218.434,20.22,198.214,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2020-03,both,242.613,71.051,171.562,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2020-04,both,146.682,583.445,-436.763,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2020-05,both,236.413,523.198,-286.785,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2020-06,both,331.576,1021.567,-689.991,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2020-07,both,207.616,601.022,-393.406,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2020-08,both,256.066,702.413,-446.347,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2020-09,both,382.334,509.55,-127.216,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2020-10,both,463.87,258.672,205.198,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2020-11,both,377.907,321.245,56.662,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2020-12,both,424.448,203.701,220.747,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2021-01,both,759.535,199.646,559.889,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2021-02,both,680.198,99.512,580.686,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2021-03,both,683.022,164.45,518.572,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2021-04,both,712.609,229.132,483.477,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2021-05,both,552.389,187.92,364.469,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2021-06,both,857.82,629.064,228.756,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2021-07,both,285.561,397.345,-111.784,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2021-08,both,264.143,274.139,-9.996,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2021-09,both,557.379,468.811,88.568,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2021-10,both,173.97,606.806,-432.836,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2021-11,both,591.424,256.14,335.284,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2021-12,both,182.936,279.004,-96.068,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2022-01,both,98.605,468.266,-369.661,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2022-02,both,353.171,647.4,-294.229,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2022-03,both,89.909,316.136,-226.227,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2022-04,both,177.733,751.862,-574.129,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2022-05,both,216.663,1882.371,-1665.708,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2022-06,both,279.387,1317.966,-1038.579,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2022-07,both,135.508,1445.543,-1310.035,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2022-08,both,110.413,1141.929,-1031.516,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2022-09,both,140.935,1543.203,-1402.268,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2022-10,both,188.277,865.515,-677.238,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2022-11,both,266.894,455.044,-188.15,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2022-12,both,285.332,391.949,-106.617,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2023-01,both,295.294,252.109,43.185,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2023-02,both,277.951,176.543,101.408,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2023-03,both,361.683,291.701,69.982,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2023-04,both,375.795,311.153,64.642,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2023-05,both,476.662,293.487,183.175,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2023-06,both,405.275,253.541,151.734,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2023-07,both,390.912,198.329,192.583,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2023-08,both,436.192,79.035,357.157,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2023-09,both,437.443,130.224,307.219,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2023-10,both,249.229,1341.25,-1092.021,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2023-11,both,127.568,276.926,-149.358,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2023-12,both,264.202,68.897,195.305,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2024-01,both,242.501,387.078,-144.577,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2024-02,both,240.726,1361.697,-1120.971,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2024-03,both,186.594,131.46,55.134,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2024-04,both,145.838,2.174,143.664,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2024-05,both,500.257,19.208,481.049,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2024-06,both,539.757,25.321,514.436,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2024-07,both,745.937,126.095,619.842,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2024-08,both,224.827,879.483,-654.656,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2024-09,both,424.964,310.772,114.192,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2024-10,both,378.365,3.115,375.25,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2024-11,both,399.091,238.788,160.303,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2024-12,both,474.099,650.311,-176.212,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2025-01,both,363.826,2457.002,-2093.176,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2025-02,both,158.509,1658.552,-1500.043,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2025-03,both,234.891,766.893,-532.002,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2025-04,both,641.114,297.359,343.755,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2025-05,both,704.319,241.367,462.952,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2025-06,both,589.351,1.225,588.126,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2025-07,both,512.084,98.896,413.188,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2025-08,both,395.328,25.774,369.554,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2025-09,both,896.804,609.935,286.869,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2025-10,both,2199.514,643.215,1556.299,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2025-11,both,795.906,100.151,695.755,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2025-12,both,1002.297,159.467,842.83,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2026-01,both,1309.557,1115.33,194.227,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2026-02,both,1197.406,1800.407,-603.001,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2026-03,both,868.965,697.837,171.128,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2026-04,both,337.93,492.669,-154.739,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100
+month,2026-05,both,210.142,36.747,173.395,HMRC UK Trade Info bulk data archive (BDS) HS71069100,CN8 71069100 unwrought silver; net mass kg -> tonnes,high,hmrc_bds_hs71069100

@@ -1,0 +1,4477 @@
+{
+  "query": {
+    "savedQueryDatabaseId": null,
+    "savedQueryID": null,
+    "savedQueryName": "Project-002 U.S. silver monthly history",
+    "savedQueryDesc": "Official monthly HS/HTS 7106 quantity history",
+    "savedQueryType": "",
+    "jobID": null,
+    "jobState": null,
+    "folderID": null,
+    "folderName": null,
+    "expandedGroups": {
+      "commodities": [],
+      "countries": [],
+      "districts": []
+    },
+    "isOwner": false,
+    "apiToken": "",
+    "captchaResponse": "",
+    "captchaValid": false,
+    "queryJSON": "",
+    "runMonthly": null,
+    "deletedCountryUserGroups": [],
+    "deletedCommodityUserGroups": [],
+    "deletedDistrictUserGroups": [],
+    "reportOptions": {
+      "tradeType": "GenImp",
+      "classificationSystem": "HTS"
+    },
+    "searchOptions": {
+      "componentSettings": {
+        "dataToReport": [
+          "GEN_FIR_UNIT_QUANTITY"
+        ],
+        "scale": "1",
+        "timeframeSelectType": "fullYears",
+        "years": [
+          "1989",
+          "1990",
+          "1991",
+          "1992",
+          "1993",
+          "1994",
+          "1995",
+          "1996",
+          "1997",
+          "1998",
+          "1999",
+          "2000",
+          "2001",
+          "2002",
+          "2003",
+          "2004",
+          "2005",
+          "2006",
+          "2007",
+          "2008",
+          "2009",
+          "2010",
+          "2011",
+          "2012",
+          "2013",
+          "2014",
+          "2015",
+          "2016",
+          "2017",
+          "2018",
+          "2019",
+          "2020",
+          "2021",
+          "2022",
+          "2023",
+          "2024",
+          "2025",
+          "2026"
+        ],
+        "startDate": null,
+        "endDate": null,
+        "startMonth": null,
+        "endMonth": null,
+        "yearsTimeline": "Monthly"
+      },
+      "commodities": {
+        "commodities": [
+          "7106"
+        ],
+        "commoditiesExpanded": [
+          {
+            "name": "SILVER (INCLUDING SILVER PLATED WITH GOLD OR PLATINUM), UNWROUGHT OR IN SEMIMANUFACTURED FORMS, OR IN POWDER FORM",
+            "value": "7106",
+            "hasChildren": true
+          }
+        ],
+        "commoditiesManual": "7106",
+        "commodityGroups": {
+          "systemGroups": [],
+          "userGroups": []
+        },
+        "granularity": "4",
+        "searchGranularity": "2",
+        "groupGranularity": "2",
+        "aggregation": "Aggregate Commodities",
+        "codeDisplayFormat": "NO",
+        "commoditySelectType": "list",
+        "showHTSValidDetails": true
+      },
+      "countries": {
+        "countries": [],
+        "countriesExpanded": [],
+        "countryGroups": {
+          "systemGroups": [],
+          "userGroups": []
+        },
+        "aggregation": "Aggregate countries",
+        "countriesSelectType": "all"
+      },
+      "MiscGroup": {
+        "importPrograms": {
+          "importPrograms": [],
+          "aggregation": "Aggregate CSC"
+        },
+        "extImportPrograms": {
+          "programsSelectType": "all",
+          "extImportPrograms": [],
+          "extImportProgramsExpanded": [],
+          "aggregation": "Aggregate CSC"
+        },
+        "provisionCodes": {
+          "rateProvisionCodes": [],
+          "rateProvisionCodesExpanded": [],
+          "aggregation": "Aggregate RPCODE",
+          "provisionCodesSelectType": "all",
+          "rateProvisionGroups": {
+            "systemGroups": []
+          }
+        },
+        "districts": {
+          "districts": [],
+          "districtsExpanded": [],
+          "districtGroups": {
+            "userGroups": []
+          },
+          "aggregation": "Aggregate District",
+          "districtsSelectType": "all"
+        }
+      }
+    },
+    "sortingAndDataFormat": {
+      "DataSort": {
+        "sortOrder": [],
+        "columnOrder": [
+          "UNITS"
+        ],
+        "sortYear": null
+      },
+      "reportCustomizations": {
+        "totalRecords": "20000",
+        "exportCombineTables": false,
+        "reportsGrid": true,
+        "removeDuplicateValues": false,
+        "suppressZeroValues": false,
+        "displayCommodityList": false,
+        "reportsFontSize": "m",
+        "exportRawData": false
+      }
+    },
+    "unitConversion": "0",
+    "manualConversions": []
+  },
+  "response": {
+    "dto": {
+      "title": null,
+      "subtitle": null,
+      "tables": [
+        {
+          "subheads": [],
+          "subHeads": [
+            "General Imports",
+            "Monthly data for 1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026"
+          ],
+          "totalRowSize": 70,
+          "name": "[1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026], General Imports: General First Unit of Quantity (In Actual Units of Quantity)",
+          "query": null,
+          "tableInfo": {
+            "tabName": "General 1st Unit of Qty",
+            "year": "[1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]",
+            "ExtendedImportPrograms": "ALL CSC2",
+            "countries": "",
+            "rateProvisionText": "ALL RPCODES",
+            "importProgram": "ALL CSC",
+            "sortColumn2": "",
+            "dataToReportDesc": "General First Unit of Quantity",
+            "sortColumn3": "",
+            "sortColumn1": "",
+            "name": "[1989, 1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026], General Imports: General First Unit of Quantity (In Actual Units of Quantity)",
+            "commoditiesDesc": "All Import Commodities"
+          },
+          "column_groups": [
+            {
+              "name": null,
+              "label": null,
+              "columns": [
+                {
+                  "fieldName": null,
+                  "label": "Year"
+                },
+                {
+                  "fieldName": null,
+                  "label": "Quantity Description"
+                }
+              ]
+            },
+            {
+              "name": null,
+              "label": "In Actual Units of Quantity",
+              "columns": [
+                {
+                  "fieldName": null,
+                  "label": "January"
+                },
+                {
+                  "fieldName": null,
+                  "label": "February"
+                },
+                {
+                  "fieldName": null,
+                  "label": "March"
+                },
+                {
+                  "fieldName": null,
+                  "label": "April"
+                },
+                {
+                  "fieldName": null,
+                  "label": "May"
+                },
+                {
+                  "fieldName": null,
+                  "label": "June"
+                },
+                {
+                  "fieldName": null,
+                  "label": "July"
+                },
+                {
+                  "fieldName": null,
+                  "label": "August"
+                },
+                {
+                  "fieldName": null,
+                  "label": "September"
+                },
+                {
+                  "fieldName": null,
+                  "label": "October"
+                },
+                {
+                  "fieldName": null,
+                  "label": "November"
+                },
+                {
+                  "fieldName": null,
+                  "label": "December"
+                }
+              ]
+            }
+          ],
+          "row_groups": [
+            {
+              "columnInfo": [
+                {
+                  "year": null,
+                  "type": "year",
+                  "columnLabel": "Year",
+                  "queryResultLabel": "year",
+                  "columnIndex": 1,
+                  "special": false
+                },
+                {
+                  "year": null,
+                  "type": "units_description",
+                  "columnLabel": "Quantity Description",
+                  "queryResultLabel": "units_description",
+                  "columnIndex": 2,
+                  "special": false
+                },
+                {
+                  "year": null,
+                  "type": "data",
+                  "columnLabel": "january",
+                  "queryResultLabel": "january",
+                  "columnIndex": 3,
+                  "special": false
+                },
+                {
+                  "year": null,
+                  "type": "data",
+                  "columnLabel": "february",
+                  "queryResultLabel": "february",
+                  "columnIndex": 4,
+                  "special": false
+                },
+                {
+                  "year": null,
+                  "type": "data",
+                  "columnLabel": "march",
+                  "queryResultLabel": "march",
+                  "columnIndex": 5,
+                  "special": false
+                },
+                {
+                  "year": null,
+                  "type": "data",
+                  "columnLabel": "april",
+                  "queryResultLabel": "april",
+                  "columnIndex": 6,
+                  "special": false
+                },
+                {
+                  "year": null,
+                  "type": "data",
+                  "columnLabel": "may",
+                  "queryResultLabel": "may",
+                  "columnIndex": 7,
+                  "special": false
+                },
+                {
+                  "year": null,
+                  "type": "data",
+                  "columnLabel": "june",
+                  "queryResultLabel": "june",
+                  "columnIndex": 8,
+                  "special": false
+                },
+                {
+                  "year": null,
+                  "type": "data",
+                  "columnLabel": "july",
+                  "queryResultLabel": "july",
+                  "columnIndex": 9,
+                  "special": false
+                },
+                {
+                  "year": null,
+                  "type": "data",
+                  "columnLabel": "august",
+                  "queryResultLabel": "august",
+                  "columnIndex": 10,
+                  "special": false
+                },
+                {
+                  "year": null,
+                  "type": "data",
+                  "columnLabel": "september",
+                  "queryResultLabel": "september",
+                  "columnIndex": 11,
+                  "special": false
+                },
+                {
+                  "year": null,
+                  "type": "data",
+                  "columnLabel": "october",
+                  "queryResultLabel": "october",
+                  "columnIndex": 12,
+                  "special": false
+                },
+                {
+                  "year": null,
+                  "type": "data",
+                  "columnLabel": "november",
+                  "queryResultLabel": "november",
+                  "columnIndex": 13,
+                  "special": false
+                },
+                {
+                  "year": null,
+                  "type": "data",
+                  "columnLabel": "december",
+                  "queryResultLabel": "december",
+                  "columnIndex": 14,
+                  "special": false
+                }
+              ],
+              "name": null,
+              "label": null,
+              "rows": [],
+              "rowsNew": [
+                {
+                  "rowEntries": [
+                    {
+                      "value": "1995"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "195,819,970",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "213,536,009",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "244,485,490",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "200,444,337",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "298,146,844",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "278,110,452",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "280,688,743",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "282,886,846",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "251,130,831",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "246,466,672",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "293,380,960",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "237,530,692",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "1996"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "277,794,167",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "252,585,488",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "239,548,156",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "228,982,248",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "219,840,819",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "205,539,289",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "250,372,667",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "191,535,998",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "234,351,007",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "224,560,609",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "207,967,121",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "313,629,238",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "1997"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "238,979,334",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "167,999,985",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "187,657,780",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "224,866,256",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "162,380,225",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "211,397,093",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "183,442,177",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "206,403,548",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "191,305,891",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "155,789,452",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "207,935,058",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "262,147,906",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "1998"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "181,730,401",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "331,921,960",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "263,305,810",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "217,435,049",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "226,102,725",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "194,380,969",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "238,964,819",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "194,078,528",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "299,996,381",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "357,302,187",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "371,756,626",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "256,910,825",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "1999"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "281,570,399",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "307,560,096",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "299,303,082",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "288,939,261",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "254,684,993",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "265,128,021",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "278,063,730",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "179,543,165",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "209,614,470",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "228,945,697",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "232,038,993",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "220,147,916",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2000"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "283,960,706",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "1,024,223,958",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "384,219,661",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "239,762,946",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "250,145,822",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "225,773,458",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "196,625,339",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "241,111,217",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "235,909,121",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "337,922,967",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "227,693,179",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "235,219,184",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2001"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "280,810,309",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "214,249,067",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "277,331,127",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "217,196,900",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "227,143,622",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "204,931,003",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "292,796,832",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "260,954,376",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "227,302,715",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "295,935,703",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "339,646,060",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "250,904,545",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2002"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "420,389,364",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "261,028,632",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "325,858,674",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "416,549,200",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "383,521,363",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "283,869,922",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "285,737,476",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "311,518,276",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "365,221,780",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "317,499,093",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "296,749,206",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "371,366,704",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2003"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "388,171,989",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "344,889,167",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "230,220,613",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "339,124,592",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "270,318,846",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "345,775,800",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "345,384,210",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "297,698,004",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "275,082,515",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "721,968,769",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "281,586,370",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "392,305,181",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2004"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "314,699,826",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "356,649,460",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "389,556,242",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "272,410,160",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "285,738,047",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "288,888,065",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "253,837,488",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "325,615,761",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "298,540,780",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "309,626,811",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "325,430,541",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "332,767,641",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2005"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "375,343,153",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "341,255,954",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "363,066,044",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "362,844,721",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "266,381,910",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "353,617,628",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "355,366,283",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "374,906,748",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "291,510,705",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "315,301,330",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "416,895,704",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "360,658,851",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2006"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "435,949,732",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "368,992,165",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "410,117,731",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "378,197,902",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "306,152,279",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "484,291,880",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "416,617,816",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "345,222,513",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "314,986,587",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "404,110,330",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "344,213,641",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "359,337,137",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2007"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "401,509,917",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "352,278,471",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "465,369,873",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "391,026,108",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "391,872,861",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "384,553,271",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "447,012,429",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "430,931,166",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "356,770,249",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "404,740,433",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "477,926,909",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "258,264,029",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2008"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "424,763,911",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "319,078,873",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "333,421,058",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "398,252,739",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "333,140,323",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "337,554,310",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "342,611,627",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "399,893,412",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "419,804,192",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "411,484,591",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "371,639,830",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "339,249,495",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2009"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "404,470,987",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "138,122,853",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "275,776,884",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "290,563,341",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "288,587,982",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "350,751,951",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "228,241,563",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "299,334,742",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "285,214,271",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "322,361,370",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "276,059,179",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "294,570,744",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2010"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "369,937,471",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "456,595,821",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "731,632,654",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "457,925,141",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "447,881,049",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "323,688,791",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "350,393,453",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "490,575,416",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "410,745,735",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "410,756,697",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "519,920,669",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "421,636,760",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2011"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "605,352,138",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "544,779,647",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "734,549,430",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "472,918,382",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "488,646,937",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "477,862,937",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "482,165,992",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "505,085,132",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "492,222,308",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "531,740,278",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "447,558,955",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "626,557,066",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2012"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "574,440,720",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "473,305,850",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "457,016,542",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "400,910,593",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "432,725,703",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "396,867,879",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "412,916,743",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "330,549,442",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "398,948,310",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "377,946,874",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "388,676,020",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "385,717,667",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2013"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "513,533,300",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "437,197,347",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "426,291,986",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "490,967,185",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "374,630,571",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "334,131,406",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "425,520,934",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "369,566,629",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "397,835,111",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "484,190,828",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "320,676,618",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "451,904,809",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2014"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "435,070,900",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "333,863,750",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "361,261,268",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "401,141,010",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "456,098,933",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "423,441,379",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "445,608,047",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "342,697,863",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "495,424,199",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "435,955,686",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "395,768,164",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "477,850,115",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2015"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "558,766,831",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "478,943,315",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "458,602,998",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "530,464,290",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "477,421,724",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "455,052,992",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "474,472,364",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "502,298,370",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "536,312,994",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "480,366,316",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "418,724,355",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "557,055,237",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2016"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "491,734,184",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "490,922,729",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "581,998,581",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "503,967,842",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "520,791,667",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "463,754,644",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "517,221,775",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "566,394,625",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "526,731,044",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "498,245,448",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "492,505,683",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "504,215,729",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2017"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "493,882,107",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "479,237,207",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "410,675,370",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "456,878,488",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "443,641,204",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "446,365,255",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "456,780,271",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "333,902,889",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "336,603,169",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "380,725,262",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "432,615,551",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "364,584,804",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2018"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "480,764,392",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "397,041,734",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "347,344,196",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "368,896,525",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "453,576,837",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "308,883,925",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "397,972,506",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "409,289,950",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "414,870,597",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "420,501,781",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "428,331,831",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "406,402,672",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2019"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "410,648,907",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "361,304,629",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "396,951,209",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "425,048,089",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "383,055,115",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "306,657,961",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "377,075,800",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "473,902,870",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "411,322,069",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "425,531,704",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "379,535,152",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "412,357,816",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2020"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "406,077,851",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "332,689,534",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "371,667,730",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "482,368,364",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "426,583,475",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "599,880,370",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "1,057,860,604",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "542,601,074",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "724,207,409",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "561,828,696",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "628,593,804",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "599,214,490",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2021"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "490,558,501",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "442,670,672",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "627,161,964",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "476,934,012",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "694,432,427",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "538,477,265",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "641,181,562",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "587,822,500",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "372,293,176",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "432,850,733",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "489,812,485",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "351,833,449",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2022"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "372,013,427",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "256,966,151",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "359,416,928",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "453,709,054",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "429,461,797",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "391,828,846",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "383,063,308",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "336,103,471",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "339,691,715",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "321,657,865",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "342,160,474",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "484,607,832",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2023"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "387,731,499",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "330,177,690",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "390,587,327",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "383,005,165",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "542,466,046",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "381,684,101",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "357,986,429",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "333,335,051",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "415,814,097",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "394,880,680",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "398,877,982",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "586,516,145",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2024"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "345,748,676",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "271,482,068",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "332,731,778",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "422,475,342",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "339,883,642",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "344,531,793",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "398,868,357",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "295,796,925",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "358,226,159",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "316,558,208",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "352,656,815",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "553,192,540",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2025"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "799,368,868",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "1,012,863,472",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "930,698,434",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "537,984,742",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "389,167,441",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "399,287,085",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "597,037,323",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "334,344,456",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "429,379,949",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "241,519,004",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "159,953,457",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "321,858,832",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2026"
+                    },
+                    {
+                      "value": "component grams"
+                    },
+                    {
+                      "value": "276,904,654",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "289,459,418",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "295,139,247",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "303,368,097",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "341,573,942",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "0",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "0",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "0",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "0",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "0",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "0",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "0",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "1989"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "255,604,467",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "375,945,767",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "361,247,176",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "342,848,910",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "226,242,299",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "166,729,835",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "137,124,340",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "246,323,436",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "157,179,261",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "407,118,474",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "197,228,074",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "242,399,236",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "1990"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "174,238,557",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "227,535,094",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "511,319,200",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "256,180,545",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "194,780,871",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "122,769,975",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "259,045,655",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "253,647,854",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "163,967,193",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "239,601,679",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "103,945,395",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "257,701,091",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "1991"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "215,869,573",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "235,225,247",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "137,947,396",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "269,396,343",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "150,248,011",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "234,067,190",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "280,422,047",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "211,756,863",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "199,554,174",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "274,587,234",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "185,920,899",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "291,681,214",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "1992"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "308,012,852",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "327,303,972",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "289,324,599",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "265,123,360",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "276,026,772",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "202,342,352",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "256,571,664",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "284,830,316",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "222,565,687",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "298,883,162",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "237,931,869",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "249,435,167",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "1993"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "207,139,467",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "302,643,592",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "238,851,949",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "256,268,172",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "222,929,563",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "162,764,165",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "192,911,104",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "172,789,613",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "189,067,300",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "204,126,370",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "182,363,358",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "227,188,211",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "1994"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "210,710,889",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "266,459,274",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "220,699,724",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "242,064,642",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "132,660,162",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "267,178,484",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "177,001,288",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "221,744,338",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "211,280,997",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "192,246,813",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "227,827,980",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "194,398,614",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "1995"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "11,179,238",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "28,627,985",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "24,603,163",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "8,880,557",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "12,202,589",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "3,419,029",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "3,659,761",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "16,477,001",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "7,988,696",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "4,892,879",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "19,248,159",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "8,880,806",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "1996"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "28,538,942",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "10,676,820",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "11,107,334",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "12,190,152",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "6,897,844",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "10,300,897",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "9,249,302",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "16,200,897",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "13,260,412",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "19,606,881",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "9,337,491",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "21,689,805",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "1997"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "13,123,784",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "19,257,138",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "27,847,488",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "39,539,439",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "18,173,497",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "30,426,101",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "21,927,507",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "21,728,968",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "18,017,225",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "27,616,922",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "27,940,092",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "37,016,246",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "1998"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "64,095,741",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "29,692,826",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "24,683,025",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "67,931,778",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "46,433,636",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "42,767,156",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "75,323,529",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "44,988,642",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "22,196,286",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "36,794,016",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "19,103,596",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "22,614,763",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "1999"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "23,548,241",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "38,819,270",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "19,982,580",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "16,570,619",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "47,302,997",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "37,743,229",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "41,796,524",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "56,125,746",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "35,750,165",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "52,786,599",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "70,068,477",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "26,077,585",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2000"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "27,528,097",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "24,393,229",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "71,246,403",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "55,994,780",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "67,212,625",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "68,872,040",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "56,554,012",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "54,191,876",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "78,088,098",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "71,573,287",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "73,898,667",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "60,983,283",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2001"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "29,740,176",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "47,118,587",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "68,201,767",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "30,119,102",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "49,777,533",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "54,524,555",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "54,192,717",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "48,867,320",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "19,050,268",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "29,018,374",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "22,719,856",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "28,264,638",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2002"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "27,005,321",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "62,707,130",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "57,988,161",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "43,066,802",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "37,058,370",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "30,537,768",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "58,118,952",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "78,686,803",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "78,461,270",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "62,650,961",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "53,193,368",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "45,342,395",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2003"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "45,795,483",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "62,941,417",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "42,075,043",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "106,648,361",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "50,107,873",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "60,079,959",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "52,973,868",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "48,876,781",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "55,671,679",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "59,415,114",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "53,197,205",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "35,880,654",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2004"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "26,689,472",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "41,343,570",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "60,724,486",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "38,952,815",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "95,727,243",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "60,677,354",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "101,199,869",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "100,234,193",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "70,402,590",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "55,863,189",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "62,640,244",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "42,015,977",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2005"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "33,327,024",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "37,780,876",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "80,236,957",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "40,845,671",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "64,649,633",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "99,117,214",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "134,261,504",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "108,863,779",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "101,511,678",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "65,273,406",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "51,560,012",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "57,461,462",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2006"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "78,292,212",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "96,264,200",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "78,244,884",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "59,007,762",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "64,968,320",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "39,959,457",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "57,829,820",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "82,001,052",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "89,232,906",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "64,570,530",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "70,740,996",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "63,017,189",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2007"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "66,445,740",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "110,458,422",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "132,326,797",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "124,942,651",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "116,188,564",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "66,315,875",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "98,531,508",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "108,120,212",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "89,204,283",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "97,629,923",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "63,604,578",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "52,438,515",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2008"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "81,965,622",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "131,894,845",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "108,991,896",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "127,980,347",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "128,774,953",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "111,057,836",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "129,752,211",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "114,794,865",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "116,311,739",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "110,515,476",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "102,478,764",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "101,519,686",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2009"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "107,601,210",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "149,725,805",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "67,479,327",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "82,331,947",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "71,590,491",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "84,916,215",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "86,031,598",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "134,856,133",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "85,393,473",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "162,662,567",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "179,726,653",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "158,720,689",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2010"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "135,225,273",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "138,522,481",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "319,717,009",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "177,988,991",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "238,416,798",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "228,868,022",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "266,725,017",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "270,577,453",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "242,545,236",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "197,271,677",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "163,395,120",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "136,823,871",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2011"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "170,589,972",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "149,457,810",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "240,383,807",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "198,228,463",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "200,147,635",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "195,199,885",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "192,923,338",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "143,983,395",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "127,962,051",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "128,226,623",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "118,204,821",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "72,396,004",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2012"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "141,073,556",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "103,689,871",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "107,331,757",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "95,324,377",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "132,079,715",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "174,643,926",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "167,190,870",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "138,217,838",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "133,306,831",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "132,944,088",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "117,590,001",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "211,459,064",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2013"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "158,991,800",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "226,955,475",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "208,835,751",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "214,253,883",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "241,567,075",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "222,429,027",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "286,815,280",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "250,665,916",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "281,793,941",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "312,492,681",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "232,474,826",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "227,212,142",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2014"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "217,542,687",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "190,326,037",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "306,544,832",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "345,333,459",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "238,596,271",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "233,870,064",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "167,051,201",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "127,941,119",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "171,505,720",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "113,557,922",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "83,673,991",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "186,827,256",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2015"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "169,226,582",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "87,158,576",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "116,643,686",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "167,371,545",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "101,300,130",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "129,820,900",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "95,801,232",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "90,553,687",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "76,100,870",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "82,793,849",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "200,208,474",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "123,444,658",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2016"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "112,775,293",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "77,950,316",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "110,173,890",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "129,174,837",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "69,654,281",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "150,404,533",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "85,217,697",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "340,028,752",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "124,994,565",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "152,273,358",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "128,429,697",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "129,077,222",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2017"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "134,500,006",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "96,725,602",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "171,331,871",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "162,785,578",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "131,002,856",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "161,471,622",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "124,211,822",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "104,704,061",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "70,141,665",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "114,650,880",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "83,719,169",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "133,965,526",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2018"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "62,006,076",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "111,760,813",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "138,962,069",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "145,145,125",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "130,617,022",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "159,323,705",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "144,314,699",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "110,858,389",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "82,495,490",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "143,431,536",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "131,856,753",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "109,149,534",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2019"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "95,841,767",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "119,311,944",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "90,174,917",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "147,899,648",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "97,961,097",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "119,193,081",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "113,614,074",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "111,008,422",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "82,374,761",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "83,947,118",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "124,481,473",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "102,361,470",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2020"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "109,755,170",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "94,106,794",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "109,236,961",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "68,018,798",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "173,575,256",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "198,437,406",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "356,479,011",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "272,801,925",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "374,271,133",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "179,382,402",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "94,210,425",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "174,752,537",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2021"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "139,096,673",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "150,510,443",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "221,710,849",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "185,914,555",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "119,254,514",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "290,656,937",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "261,579,589",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "114,121,001",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "99,853,344",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "67,873,962",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "173,799,339",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "244,994,525",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2022"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "259,024,400",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "197,370,117",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "155,375,855",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "334,608,587",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "242,889,832",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "379,441,156",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "296,906,023",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "188,393,009",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "301,673,340",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "132,074,351",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "197,735,892",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "226,127,953",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2023"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "157,909,502",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "147,956,088",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "213,797,250",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "122,046,162",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "634,275,023",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "337,748,827",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "265,329,326",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "410,618,094",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "202,322,718",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "120,735,922",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "91,707,831",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "186,860,954",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2024"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "101,052,353",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "95,021,698",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "139,645,354",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "120,414,335",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "207,356,809",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "145,273,360",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "98,804,066",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "128,493,940",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "166,753,979",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "139,457,919",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "49,629,293",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "87,914,190",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2025"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "130,391,244",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "261,869,094",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "423,978,419",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "47,811,143",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "54,221,946",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "49,095,736",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "66,360,864",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "58,204,488",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "49,645,822",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "41,292,939",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "46,565,846",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "53,000,518",
+                      "suppressed": 0
+                    }
+                  ]
+                },
+                {
+                  "rowEntries": [
+                    {
+                      "value": "2026"
+                    },
+                    {
+                      "value": "grams"
+                    },
+                    {
+                      "value": "49,985,330",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "46,764,026",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "79,427,235",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "57,074,859",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "74,520,214",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "0",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "0",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "0",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "0",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "0",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "0",
+                      "suppressed": 0
+                    },
+                    {
+                      "value": "0",
+                      "suppressed": 0
+                    }
+                  ]
+                }
+              ],
+              "subtotals": []
+            }
+          ],
+          "total": {
+            "values": [],
+            "warning": null
+          },
+          "label": null,
+          "tab_name": "General 1st Unit of Qty",
+          "rows": []
+        }
+      ],
+      "errors": [],
+      "complexityThreshold": false,
+      "problemSql": null,
+      "needMoreTime": null,
+      "isOwner": null,
+      "htsChanges": {
+        "changes": [],
+        "validTimeSeriesNums": [],
+        "validTimeSeries": [],
+        "isValid": true
+      },
+      "hts2Selections": [
+        "71"
+      ]
+    }
+  }
+}

@@ -13,5 +13,10 @@ conversation_logs/
 **/*对话记录*
 **/conversation*
 
-# UK BDS bulk archives (~134MB, re-downloadable from uktradeinfo.com)
+# UK BDS bulk archives (re-downloadable from uktradeinfo.com)
 data/uk/_*.zip
+data/uk/hmrc_bulk/*.zip
+
+# US Census bulk archives (hundreds of MB, re-downloadable)
+data/us/census_bulk/*.ZIP
+data/us/census_bulk/*.zip

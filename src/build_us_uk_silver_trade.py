@@ -133,6 +133,23 @@ def write_csv(path: Path, rows: list[dict], fieldnames: list[str]) -> None:
 
 
 def build_us() -> dict:
+    # 若 us_trade.json 已由 fetch_us_trade_data.py（Census HS7106 月度明细）生成，
+    # 直接沿用其结果，避免 update_all.py 用旧 USGS 年度硬编码覆盖月度数据。
+    if OUT_US_JSON.exists():
+        try:
+            existing = json.loads(OUT_US_JSON.read_text(encoding="utf-8"))
+        except Exception:
+            existing = None
+        if isinstance(existing, dict) and existing.get("primarySeries") in {
+            "us_hs7106_census_comtrade",
+            "us_dataweb_census_hs7106",
+        }:
+            print(
+                "[SKIP] US 使用 fetch_us_trade_data.py 已生成的官方月度数据"
+                f"（asOf={existing.get('asOf')}），硬编码不再覆盖"
+            )
+            return existing
+
     rows = []
     years, imps, exps, nets = [], [], [], []
     for y in sorted(US_USGS):
@@ -309,7 +326,10 @@ def build_uk() -> dict:
             existing = json.loads(OUT_UK_JSON.read_text(encoding="utf-8"))
         except Exception:
             existing = None
-        if isinstance(existing, dict) and existing.get("primarySeries") == "hmrc_ots_hs71069100":
+        if isinstance(existing, dict) and existing.get("primarySeries") in {
+            "hmrc_ots_hs71069100",
+            "hmrc_bds_hs71069100",
+        }:
             print(f"[SKIP] UK 使用 fetch_uk_trade_data.py 已生成的 BDS 数据（asOf={existing.get('asOf')}），硬编码不再覆盖")
             return existing
 

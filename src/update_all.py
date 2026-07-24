@@ -159,7 +159,22 @@ def main() -> int:
             print(f"[SKIP] 共享报价源不存在，保留现有 spot_quotes.json: {spot_source}")
 
         steps.append(run_step("生成香港贸易数据", [sys.executable, str(ROOT / "src" / "build_hk_trade.py")]))
-        steps.append(run_step("生成英美贸易数据", [sys.executable, str(ROOT / "src" / "build_us_uk_silver_trade.py")]))
+        steps.append(run_step(
+            "生成美国月度贸易数据",
+            [sys.executable, str(ROOT / "src" / "fetch_us_trade_data.py")],
+        ))
+        steps.append(run_step(
+            "生成英国月度贸易数据",
+            [sys.executable, str(ROOT / "src" / "fetch_uk_trade_data.py")],
+        ))
+        steps.append(run_step(
+            "拉取印度官方月度贸易数据",
+            [sys.executable, str(ROOT / "src" / "fetch_india_trade_data.py")],
+        ))
+        steps.append(run_step(
+            "生成印度月度贸易数据",
+            [sys.executable, str(ROOT / "src" / "preview_india_trade_chart.py")],
+        ))
         steps.append(run_step("生成龙虎榜数据", [sys.executable, str(ROOT / "src" / "build_lhb.py")]))
         if not args.data_only:
             node = shutil.which("node")

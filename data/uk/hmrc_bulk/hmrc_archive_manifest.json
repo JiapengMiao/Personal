@@ -1,0 +1,230 @@
+{
+  "generatedAt": "2026-07-24T09:35:46+08:00",
+  "archivePage": "https://www.uktradeinfo.com/trade-data/latest-bulk-data-sets/bulk-data-sets-archive/",
+  "archives": [
+    {
+      "key": "exp-2026",
+      "flow": "export",
+      "url": "https://www.uktradeinfo.com/media/xm1jtft5/bdsexp_26archive.zip",
+      "localPath": "data\\uk\\_exp_26.zip",
+      "sizeBytes": 11365019,
+      "silverRecordCount": 93
+    },
+    {
+      "key": "exp-2026-05",
+      "flow": "export",
+      "url": "https://www.uktradeinfo.com/media/m4wpixkm/bdsexp2605.zip",
+      "localPath": "data\\uk\\_bdsexp2605.zip",
+      "sizeBytes": 2728826,
+      "silverRecordCount": 18
+    },
+    {
+      "key": "exp-2025",
+      "flow": "export",
+      "url": "https://www.uktradeinfo.com/media/ye2mtvjj/bdsexp_25archive.zip",
+      "localPath": "data\\uk\\_exp_25.zip",
+      "sizeBytes": 34967009,
+      "silverRecordCount": 206
+    },
+    {
+      "key": "exp-2024",
+      "flow": "export",
+      "url": "https://www.uktradeinfo.com/media/gjmhgw2g/bdsexp_24archive.zip",
+      "localPath": "data\\uk\\hmrc_bulk\\bdsexp_24archive.zip",
+      "sizeBytes": 35679686,
+      "silverRecordCount": 186
+    },
+    {
+      "key": "exp-2023",
+      "flow": "export",
+      "url": "https://www.uktradeinfo.com/media/br3dcbef/bdsexp_23archive.zip",
+      "localPath": "data\\uk\\hmrc_bulk\\bdsexp_23archive.zip",
+      "sizeBytes": 36008061,
+      "silverRecordCount": 216
+    },
+    {
+      "key": "exp-2022",
+      "flow": "export",
+      "url": "https://www.uktradeinfo.com/media/0e1b11zq/bdsexp_22archive.zip",
+      "localPath": "data\\uk\\hmrc_bulk\\bdsexp_22archive.zip",
+      "sizeBytes": 37143566,
+      "silverRecordCount": 251
+    },
+    {
+      "key": "exp-2021",
+      "flow": "export",
+      "url": "https://www.uktradeinfo.com/media/ifsljkie/bdsexp_21archive.zip",
+      "localPath": "data\\uk\\hmrc_bulk\\bdsexp_21archive.zip",
+      "sizeBytes": 36843478,
+      "silverRecordCount": 195
+    },
+    {
+      "key": "exp-2020",
+      "flow": "export",
+      "url": "https://www.uktradeinfo.com/media/gw2oqtjj/bdsexp_20archive.zip",
+      "localPath": "data\\uk\\hmrc_bulk\\bdsexp_20archive.zip",
+      "sizeBytes": 29547660,
+      "silverRecordCount": 204
+    },
+    {
+      "key": "exp-2019",
+      "flow": "export",
+      "url": "https://www.uktradeinfo.com/media/p0fjm54d/bdsexp_19archive.zip",
+      "localPath": "data\\uk\\hmrc_bulk\\bdsexp_19archive.zip",
+      "sizeBytes": 31985725,
+      "silverRecordCount": 228
+    },
+    {
+      "key": "exp-2018",
+      "flow": "export",
+      "url": "https://www.uktradeinfo.com/media/lvwa0fbz/bdsexp_18archive.zip",
+      "localPath": "data\\uk\\hmrc_bulk\\bdsexp_18archive.zip",
+      "sizeBytes": 31705394,
+      "silverRecordCount": 214
+    },
+    {
+      "key": "exp-2017",
+      "flow": "export",
+      "url": "https://www.uktradeinfo.com/media/y11fd51z/bdsexp_17archive.zip",
+      "localPath": "data\\uk\\hmrc_bulk\\bdsexp_17archive.zip",
+      "sizeBytes": 31415269,
+      "silverRecordCount": 215
+    },
+    {
+      "key": "exp-2016",
+      "flow": "export",
+      "url": "https://www.uktradeinfo.com/media/bkdhi1lr/bdsexp_16archive.zip",
+      "localPath": "data\\uk\\hmrc_bulk\\bdsexp_16archive.zip",
+      "sizeBytes": 30916942,
+      "silverRecordCount": 206
+    },
+    {
+      "key": "imp-2026-h1",
+      "flow": "import",
+      "url": "https://www.uktradeinfo.com/media/4d1dpb4r/bdsimp_jan-jun26archive.zip",
+      "localPath": "data\\uk\\_imp_jan_jun26.zip",
+      "sizeBytes": 20905962,
+      "silverRecordCount": 241
+    },
+    {
+      "key": "imp-2026-05",
+      "flow": "import",
+      "url": "https://www.uktradeinfo.com/media/cjilp2jp/bdsimp2605.zip",
+      "localPath": "data\\uk\\_bdsimp2605.zip",
+      "sizeBytes": 4883844,
+      "silverRecordCount": 50
+    },
+    {
+      "key": "imp-2025-h1",
+      "flow": "import",
+      "url": "https://www.uktradeinfo.com/media/rzloztvw/bdsimp_jan-jun25archive.zip",
+      "localPath": "data\\uk\\_imp_jan_jun25.zip",
+      "sizeBytes": 31163447,
+      "silverRecordCount": 222
+    },
+    {
+      "key": "imp-2025-h2",
+      "flow": "import",
+      "url": "https://www.uktradeinfo.com/media/utwhkjjx/bdsimp_jul-dec25archive.zip",
+      "localPath": "data\\uk\\_imp_jul_dec25.zip",
+      "sizeBytes": 29751241,
+      "silverRecordCount": 391
+    },
+    {
+      "key": "imp-2024-h1",
+      "flow": "import",
+      "url": "https://www.uktradeinfo.com/media/c1rlakyp/bdsimp_jan-jun24archive.zip",
+      "localPath": "data\\uk\\hmrc_bulk\\bdsimp_jan-jun24archive.zip",
+      "sizeBytes": 29384973,
+      "silverRecordCount": 186
+    },
+    {
+      "key": "imp-2024-h2",
+      "flow": "import",
+      "url": "https://www.uktradeinfo.com/media/sgyhxio1/bdsimp_jul-dec24archive.zip",
+      "localPath": "data\\uk\\hmrc_bulk\\bdsimp_jul-dec24archive.zip",
+      "sizeBytes": 31343700,
+      "silverRecordCount": 198
+    },
+    {
+      "key": "imp-2023-h1",
+      "flow": "import",
+      "url": "https://www.uktradeinfo.com/media/zf1kevsi/bdsimp_jan-jun23archive.zip",
+      "localPath": "data\\uk\\hmrc_bulk\\bdsimp_jan-jun23archive.zip",
+      "sizeBytes": 31274166,
+      "silverRecordCount": 164
+    },
+    {
+      "key": "imp-2023-h2",
+      "flow": "import",
+      "url": "https://www.uktradeinfo.com/media/cykmlmkf/bdsimp_jul-dec23archive.zip",
+      "localPath": "data\\uk\\hmrc_bulk\\bdsimp_jul-dec23archive.zip",
+      "sizeBytes": 29433721,
+      "silverRecordCount": 146
+    },
+    {
+      "key": "imp-2022-h1",
+      "flow": "import",
+      "url": "https://www.uktradeinfo.com/media/sp5jfckt/bdsimp_jan-jun22archive.zip",
+      "localPath": "data\\uk\\hmrc_bulk\\bdsimp_jan-jun22archive.zip",
+      "sizeBytes": 31727713,
+      "silverRecordCount": 124
+    },
+    {
+      "key": "imp-2022-h2",
+      "flow": "import",
+      "url": "https://www.uktradeinfo.com/media/guaigoer/bdsimp_jul-dec22archive.zip",
+      "localPath": "data\\uk\\hmrc_bulk\\bdsimp_jul-dec22archive.zip",
+      "sizeBytes": 29920533,
+      "silverRecordCount": 152
+    },
+    {
+      "key": "imp-2021",
+      "flow": "import",
+      "url": "https://www.uktradeinfo.com/media/05ofpp4l/bdsimp_21archive.zip",
+      "localPath": "data\\uk\\hmrc_bulk\\bdsimp_21archive.zip",
+      "sizeBytes": 26826436,
+      "silverRecordCount": 246
+    },
+    {
+      "key": "imp-2020",
+      "flow": "import",
+      "url": "https://www.uktradeinfo.com/media/cw2bkhvh/bdsimp_20archive.zip",
+      "localPath": "data\\uk\\hmrc_bulk\\bdsimp_20archive.zip",
+      "sizeBytes": 24977856,
+      "silverRecordCount": 182
+    },
+    {
+      "key": "imp-2019",
+      "flow": "import",
+      "url": "https://www.uktradeinfo.com/media/batgkl2p/bdsimp_19archive.zip",
+      "localPath": "data\\uk\\hmrc_bulk\\bdsimp_19archive.zip",
+      "sizeBytes": 26997405,
+      "silverRecordCount": 169
+    },
+    {
+      "key": "imp-2018",
+      "flow": "import",
+      "url": "https://www.uktradeinfo.com/media/ndupigqy/bdsimp_18archive.zip",
+      "localPath": "data\\uk\\hmrc_bulk\\bdsimp_18archive.zip",
+      "sizeBytes": 26764096,
+      "silverRecordCount": 199
+    },
+    {
+      "key": "imp-2017",
+      "flow": "import",
+      "url": "https://www.uktradeinfo.com/media/y4rk5l3v/bdsimp_17archive.zip",
+      "localPath": "data\\uk\\hmrc_bulk\\bdsimp_17archive.zip",
+      "sizeBytes": 26352145,
+      "silverRecordCount": 189
+    },
+    {
+      "key": "imp-2016",
+      "flow": "import",
+      "url": "https://www.uktradeinfo.com/media/5qudm0sw/bdsimp_16archive.zip",
+      "localPath": "data\\uk\\hmrc_bulk\\bdsimp_16archive.zip",
+      "sizeBytes": 26196817,
+      "silverRecordCount": 209
+    }
+  ]
+}
